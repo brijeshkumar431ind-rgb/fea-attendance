@@ -7,7 +7,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="bg-blue-50 min-h-screen pb-20">
+<body class="bg-blue-50 min-h-screen pb-20 text-gray-800">
 
 <header class="bg-blue-600 text-white p-4 text-center font-bold text-lg sticky top-0 z-10 shadow-md flex justify-center items-center gap-2">
   FEA Attendance <span class="text-yellow-300 text-sm">✨ Jesh AI</span>
@@ -18,15 +18,15 @@
 <!-- TAB 1: ATTENDANCE -->
 <section id="tab1">
   <div class="flex gap-2 mb-2">
-    <select id="session" class="flex-1 p-3 rounded-lg border border-blue-300 bg-white shadow-sm font-semibold">
+    <select id="session" class="flex-1 p-3 rounded-lg border border-blue-300 bg-white shadow-sm font-semibold focus:outline-blue-500">
       <option>S.1</option><option>S.2</option><option>S.3</option>
     </select>
-    <button onclick="openImportModal()" class="bg-indigo-600 text-white px-4 py-3 rounded-lg font-semibold shadow-sm text-sm">
+    <button onclick="openImportModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-3 rounded-lg font-semibold shadow-sm text-sm transition">
       📥 AI Import
     </button>
   </div>
   
-  <input id="search" placeholder="Search by Name or ID" class="w-full p-3 rounded-lg border border-blue-300 bg-white mb-3 shadow-sm">
+  <input id="search" placeholder="Search by Name or ID" class="w-full p-3 rounded-lg border border-blue-300 bg-white mb-3 shadow-sm focus:outline-blue-500">
   <div id="studentList" class="space-y-2"></div>
 </section>
 
@@ -38,24 +38,39 @@
 
 <!-- TAB 3: REPORT -->
 <section id="tab3" class="hidden">
-  <textarea id="report" rows="18" class="w-full p-3 rounded-lg border border-blue-300 bg-white text-sm shadow-sm"></textarea>
-  <button onclick="copyText(report.value)" class="w-full mt-3 bg-blue-600 text-white p-3 rounded-lg font-semibold shadow-md">Copy Report</button>
+  <textarea id="report" rows="18" class="w-full p-3 rounded-lg border border-blue-300 bg-white text-sm shadow-sm focus:outline-blue-500 font-mono"></textarea>
+  <button onclick="copyText(report.value)" class="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg font-semibold shadow-md transition">📋 Copy Report</button>
 </section>
 
 <!-- TAB 4: SETTINGS -->
 <section id="tab4" class="hidden space-y-4">
+  <!-- AI Keys -->
   <div class="bg-white p-4 rounded-lg shadow-sm border border-blue-200">
     <h2 class="font-bold text-blue-700 mb-2">✨ Jesh AI Keys (Fallback)</h2>
     <p class="text-xs text-gray-500 mb-2">AI will use Key 1, if fails tries Key 2, then Key 3.</p>
-    <input id="apiKey1" type="password" placeholder="Gemini Key 1" class="w-full p-2 border rounded mb-2 text-sm">
-    <input id="apiKey2" type="password" placeholder="Gemini Key 2 (Optional)" class="w-full p-2 border rounded mb-2 text-sm">
-    <input id="apiKey3" type="password" placeholder="Gemini Key 3 (Optional)" class="w-full p-2 border rounded mb-2 text-sm">
+    <input id="apiKey1" type="password" placeholder="Gemini Key 1 (Required)" class="w-full p-2 border rounded mb-2 text-sm focus:outline-blue-500">
+    <input id="apiKey2" type="password" placeholder="Gemini Key 2 (Optional)" class="w-full p-2 border rounded mb-2 text-sm focus:outline-blue-500">
+    <input id="apiKey3" type="password" placeholder="Gemini Key 3 (Optional)" class="w-full p-2 border rounded mb-2 text-sm focus:outline-blue-500">
   </div>
-  <div class="bg-white p-4 rounded-lg shadow-sm border border-blue-200">
-    <h2 class="font-bold text-blue-700 mb-2">Google Sheet Webhooks</h2>
-    <textarea id="sheetUrls" rows="3" placeholder="https://script.google.com/..." class="w-full p-2 border rounded text-sm mb-2"></textarea>
+
+  <!-- Google Sheet Setup -->
+  <div class="bg-white p-4 rounded-lg shadow-sm border border-green-300 bg-green-50">
+    <h2 class="font-bold text-green-800 mb-2">📊 Connect Google Sheet</h2>
+    <p class="text-xs text-gray-600 mb-2"><b>Step 1:</b> Open Google Sheet > Extensions > Apps Script. Paste the code below and Deploy as Web App (Access: Anyone).</p>
+    <textarea id="appsScriptCode" rows="4" readonly class="w-full p-2 border rounded text-xs bg-gray-100 mb-2 font-mono">function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  if(data.type == 'attendance') sheet.appendRow([new Date(), 'Att', data.date, data.student_id, data.session, data.status]);
+  if(data.type == 'outcome') sheet.appendRow([new Date(), 'Log', data.date, data.student_id, data.outcome]);
+  return ContentService.createTextOutput("Success");
+}</textarea>
+    <button onclick="copyText(document.getElementById('appsScriptCode').value)" class="bg-gray-200 text-gray-700 px-3 py-1 rounded text-xs font-bold mb-3">Copy Script</button>
+
+    <p class="text-xs text-gray-600 mb-2"><b>Step 2:</b> Paste your Web App URL here:</p>
+    <input id="sheetUrl" type="text" placeholder="https://script.google.com/macros/s/.../exec" class="w-full p-2 border rounded mb-3 text-sm focus:outline-green-500">
   </div>
-  <button onclick="saveSettings()" class="w-full bg-green-600 text-white p-3 rounded-lg font-semibold shadow-md">Save Settings</button>
+
+  <button onclick="saveSettings()" class="w-full bg-green-600 hover:bg-green-700 text-white p-3 rounded-lg font-semibold shadow-md transition">Save All Settings</button>
   <div id="settingsMsg" class="text-center text-green-600 font-bold hidden">Settings Saved!</div>
 </section>
 
@@ -68,9 +83,9 @@
       <div class="font-bold text-indigo-700 text-lg">📥 AI Data Import</div>
       <button onclick="closeImportModal()" class="text-3xl text-gray-400 px-2">&times;</button>
     </div>
-    <p class="text-sm text-gray-600 mb-2">Paste any rough data below (e.g., from WhatsApp, Word, or Excel). Jesh AI will analyze and save it to the database.</p>
-    <textarea id="importText" rows="6" placeholder="Example:&#10;101 Rahul S1 9876543210&#10;102 Priya, S2, 9812345678" class="w-full p-3 rounded-lg border border-gray-300 mb-3 text-sm focus:outline-indigo-500"></textarea>
-    <button onclick="processAIImport()" id="importBtn" class="w-full bg-indigo-600 text-white p-3 rounded-lg font-semibold shadow-md flex justify-center items-center gap-2">
+    <p class="text-sm text-gray-600 mb-2">Copy raw data from Excel/WhatsApp and paste below. Jesh AI will extract Name, ID, and Phone.</p>
+    <textarea id="importText" rows="6" placeholder="Example:&#10;954285 Aishwarya Pratap Singh 965223028&#10;954117 Juhi Kushwaha 7348346703" class="w-full p-3 rounded-lg border border-gray-300 mb-3 text-sm focus:outline-indigo-500 font-mono"></textarea>
+    <button onclick="processAIImport()" id="importBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-lg font-semibold shadow-md flex justify-center items-center gap-2 transition">
       ✨ Analyze & Save to DB
     </button>
   </div>
@@ -86,20 +101,22 @@
       </div>
       <button onclick="closeModal()" class="text-3xl text-gray-400 px-2 hover:text-red-500">&times;</button>
     </div>
+    
     <div id="mPhones" class="space-y-2 mb-4"></div>
-    <button id="mLms" class="w-full bg-blue-100 text-blue-700 p-3 rounded-lg font-semibold mb-4 border border-blue-200">Copy LMS Link</button>
+    
+    <button id="mLms" class="w-full bg-blue-100 hover:bg-blue-200 text-blue-700 p-3 rounded-lg font-semibold mb-4 border border-blue-200 transition">📋 Copy LMS Link</button>
     
     <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
       <div class="flex justify-between items-center mb-2">
         <label class="text-sm font-bold text-gray-700">Outcome</label>
-        <button onclick="polishAI()" id="aiBtn" class="bg-purple-100 text-purple-700 text-xs font-bold px-3 py-1 rounded-full border border-purple-300 flex items-center gap-1">
+        <button onclick="polishAI()" id="aiBtn" class="bg-purple-100 hover:bg-purple-200 text-purple-700 text-xs font-bold px-3 py-1 rounded-full border border-purple-300 flex items-center gap-1 transition">
           ✨ Jesh AI Polish
         </button>
       </div>
-      <textarea id="outcome" rows="4" placeholder="Type rough notes..." class="w-full p-3 rounded-lg border border-gray-300 mb-3 text-sm focus:outline-blue-500"></textarea>
+      <textarea id="outcome" rows="4" placeholder="Type rough notes (Hindi/Hinglish)..." class="w-full p-3 rounded-lg border border-gray-300 mb-3 text-sm focus:outline-blue-500"></textarea>
       <div class="flex gap-2">
-        <button onclick="copyText(outcome.value)" class="flex-1 bg-gray-200 text-gray-700 p-3 rounded-lg font-semibold">Copy</button>
-        <button onclick="saveOutcome()" class="flex-1 bg-blue-600 text-white p-3 rounded-lg font-semibold">Save Outcome</button>
+        <button onclick="copyText(outcome.value)" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 p-3 rounded-lg font-semibold transition">📋 Copy</button>
+        <button onclick="saveOutcome()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg font-semibold shadow transition">Save Outcome</button>
       </div>
     </div>
   </div>
@@ -173,10 +190,19 @@ async function processAIImport() {
   if(!text) return toast('Paste some data first');
 
   const btn = $('importBtn');
-  btn.innerHTML = 'Analyzing with AI...';
+  btn.innerHTML = '⏳ Analyzing...';
   btn.disabled = true;
 
-  const prompt = `Extract student data from the text below. Return ONLY a valid JSON array of objects. Do not wrap in markdown. Each object must have keys: "student_id" (string), "name" (string), "session" (string like S.1, S.2, S.3 - default to S.1 if not found), "phone1" (string). Ignore extra text.\n\nText:\n${text}`;
+  const prompt = `Extract student data from the text below. The text might be copied from an Excel sheet (tab-separated). 
+  Return ONLY a valid JSON array of objects. Do not wrap in markdown. 
+  Each object must have exactly these keys:
+  - "student_id": (Look for a 6-digit number in the row)
+  - "name": (The text containing the student's full name)
+  - "session": (Default to "S.1" if not found)
+  - "phone1": (Look for a 9 or 10-digit mobile number)
+  
+  Ignore dates, branch names, and extra numbers.
+  Text:\n${text}`;
 
   let success = false;
   for (let i = 0; i < keys.length; i++) {
@@ -208,7 +234,7 @@ async function processAIImport() {
     } catch(e) { console.log("Key failed", e); }
   }
 
-  if (!success) toast('AI Failed. Check keys or data format.');
+  if (!success) toast('AI Failed. Check keys or data.');
   btn.innerHTML = '✨ Analyze & Save to DB';
   btn.disabled = false;
 }
@@ -232,7 +258,7 @@ function renderStudents() {
     return `<div onclick="toggle('${s.student_id}')" class="p-3 rounded-lg text-white flex justify-between items-center cursor-pointer shadow-sm transition ${absent ? 'bg-red-500' : 'bg-green-500'}">
       <div><div class="font-semibold text-sm">${s.name}</div><div class="text-xs opacity-90">${s.student_id}</div></div>
       <div class="font-bold text-sm">${absent ? 'Absent' : 'Present'}</div></div>`;
-  }).join('') || '<p class="text-center text-gray-500 mt-5">No students found. Use AI Import!</p>';
+  }).join('') || '<p class="text-center text-gray-500 mt-5">No students found. Use AI Import.</p>';
 }
 
 async function toggle(sid) {
@@ -247,7 +273,8 @@ async function toggle(sid) {
   } else {
     ({ error: err } = await db.from('attendance').insert({ date: today(), student_id: sid, session: s, status: next }));
   }
-  toast(err ? 'Error' : 'Saved');
+  toast(err ? 'Error' : 'Saved ✓');
+  if(!err) syncToSheet({type: 'attendance', student_id: sid, status: next, session: s, date: today()});
 }
 
 // --- TAB 2: FOLLOW-UP & AI ---
@@ -263,7 +290,7 @@ async function loadAbsent() {
   const done = new Set((fu || []).map(r => r.student_id));
   window.absentStudents = st || [];
   $('absentList').innerHTML = window.absentStudents.map((s, i) => `
-    <div onclick="openModal(${i})" class="p-3 bg-white rounded-lg border border-blue-200 flex justify-between items-center cursor-pointer shadow-sm">
+    <div onclick="openModal(${i})" class="p-3 bg-white rounded-lg border border-blue-200 flex justify-between items-center cursor-pointer shadow-sm hover:bg-blue-50 transition">
       <div><div class="font-semibold text-blue-700 text-sm">${s.name}</div><div class="text-xs text-gray-500">${s.student_id} | ${s.session}</div></div>
       <div class="text-xs font-bold px-2 py-1 rounded ${done.has(s.student_id) ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">${done.has(s.student_id) ? 'Done' : 'Pending'}</div>
     </div>`).join('');
@@ -277,8 +304,8 @@ async function openModal(i) {
   $('mPhones').innerHTML = phones.map(p => `
     <div class="flex items-center gap-2">
       <div class="flex-1 p-2 bg-blue-50 rounded-lg text-sm font-mono">${p || '-'}</div>
-      ${p ? `<a href="tel:${p}" class="bg-green-500 text-white px-3 py-2 rounded-lg text-sm font-semibold shadow-sm">Call</a>
-      <button onclick="copyText('${p}')" class="bg-blue-100 text-blue-700 px-3 py-2 rounded-lg text-sm font-semibold border border-blue-200">Copy</button>` : ''}
+      ${p ? `<a href="tel:${p}" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg text-sm font-semibold shadow-sm transition">📞 Call</a>
+      <button onclick="copyText('${p}')" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-2 rounded-lg text-sm font-semibold border border-blue-200 transition">📋 Copy</button>` : ''}
     </div>`).join('');
   $('mLms').onclick = () => copyText(LMS_BASE + current.student_id);
   $('outcome').value = '';
@@ -300,7 +327,11 @@ async function saveOutcome() {
     ({ error: err } = await db.from('follow_ups').insert({ date: today(), student_id: current.student_id, outcome_final: val }));
   }
   toast(err ? 'Error' : 'Saved ✓');
-  if (!err) { closeModal(); loadAbsent(); }
+  if (!err) { 
+    closeModal(); 
+    loadAbsent();
+    syncToSheet({type: 'outcome', student_id: current.student_id, outcome: val, date: today()});
+  }
 }
 
 // JESH AI POLISH
@@ -311,7 +342,7 @@ async function polishAI() {
   if(!text) return toast('Type something first');
 
   const btn = $('aiBtn');
-  btn.innerHTML = 'Polishing...';
+  btn.innerHTML = '⏳ Polishing...';
   btn.disabled = true;
 
   let success = false;
@@ -371,26 +402,18 @@ S.2: ${out['S.2'].ids}
 S.3: ${out['S.3'].ids}`;
 }
 
-// --- TAB 4: SETTINGS ---
+// --- TAB 4: SETTINGS & SHEETS ---
 function loadSettings() {
   $('apiKey1').value = localStorage.getItem('geminiKey1') || '';
   $('apiKey2').value = localStorage.getItem('geminiKey2') || '';
   $('apiKey3').value = localStorage.getItem('geminiKey3') || '';
-  $('sheetUrls').value = localStorage.getItem('sheetUrls') || '';
+  $('sheetUrl').value = localStorage.getItem('sheetUrl') || '';
 }
 
 function saveSettings() {
   localStorage.setItem('geminiKey1', $('apiKey1').value.trim());
   localStorage.setItem('geminiKey2', $('apiKey2').value.trim());
   localStorage.setItem('geminiKey3', $('apiKey3').value.trim());
-  localStorage.setItem('sheetUrls', $('sheetUrls').value.trim());
+  localStorage.setItem('sheetUrl', $('sheetUrl').value.trim());
   $('settingsMsg').classList.remove('hidden');
-  setTimeout(() => $('settingsMsg').classList.add('hidden'), 2000);
-}
-
-$('session').addEventListener('change', loadStudents);
-$('search').addEventListener('input', renderStudents);
-showTab(1);
-</script>
-</body>
-</html>
+  setTimeout(() => $('settin
