@@ -103,11 +103,11 @@
     <section id="tab-settings" class="tab-panel hidden space-y-4">
       <div class="border-primary rounded-lg border bg-white p-4 shadow-sm dark:bg-gray-800">
         <h2 class="text-primary mb-1 flex items-center gap-2 font-bold"><i data-lucide="sparkles" class="h-4 w-4"></i><span data-i18n="controlCenter">Jesh AI Control Center</span></h2>
-        <p class="mb-3 text-xs text-gray-500 dark:text-gray-400" data-i18n="fallbackOrder">Order: Gemini → Groq → Cerebras. If one fails (quota, 429, error), the next is tried instantly.</p>
+        <p class="mb-3 text-xs text-gray-500 dark:text-gray-400" data-i18n="fallbackOrder">Order: OpenRouter → Groq → Cerebras. If one fails (quota, 429, error), the next is tried instantly.</p>
         <div id="aiStatus" class="mb-3 flex flex-wrap gap-2 text-xs font-semibold"></div>
-        <label class="mb-1 block text-sm" for="geminiKey">Gemini API Key</label>
-        <input id="geminiKey" type="password" autocomplete="off" placeholder="Gemini API key" class="mb-2 w-full rounded border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900">
-        <input id="geminiModel" type="text" autocomplete="off" placeholder="gemini-flash-latest" aria-label="Gemini model" class="mb-3 w-full rounded border border-gray-300 bg-white p-2 text-xs dark:border-gray-600 dark:bg-gray-900">
+        <label class="mb-1 block text-sm" for="openrouterKey">OpenRouter API Key</label>
+        <input id="openrouterKey" type="password" autocomplete="off" placeholder="sk-or-v1-..." class="mb-2 w-full rounded border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900">
+        <input id="openrouterModel" type="text" autocomplete="off" placeholder="meta-llama/llama-3.3-70b-instruct:free" aria-label="OpenRouter model" class="mb-3 w-full rounded border border-gray-300 bg-white p-2 text-xs dark:border-gray-600 dark:bg-gray-900">
         <label class="mb-1 block text-sm" for="groqKey">Groq API Key</label>
         <input id="groqKey" type="password" autocomplete="off" placeholder="Groq API key" class="mb-2 w-full rounded border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900">
         <input id="groqModel" type="text" autocomplete="off" placeholder="llama-3.3-70b-versatile" aria-label="Groq model" class="mb-3 w-full rounded border border-gray-300 bg-white p-2 text-xs dark:border-gray-600 dark:bg-gray-900">
@@ -277,8 +277,9 @@
     const SUPABASE_URL = 'https://dutsjeykzovclazuztho.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_fW3YXy94NvEQkzODuoPFpQ_H8nSylsk';
     const LMS_BASE = 'http://103.27.234.18:8080/Student/Details/';
+    const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
+    const OPENROUTER_MODELS = ['meta-llama/llama-3.3-70b-instruct:free', 'meta-llama/llama-3.3-70b-instruct'];
     const DEFAULT_MODELS = {
-      gemini: 'gemini-flash-latest',
       groq: 'llama-3.3-70b-versatile',
       cerebras: 'llama3.1-8b'
     };
@@ -295,10 +296,10 @@
     const sessions = ['S.1', 'S.2', 'S.3'];
     const translations = {
       en: {
-        appTitle:'FEA Attendance', todayLesson:"Today's Lesson", session:'Session', lessonNumber:'Lesson No.', lessonType:'Type', saveLesson:"Save Today's Lesson", aiImport:'AI Import', searchPlaceholder:'Search by Name or ID', absentToday:'Absent Today', insights:'Insights', insightsTitle:'Jesh AI Insights', topAttendance:'Top Attendance', dropoutRisk:'Dropout Risk — Lowest Attendance', absencesBySession:'Total Absences by Session', insightsNote:'Attendance rate excludes Exempt records. Historical insights use all records available through Supabase.', copyReport:'📋 Copy Report', controlCenter:'Jesh AI Control Center', fallbackOrder:'Order: Gemini → Groq → Cerebras. If one fails (quota, 429, error), the next is tried instantly.', modelHelp:'Model fields are optional. Leave blank to use the defaults shown.', keyWarning:"Browser-stored API keys are visible to this device's users. For production, use a secured backend.", googleSheets:'📊 Google Sheet Webhooks', sheetsHelp:'Paste one or more deployed Web App URLs, one per line. Each saved attendance or outcome is sent to every URL.', scriptHelp:'Apps Script code (Extensions → Apps Script → Deploy as Web App, Anyone)', copyScript:'Copy Script', githubTitle:'GitHub (for Code Agent)', githubHelp:'Needed only for the AI Code Agent. Use a fine-grained token limited to this one repository with Contents: Read and write.', githubWarning:'The token is stored only in this browser. Never share it with anyone.', preferences:'Preferences', darkMode:'Dark Mode', language:'Language', themeColor:'Theme Color', studioTitle:'Jesh AI Studio (Beta)', beta:'Beta', studioHelp:'Both tools are free and run with your Jesh AI keys. No server needed.', videoTitle:'AI Video Script Planner', videoDesc:'Make a scene-by-scene video script with Jesh AI.', codeTitle:'AI Code Agent', codeDesc:'Describe a change in simple words. Jesh AI prepares it and you approve before it is saved to GitHub.', activeBadge:'Active', freeBadge:'Free', openPlanner:'Open Planner', openAgent:'Open Code Agent', saveSettings:'Save Settings', importTitle:'📥 Jesh AI Data Import', importHelp:'Paste raw Excel or WhatsApp data. Jesh AI extracts name, ID, session and phone.', analyzeSave:'✨ Analyze & Save to DB', copyLms:'📋 Copy LMS Link', exemptCall:'Mark Exempt from Call', outcome:'Outcome', polish:'✨ Jesh AI Polish', copyOutcome:'📋 Copy Outcome', saveOutcome:'Save Outcome', attendance:'Attendance', followup:'Follow-up', report:'Report', settings:'Settings', present:'Present', absent:'Absent', exempt:'Exempt', done:'Done', pending:'Pending', noStudents:'No students found. Use AI Import.', noMatches:'No matching students found.', noAbsentees:'No absentees today 🎉', noData:'No historical attendance data available.', totalStudents:'Students', records:'Attendance records', keySet:'set', keyMissing:'not set'
+        appTitle:'FEA Attendance', todayLesson:"Today's Lesson", session:'Session', lessonNumber:'Lesson No.', lessonType:'Type', saveLesson:"Save Today's Lesson", aiImport:'AI Import', searchPlaceholder:'Search by Name or ID', absentToday:'Absent Today', insights:'Insights', insightsTitle:'Jesh AI Insights', topAttendance:'Top Attendance', dropoutRisk:'Dropout Risk — Lowest Attendance', absencesBySession:'Total Absences by Session', insightsNote:'Attendance rate excludes Exempt records. Historical insights use all records available through Supabase.', copyReport:'📋 Copy Report', controlCenter:'Jesh AI Control Center', fallbackOrder:'Order: OpenRouter → Groq → Cerebras. If one fails (quota, 429, error), the next is tried instantly.', modelHelp:'Model fields are optional. Leave blank to use the defaults shown.', keyWarning:"Browser-stored API keys are visible to this device's users. For production, use a secured backend.", googleSheets:'📊 Google Sheet Webhooks', sheetsHelp:'Paste one or more deployed Web App URLs, one per line. Each saved attendance or outcome is sent to every URL.', scriptHelp:'Apps Script code (Extensions → Apps Script → Deploy as Web App, Anyone)', copyScript:'Copy Script', githubTitle:'GitHub (for Code Agent)', githubHelp:'Needed only for the AI Code Agent. Use a fine-grained token limited to this one repository with Contents: Read and write.', githubWarning:'The token is stored only in this browser. Never share it with anyone.', preferences:'Preferences', darkMode:'Dark Mode', language:'Language', themeColor:'Theme Color', studioTitle:'Jesh AI Studio (Beta)', beta:'Beta', studioHelp:'Both tools are free and run with your Jesh AI keys. No server needed.', videoTitle:'AI Video Script Planner', videoDesc:'Make a scene-by-scene video script with Jesh AI.', codeTitle:'AI Code Agent', codeDesc:'Describe a change in simple words. Jesh AI prepares it and you approve before it is saved to GitHub.', activeBadge:'Active', freeBadge:'Free', openPlanner:'Open Planner', openAgent:'Open Code Agent', saveSettings:'Save Settings', importTitle:'📥 Jesh AI Data Import', importHelp:'Paste raw Excel or WhatsApp data. Jesh AI extracts name, ID, session and phone.', analyzeSave:'✨ Analyze & Save to DB', copyLms:'📋 Copy LMS Link', exemptCall:'Mark Exempt from Call', outcome:'Outcome', polish:'✨ Jesh AI Polish', copyOutcome:'📋 Copy Outcome', saveOutcome:'Save Outcome', attendance:'Attendance', followup:'Follow-up', report:'Report', settings:'Settings', present:'Present', absent:'Absent', exempt:'Exempt', done:'Done', pending:'Pending', noStudents:'No students found. Use AI Import.', noMatches:'No matching students found.', noAbsentees:'No absentees today 🎉', noData:'No historical attendance data available.', totalStudents:'Students', records:'Attendance records', keySet:'set', keyMissing:'not set'
       },
       hi: {
-        appTitle:'FEA उपस्थिति', todayLesson:'आज का पाठ', session:'सत्र', lessonNumber:'पाठ संख्या', lessonType:'प्रकार', saveLesson:'आज का पाठ सहेजें', aiImport:'AI इम्पोर्ट', searchPlaceholder:'नाम या ID से खोजें', absentToday:'आज अनुपस्थित', insights:'जानकारी', insightsTitle:'Jesh AI जानकारी', topAttendance:'सबसे अच्छी उपस्थिति', dropoutRisk:'जोखिम — सबसे कम उपस्थिति', absencesBySession:'सत्र के अनुसार कुल अनुपस्थिति', insightsNote:'उपस्थिति दर में Exempt रिकॉर्ड शामिल नहीं हैं। ऐतिहासिक जानकारी Supabase में उपलब्ध रिकॉर्ड से है।', copyReport:'📋 रिपोर्ट कॉपी करें', controlCenter:'Jesh AI कंट्रोल सेंटर', fallbackOrder:'क्रम: Gemini → Groq → Cerebras। एक फेल होने पर (quota, 429, error) अगला तुरंत आज़माया जाता है।', modelHelp:'Model वाले खाने वैकल्पिक हैं। खाली छोड़ने पर दिखाए गए डिफ़ॉल्ट इस्तेमाल होंगे।', keyWarning:'ब्राउज़र में रखी API कुंजियाँ इस डिवाइस के उपयोगकर्ताओं को दिख सकती हैं। उत्पादन में सुरक्षित बैकएंड का उपयोग करें।', googleSheets:'📊 Google Sheet वेबहुक', sheetsHelp:'एक या अधिक Web App URL डालें, हर पंक्ति में एक URL। सेव की गई उपस्थिति और परिणाम सभी URL पर भेजे जाएंगे।', scriptHelp:'Apps Script कोड (Extensions → Apps Script → Web App के रूप में Deploy, Anyone)', copyScript:'स्क्रिप्ट कॉपी करें', githubTitle:'GitHub (Code Agent के लिए)', githubHelp:'सिर्फ AI Code Agent के लिए चाहिए। सिर्फ इसी एक repository वाला fine-grained token बनाइए, जिसमें Contents: Read and write हो।', githubWarning:'Token सिर्फ इसी ब्राउज़र में रहता है। इसे किसी को मत दीजिए।', preferences:'प्राथमिकताएँ', darkMode:'डार्क मोड', language:'भाषा', themeColor:'थीम का रंग', studioTitle:'Jesh AI स्टूडियो (बीटा)', beta:'बीटा', studioHelp:'दोनों टूल मुफ्त हैं और आपकी Jesh AI key से चलते हैं। किसी सर्वर की ज़रूरत नहीं।', videoTitle:'AI वीडियो स्क्रिप्ट प्लानर', videoDesc:'Jesh AI से सीन-दर-सीन वीडियो स्क्रिप्ट बनाएँ।', codeTitle:'AI कोड एजेंट', codeDesc:'बदलाव आसान भाषा में लिखिए। Jesh AI उसे तैयार करेगा और आपके Approve करने पर ही GitHub में सेव होगा।', activeBadge:'चालू', freeBadge:'मुफ्त', openPlanner:'प्लानर खोलें', openAgent:'कोड एजेंट खोलें', saveSettings:'सेटिंग्स सहेजें', importTitle:'📥 Jesh AI डेटा इम्पोर्ट', importHelp:'Excel या WhatsApp का डेटा पेस्ट करें। Jesh AI नाम, ID, सत्र और फ़ोन निकालेगा।', analyzeSave:'✨ विश्लेषण करें और DB में सहेजें', copyLms:'📋 LMS लिंक कॉपी करें', exemptCall:'कॉल से छूट दें', outcome:'परिणाम', polish:'✨ Jesh AI सुधारें', copyOutcome:'📋 परिणाम कॉपी करें', saveOutcome:'परिणाम सहेजें', attendance:'उपस्थिति', followup:'फॉलो-अप', report:'रिपोर्ट', settings:'सेटिंग्स', present:'उपस्थित', absent:'अनुपस्थित', exempt:'छूट', done:'पूरा', pending:'बाकी', noStudents:'कोई विद्यार्थी नहीं मिला। AI इम्पोर्ट करें।', noMatches:'कोई मेल खाता विद्यार्थी नहीं मिला।', noAbsentees:'आज कोई अनुपस्थित नहीं 🎉', noData:'ऐतिहासिक उपस्थिति डेटा उपलब्ध नहीं है।', totalStudents:'विद्यार्थी', records:'उपस्थिति रिकॉर्ड', keySet:'सेट है', keyMissing:'सेट नहीं'
+        appTitle:'FEA उपस्थिति', todayLesson:'आज का पाठ', session:'सत्र', lessonNumber:'पाठ संख्या', lessonType:'प्रकार', saveLesson:'आज का पाठ सहेजें', aiImport:'AI इम्पोर्ट', searchPlaceholder:'नाम या ID से खोजें', absentToday:'आज अनुपस्थित', insights:'जानकारी', insightsTitle:'Jesh AI जानकारी', topAttendance:'सबसे अच्छी उपस्थिति', dropoutRisk:'जोखिम — सबसे कम उपस्थिति', absencesBySession:'सत्र के अनुसार कुल अनुपस्थिति', insightsNote:'उपस्थिति दर में Exempt रिकॉर्ड शामिल नहीं हैं। ऐतिहासिक जानकारी Supabase में उपलब्ध रिकॉर्ड से है।', copyReport:'📋 रिपोर्ट कॉपी करें', controlCenter:'Jesh AI कंट्रोल सेंटर', fallbackOrder:'क्रम: OpenRouter → Groq → Cerebras। एक फेल होने पर (quota, 429, error) अगला तुरंत आज़माया जाता है।', modelHelp:'Model वाले खाने वैकल्पिक हैं। खाली छोड़ने पर दिखाए गए डिफ़ॉल्ट इस्तेमाल होंगे।', keyWarning:'ब्राउज़र में रखी API कुंजियाँ इस डिवाइस के उपयोगकर्ताओं को दिख सकती हैं। उत्पादन में सुरक्षित बैकएंड का उपयोग करें।', googleSheets:'📊 Google Sheet वेबहुक', sheetsHelp:'एक या अधिक Web App URL डालें, हर पंक्ति में एक URL। सेव की गई उपस्थिति और परिणाम सभी URL पर भेजे जाएंगे।', scriptHelp:'Apps Script कोड (Extensions → Apps Script → Web App के रूप में Deploy, Anyone)', copyScript:'स्क्रिप्ट कॉपी करें', githubTitle:'GitHub (Code Agent के लिए)', githubHelp:'सिर्फ AI Code Agent के लिए चाहिए। सिर्फ इसी एक repository वाला fine-grained token बनाइए, जिसमें Contents: Read and write हो।', githubWarning:'Token सिर्फ इसी ब्राउज़र में रहता है। इसे किसी को मत दीजिए।', preferences:'प्राथमिकताएँ', darkMode:'डार्क मोड', language:'भाषा', themeColor:'थीम का रंग', studioTitle:'Jesh AI स्टूडियो (बीटा)', beta:'बीटा', studioHelp:'दोनों टूल मुफ्त हैं और आपकी Jesh AI key से चलते हैं। किसी सर्वर की ज़रूरत नहीं।', videoTitle:'AI वीडियो स्क्रिप्ट प्लानर', videoDesc:'Jesh AI से सीन-दर-सीन वीडियो स्क्रिप्ट बनाएँ।', codeTitle:'AI कोड एजेंट', codeDesc:'बदलाव आसान भाषा में लिखिए। Jesh AI उसे तैयार करेगा और आपके Approve करने पर ही GitHub में सेव होगा।', activeBadge:'चालू', freeBadge:'मुफ्त', openPlanner:'प्लानर खोलें', openAgent:'कोड एजेंट खोलें', saveSettings:'सेटिंग्स सहेजें', importTitle:'📥 Jesh AI डेटा इम्पोर्ट', importHelp:'Excel या WhatsApp का डेटा पेस्ट करें। Jesh AI नाम, ID, सत्र और फ़ोन निकालेगा।', analyzeSave:'✨ विश्लेषण करें और DB में सहेजें', copyLms:'📋 LMS लिंक कॉपी करें', exemptCall:'कॉल से छूट दें', outcome:'परिणाम', polish:'✨ Jesh AI सुधारें', copyOutcome:'📋 परिणाम कॉपी करें', saveOutcome:'परिणाम सहेजें', attendance:'उपस्थिति', followup:'फॉलो-अप', report:'रिपोर्ट', settings:'सेटिंग्स', present:'उपस्थित', absent:'अनुपस्थित', exempt:'छूट', done:'पूरा', pending:'बाकी', noStudents:'कोई विद्यार्थी नहीं मिला। AI इम्पोर्ट करें।', noMatches:'कोई मेल खाता विद्यार्थी नहीं मिला।', noAbsentees:'आज कोई अनुपस्थित नहीं 🎉', noData:'ऐतिहासिक उपस्थिति डेटा उपलब्ध नहीं है।', totalStudents:'विद्यार्थी', records:'उपस्थिति रिकॉर्ड', keySet:'सेट है', keyMissing:'सेट नहीं'
       }
     };
     let db = null;
@@ -405,7 +406,7 @@
       const box = $('aiStatus');
       if (!box) return;
       box.replaceChildren();
-      [['Gemini', 'geminiKey'], ['Groq', 'groqKey'], ['Cerebras', 'cerebrasKey']].forEach(([name, key]) => {
+      [['OpenRouter', 'openrouterKey'], ['Groq', 'groqKey'], ['Cerebras', 'cerebrasKey']].forEach(([name, key]) => {
         const ready = Boolean((localStorage.getItem(key) || '').trim());
         const chip = document.createElement('span');
         chip.className = `rounded-full px-2 py-1 ${ready ? 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300' : 'bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300'}`;
@@ -448,7 +449,7 @@
     function getAIConfig() {
       const read = key => (localStorage.getItem(key) || '').trim();
       return {
-        gemini: { key: read('geminiKey'), model: read('geminiModel') || DEFAULT_MODELS.gemini },
+        openrouter: { key: read('openrouterKey'), model: read('openrouterModel') },
         groq: { key: read('groqKey'), model: read('groqModel') || DEFAULT_MODELS.groq },
         cerebras: { key: read('cerebrasKey'), model: read('cerebrasModel') || DEFAULT_MODELS.cerebras }
       };
@@ -467,19 +468,6 @@
       }
     }
 
-    async function requestGemini(key, model, prompt) {
-      const response = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-      });
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(`HTTP ${response.status}: ${data.error?.message || 'Gemini request failed'}`);
-      const text = data.candidates?.[0]?.content?.parts?.map(part => part.text || '').join('');
-      if (!text || !text.trim()) throw new Error('Empty response');
-      return text;
-    }
-
     async function requestChatCompletion(url, key, model, prompt) {
       const response = await fetchWithTimeout(url, {
         method: 'POST',
@@ -493,10 +481,23 @@
       return text;
     }
 
+    async function requestOpenRouter(key, customModel, prompt) {
+      const models = customModel ? [customModel] : OPENROUTER_MODELS;
+      const failures = [];
+      for (const model of models) {
+        try {
+          return await requestChatCompletion(OPENROUTER_URL, key, model, prompt);
+        } catch (error) {
+          failures.push(`${model}: ${error.message}`);
+        }
+      }
+      throw new Error(failures.join(' ; '));
+    }
+
     async function callJeshAI(prompt) {
       const config = getAIConfig();
       const providers = [
-        { name: 'Gemini', key: config.gemini.key, run: () => requestGemini(config.gemini.key, config.gemini.model, prompt) },
+        { name: 'OpenRouter', key: config.openrouter.key, run: () => requestOpenRouter(config.openrouter.key, config.openrouter.model, prompt) },
         { name: 'Groq', key: config.groq.key, run: () => requestChatCompletion('https://api.groq.com/openai/v1/chat/completions', config.groq.key, config.groq.model, prompt) },
         { name: 'Cerebras', key: config.cerebras.key, run: () => requestChatCompletion('https://api.cerebras.ai/v1/chat/completions', config.cerebras.key, config.cerebras.model, prompt) }
       ].filter(provider => provider.key);
@@ -910,7 +911,7 @@
     $('copyScriptBtn').addEventListener('click', () => copyText($('appsScriptCode').value));
 
     const SETTING_FIELDS = {
-      geminiKey: 'geminiKey', geminiModel: 'geminiModel',
+      openrouterKey: 'openrouterKey', openrouterModel: 'openrouterModel',
       groqKey: 'groqKey', groqModel: 'groqModel',
       cerebrasKey: 'cerebrasKey', cerebrasModel: 'cerebrasModel',
       ghRepo: 'ghRepo', ghBranch: 'ghBranch', ghPath: 'ghPath', ghToken: 'ghToken'
