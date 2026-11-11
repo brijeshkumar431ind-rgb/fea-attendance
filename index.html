@@ -126,7 +126,7 @@
 </nav>
 
 <script>
-// ERROR CATCHER: अगर कोड में कोई गलती होगी, तो यह स्क्रीन पर अलर्ट दिखाएगा
+// ERROR CATCHER
 window.onerror = function(msg, url, line, col, error) {
    alert("⚠️ Error Found: " + msg + "\nLine: " + line);
    return false;
@@ -213,6 +213,7 @@ async function processAIImport() {
   let success = false;
   for (let i = 0; i < keys.length; i++) {
     try {
+      // Using v1beta endpoint and gemini-1.5-flash model
       const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${keys[i]}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -344,6 +345,7 @@ async function saveOutcome() {
   }
 }
 
+// JESH AI POLISH
 async function polishAI() {
   const keys = getApiKeys();
   const text = $('outcome').value;
@@ -422,4 +424,4 @@ function saveSettings() {
   localStorage.setItem('geminiKey1', $('apiKey1').value.trim());
   localStorage.setItem('geminiKey2', $('apiKey2').value.trim());
   localStorage.setItem('geminiKey3', $('apiKey3').value.trim());
-  localStorage.setItem('s
+  localS
