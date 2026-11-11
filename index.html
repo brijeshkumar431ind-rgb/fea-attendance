@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,23 +10,46 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>tailwind.config = { darkMode: 'class' };</script>
   <style>
-    :root { color-scheme: light; }
-    html.dark { color-scheme: dark; }
-    body { -webkit-tap-highlight-color: transparent; }
+    :root {
+      color-scheme: light;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-soft: color-mix(in srgb, var(--primary) 10%, white);
+      --primary-border: color-mix(in srgb, var(--primary) 30%, white);
+      --primary-text: var(--primary-dark);
+      --page-bg: color-mix(in srgb, var(--primary) 6%, white);
+    }
+    html.dark {
+      color-scheme: dark;
+      --primary-soft: color-mix(in srgb, var(--primary) 22%, #111827);
+      --primary-border: color-mix(in srgb, var(--primary) 35%, #111827);
+      --primary-text: color-mix(in srgb, var(--primary) 45%, white);
+      --page-bg: #111827;
+    }
+    body { -webkit-tap-highlight-color: transparent; background: var(--page-bg); }
     .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+    .bg-primary { background-color: var(--primary); }
+    .bg-primary-hover:hover { background-color: var(--primary-dark); }
+    .bg-primary-soft { background-color: var(--primary-soft); }
+    .text-primary { color: var(--primary-text); }
+    .border-primary { border-color: var(--primary-border); }
+    .focus-primary:focus { outline: none; box-shadow: 0 0 0 2px var(--primary); }
+    .swatch { width: 2.25rem; height: 2.25rem; border-radius: 9999px; border: 3px solid transparent; }
+    .swatch.active { border-color: #111827; box-shadow: 0 0 0 2px #fff inset; }
+    html.dark .swatch.active { border-color: #fff; box-shadow: 0 0 0 2px #111827 inset; }
   </style>
 </head>
-<body class="min-h-screen bg-blue-50 pb-24 text-gray-800 transition-colors dark:bg-gray-900 dark:text-gray-100">
-  <header class="sticky top-0 z-20 flex items-center justify-center gap-2 bg-blue-600 p-4 text-center text-lg font-bold text-white shadow-md dark:bg-blue-800">
-    <i data-lucide="clipboard-check" class="h-5 w-5" aria-hidden="true"></i>
+<body class="min-h-screen pb-24 text-gray-800 transition-colors dark:text-gray-100">
+  <header class="bg-primary sticky top-0 z-20 flex items-center justify-center gap-2 p-4 text-center text-lg font-bold text-white shadow-md">
+    <i data-lucide="bot" class="h-5 w-5" aria-hidden="true"></i>
     <span data-i18n="appTitle">FEA Attendance</span>
-    <span class="text-sm text-yellow-300">✨ Jesh AI</span>
+    <span class="rounded-full bg-white/20 px-2 py-0.5 text-xs text-yellow-200">✨ Jesh AI</span>
   </header>
 
   <main class="mx-auto max-w-xl p-3">
     <section id="tab-attendance" class="tab-panel space-y-3">
-      <div class="rounded-xl border border-blue-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-        <h2 class="mb-2 flex items-center gap-2 font-bold text-blue-700 dark:text-blue-300"><i data-lucide="book-open-check" class="h-4 w-4"></i><span data-i18n="todayLesson">Today's Lesson</span></h2>
+      <div class="border-primary rounded-xl border bg-white p-3 shadow-sm dark:bg-gray-800">
+        <h2 class="text-primary mb-2 flex items-center gap-2 font-bold"><i data-lucide="book-open-check" class="h-4 w-4"></i><span data-i18n="todayLesson">Today's Lesson</span></h2>
         <div class="grid grid-cols-3 gap-2">
           <label class="text-xs font-semibold text-gray-600 dark:text-gray-300"><span data-i18n="session">Session</span>
             <select id="lessonSession" class="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900"><option>S.1</option><option>S.2</option><option>S.3</option></select>
@@ -39,24 +61,24 @@
             <select id="lessonType" class="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900"><option value="Regular">Regular</option><option value="SL">SL</option><option value="Rev">Rev</option></select>
           </label>
         </div>
-        <button id="saveLessonBtn" class="mt-3 w-full rounded-lg bg-blue-600 p-2.5 text-sm font-bold text-white hover:bg-blue-700" data-i18n="saveLesson">Save Today's Lesson</button>
+        <button id="saveLessonBtn" class="bg-primary bg-primary-hover mt-3 w-full rounded-lg p-2.5 text-sm font-bold text-white" data-i18n="saveLesson">Save Today's Lesson</button>
       </div>
 
       <div class="flex gap-2">
-        <select id="session" aria-label="Session" class="flex-1 rounded-lg border border-blue-300 bg-white p-3 font-semibold shadow-sm dark:border-gray-600 dark:bg-gray-800"><option>S.1</option><option>S.2</option><option>S.3</option></select>
-        <button id="openImportBtn" class="flex items-center gap-1 rounded-lg bg-indigo-600 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700"><i data-lucide="file-up" class="h-4 w-4"></i><span data-i18n="aiImport">AI Import</span></button>
+        <select id="session" aria-label="Session" class="border-primary flex-1 rounded-lg border bg-white p-3 font-semibold shadow-sm dark:bg-gray-800"><option>S.1</option><option>S.2</option><option>S.3</option></select>
+        <button id="openImportBtn" class="bg-primary bg-primary-hover flex items-center gap-1 rounded-lg px-3 py-3 text-sm font-semibold text-white shadow-sm"><i data-lucide="file-up" class="h-4 w-4"></i><span data-i18n="aiImport">AI Import</span></button>
       </div>
-      <input id="search" type="search" data-i18n-placeholder="searchPlaceholder" placeholder="Search by Name or ID" class="w-full rounded-lg border border-blue-300 bg-white p-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800">
+      <input id="search" type="search" data-i18n-placeholder="searchPlaceholder" placeholder="Search by Name or ID" class="border-primary focus-primary w-full rounded-lg border bg-white p-3 shadow-sm dark:bg-gray-800">
       <div id="studentList" class="space-y-2" aria-live="polite"></div>
     </section>
 
     <section id="tab-followup" class="tab-panel hidden">
-      <h2 class="mb-2 flex items-center gap-2 font-bold text-blue-700 dark:text-blue-300"><i data-lucide="phone-call" class="h-5 w-5"></i><span data-i18n="absentToday">Absent Today</span></h2>
+      <h2 class="text-primary mb-2 flex items-center gap-2 font-bold"><i data-lucide="phone-call" class="h-5 w-5"></i><span data-i18n="absentToday">Absent Today</span></h2>
       <div id="absentList" class="space-y-2"></div>
     </section>
 
     <section id="tab-insights" class="tab-panel hidden space-y-4">
-      <h2 class="flex items-center gap-2 text-lg font-bold text-blue-700 dark:text-blue-300"><i data-lucide="chart-no-axes-combined" class="h-5 w-5"></i><span data-i18n="insights">Insights</span></h2>
+      <h2 class="text-primary flex items-center gap-2 text-lg font-bold"><i data-lucide="chart-no-axes-combined" class="h-5 w-5"></i><span data-i18n="insightsTitle">Jesh AI Insights</span></h2>
       <div id="insightsSummary" class="grid grid-cols-2 gap-3"></div>
       <div class="rounded-xl border border-green-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
         <h3 class="mb-3 font-bold text-green-700 dark:text-green-300" data-i18n="topAttendance">Top Attendance</h3>
@@ -74,23 +96,24 @@
     </section>
 
     <section id="tab-report" class="tab-panel hidden">
-      <textarea id="report" rows="20" readonly class="w-full rounded-lg border border-blue-300 bg-white p-3 font-mono text-sm shadow-sm dark:border-gray-600 dark:bg-gray-800"></textarea>
-      <button id="copyReportBtn" class="mt-3 w-full rounded-lg bg-blue-600 p-3 font-semibold text-white shadow-md hover:bg-blue-700"><span data-i18n="copyReport">📋 Copy Report</span></button>
+      <textarea id="report" rows="20" readonly class="border-primary w-full rounded-lg border bg-white p-3 font-mono text-sm shadow-sm dark:bg-gray-800"></textarea>
+      <button id="copyReportBtn" class="bg-primary bg-primary-hover mt-3 w-full rounded-lg p-3 font-semibold text-white shadow-md"><span data-i18n="copyReport">📋 Copy Report</span></button>
     </section>
 
     <section id="tab-settings" class="tab-panel hidden space-y-4">
-      <div class="rounded-lg border border-blue-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-        <h2 class="mb-3 flex items-center gap-2 font-bold text-blue-700 dark:text-blue-300"><i data-lucide="sparkles" class="h-4 w-4"></i><span data-i18n="aiKeys">Jesh AI Keys (Fallback)</span></h2>
+      <div class="border-primary rounded-lg border bg-white p-4 shadow-sm dark:bg-gray-800">
+        <h2 class="text-primary mb-1 flex items-center gap-2 font-bold"><i data-lucide="sparkles" class="h-4 w-4"></i><span data-i18n="controlCenter">Jesh AI Control Center</span></h2>
         <p class="mb-3 text-xs text-gray-500 dark:text-gray-400" data-i18n="fallbackOrder">Order: Gemini → Groq → Cerebras. If one fails (quota, 429, error), the next is tried instantly.</p>
+        <div id="aiStatus" class="mb-3 flex flex-wrap gap-2 text-xs font-semibold"></div>
         <label class="mb-1 block text-sm" for="geminiKey">Gemini API Key</label>
         <input id="geminiKey" type="password" autocomplete="off" placeholder="Gemini API key" class="mb-2 w-full rounded border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900">
-        <input id="geminiModel" type="text" autocomplete="off" placeholder="gemini-flash-latest" class="mb-3 w-full rounded border border-gray-300 bg-white p-2 text-xs dark:border-gray-600 dark:bg-gray-900" aria-label="Gemini model">
+        <input id="geminiModel" type="text" autocomplete="off" placeholder="gemini-flash-latest" aria-label="Gemini model" class="mb-3 w-full rounded border border-gray-300 bg-white p-2 text-xs dark:border-gray-600 dark:bg-gray-900">
         <label class="mb-1 block text-sm" for="groqKey">Groq API Key</label>
         <input id="groqKey" type="password" autocomplete="off" placeholder="Groq API key" class="mb-2 w-full rounded border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900">
-        <input id="groqModel" type="text" autocomplete="off" placeholder="llama-3.3-70b-versatile" class="mb-3 w-full rounded border border-gray-300 bg-white p-2 text-xs dark:border-gray-600 dark:bg-gray-900" aria-label="Groq model">
+        <input id="groqModel" type="text" autocomplete="off" placeholder="llama-3.3-70b-versatile" aria-label="Groq model" class="mb-3 w-full rounded border border-gray-300 bg-white p-2 text-xs dark:border-gray-600 dark:bg-gray-900">
         <label class="mb-1 block text-sm" for="cerebrasKey">Cerebras API Key</label>
         <input id="cerebrasKey" type="password" autocomplete="off" placeholder="Cerebras API key" class="mb-2 w-full rounded border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900">
-        <input id="cerebrasModel" type="text" autocomplete="off" placeholder="llama3.1-8b" class="w-full rounded border border-gray-300 bg-white p-2 text-xs dark:border-gray-600 dark:bg-gray-900" aria-label="Cerebras model">
+        <input id="cerebrasModel" type="text" autocomplete="off" placeholder="llama3.1-8b" aria-label="Cerebras model" class="w-full rounded border border-gray-300 bg-white p-2 text-xs dark:border-gray-600 dark:bg-gray-900">
         <p class="mt-2 text-xs text-gray-500 dark:text-gray-400" data-i18n="modelHelp">Model fields are optional. Leave blank to use the defaults shown.</p>
         <p class="mt-2 text-xs text-amber-700 dark:text-amber-300" data-i18n="keyWarning">Browser-stored API keys are visible to this device's users. For production, use a secured backend.</p>
       </div>
@@ -115,39 +138,76 @@
       <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
         <h2 class="mb-3 font-bold" data-i18n="preferences">Preferences</h2>
         <label class="mb-4 flex items-center justify-between"><span data-i18n="darkMode">Dark Mode</span><input id="darkMode" type="checkbox" class="h-5 w-5 accent-blue-600"></label>
-        <label class="flex items-center justify-between gap-3"><span data-i18n="language">Language</span><select id="language" class="rounded border border-gray-300 bg-white p-2 dark:border-gray-600 dark:bg-gray-900"><option value="en">English</option><option value="hi">हिन्दी</option></select></label>
+        <label class="mb-4 flex items-center justify-between gap-3"><span data-i18n="language">Language</span><select id="language" class="rounded border border-gray-300 bg-white p-2 dark:border-gray-600 dark:bg-gray-900"><option value="en">English</option><option value="hi">हिन्दी</option></select></label>
+        <div>
+          <div class="mb-2 flex items-center gap-2 text-sm"><i data-lucide="palette" class="h-4 w-4"></i><span data-i18n="themeColor">Theme Color</span></div>
+          <div id="swatches" class="flex flex-wrap gap-3"></div>
+        </div>
       </div>
+
+      <div class="rounded-lg border border-purple-200 bg-white p-4 shadow-sm dark:border-purple-900 dark:bg-gray-800">
+        <div class="mb-1 flex items-center justify-between">
+          <h2 class="flex items-center gap-2 font-bold text-purple-700 dark:text-purple-300"><i data-lucide="flask-conical" class="h-4 w-4"></i><span data-i18n="studioTitle">Jesh AI Studio (Beta)</span></h2>
+          <span class="rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-bold uppercase text-purple-700 dark:bg-purple-950 dark:text-purple-200" data-i18n="beta">Beta</span>
+        </div>
+        <p class="mb-3 text-xs text-gray-500 dark:text-gray-400" data-i18n="studioHelp">These tools need a secure backend server and are not active yet.</p>
+        <div class="space-y-3">
+          <div class="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-900">
+            <div class="flex items-start gap-3">
+              <div class="rounded-lg bg-pink-100 p-2 text-pink-600 dark:bg-pink-950 dark:text-pink-300"><i data-lucide="video" class="h-5 w-5"></i></div>
+              <div class="min-w-0 flex-1">
+                <div class="flex flex-wrap items-center gap-2"><span class="font-semibold" data-i18n="videoTitle">AI Video Generation</span><span class="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:bg-amber-900 dark:text-amber-100" data-i18n="comingSoon">Coming Soon</span></div>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" data-i18n="videoDesc">Create AI avatar videos for lessons and parent updates.</p>
+                <span class="mt-2 inline-block rounded bg-gray-200 px-2 py-0.5 text-[10px] font-semibold text-gray-600 dark:bg-gray-700 dark:text-gray-300" data-i18n="needsBackend">Requires Backend</span>
+              </div>
+            </div>
+            <button disabled class="mt-3 w-full cursor-not-allowed rounded-lg bg-gray-200 p-2 text-sm font-semibold text-gray-400 dark:bg-gray-700 dark:text-gray-500" data-i18n="launchDisabled">Not available yet</button>
+          </div>
+          <div class="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-900">
+            <div class="flex items-start gap-3">
+              <div class="rounded-lg bg-cyan-100 p-2 text-cyan-600 dark:bg-cyan-950 dark:text-cyan-300"><i data-lucide="terminal" class="h-5 w-5"></i></div>
+              <div class="min-w-0 flex-1">
+                <div class="flex flex-wrap items-center gap-2"><span class="font-semibold" data-i18n="codeTitle">AI Code Agent</span><span class="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:bg-amber-900 dark:text-amber-100" data-i18n="comingSoon">Coming Soon</span></div>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" data-i18n="codeDesc">An autonomous agent that can update this app's code for you.</p>
+                <span class="mt-2 inline-block rounded bg-gray-200 px-2 py-0.5 text-[10px] font-semibold text-gray-600 dark:bg-gray-700 dark:text-gray-300" data-i18n="needsBackend">Requires Backend</span>
+              </div>
+            </div>
+            <button disabled class="mt-3 w-full cursor-not-allowed rounded-lg bg-gray-200 p-2 text-sm font-semibold text-gray-400 dark:bg-gray-700 dark:text-gray-500" data-i18n="launchDisabled">Not available yet</button>
+          </div>
+        </div>
+      </div>
+
       <button id="saveSettingsBtn" class="w-full rounded-lg bg-green-600 p-3 font-semibold text-white shadow-md hover:bg-green-700" data-i18n="saveSettings">Save Settings</button>
     </section>
   </main>
 
   <div id="importModal" class="fixed inset-0 z-40 hidden items-end justify-center bg-black/60 p-0 sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="importTitle">
     <div class="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-t-2xl bg-white p-4 shadow-xl dark:bg-gray-800 sm:rounded-2xl" onclick="event.stopPropagation()">
-      <div class="mb-3 flex items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700"><h2 id="importTitle" class="text-lg font-bold text-indigo-700 dark:text-indigo-300" data-i18n="importTitle">📥 AI Data Import</h2><button data-close="importModal" class="px-2 text-3xl text-gray-400" aria-label="Close">&times;</button></div>
-      <p class="mb-2 text-sm text-gray-600 dark:text-gray-300" data-i18n="importHelp">Paste raw Excel or WhatsApp data. AI extracts name, ID, session and phone.</p>
+      <div class="mb-3 flex items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700"><h2 id="importTitle" class="text-primary text-lg font-bold" data-i18n="importTitle">📥 Jesh AI Data Import</h2><button data-close="importModal" class="px-2 text-3xl text-gray-400" aria-label="Close">&times;</button></div>
+      <p class="mb-2 text-sm text-gray-600 dark:text-gray-300" data-i18n="importHelp">Paste raw Excel or WhatsApp data. Jesh AI extracts name, ID, session and phone.</p>
       <textarea id="importText" rows="7" placeholder="Paste student data here..." class="mb-3 w-full rounded-lg border border-gray-300 bg-white p-3 text-sm dark:border-gray-600 dark:bg-gray-900"></textarea>
-      <button id="analyzeBtn" class="w-full rounded-lg bg-indigo-600 p-3 font-semibold text-white shadow-md hover:bg-indigo-700" data-i18n="analyzeSave">✨ Analyze &amp; Save to DB</button>
+      <button id="analyzeBtn" class="bg-primary bg-primary-hover w-full rounded-lg p-3 font-semibold text-white shadow-md" data-i18n="analyzeSave">✨ Analyze &amp; Save to DB</button>
     </div>
   </div>
 
   <div id="studentModal" class="fixed inset-0 z-40 hidden items-end justify-center bg-black/60 p-0 sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="modalName">
     <div class="max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-t-2xl bg-white p-4 shadow-xl dark:bg-gray-800 sm:rounded-2xl" onclick="event.stopPropagation()">
-      <div class="mb-3 flex items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700"><div><h2 id="modalName" class="text-lg font-bold text-blue-700 dark:text-blue-300"></h2><div id="modalId" class="text-sm text-gray-500 dark:text-gray-400"></div></div><button data-close="studentModal" class="px-2 text-3xl text-gray-400" aria-label="Close">&times;</button></div>
+      <div class="mb-3 flex items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700"><div><h2 id="modalName" class="text-primary text-lg font-bold"></h2><div id="modalId" class="text-sm text-gray-500 dark:text-gray-400"></div></div><button data-close="studentModal" class="px-2 text-3xl text-gray-400" aria-label="Close">&times;</button></div>
       <div id="phoneList" class="mb-4 space-y-2"></div>
-      <button id="copyLmsBtn" class="mb-3 w-full rounded-lg border border-blue-200 bg-blue-50 p-3 font-semibold text-blue-700 hover:bg-blue-100 dark:border-blue-900 dark:bg-blue-950 dark:text-blue-200" data-i18n="copyLms">📋 Copy LMS Link</button>
+      <button id="copyLmsBtn" class="bg-primary-soft border-primary text-primary mb-3 w-full rounded-lg border p-3 font-semibold" data-i18n="copyLms">📋 Copy LMS Link</button>
       <button id="exemptBtn" class="mb-4 w-full rounded-lg bg-amber-100 p-3 font-semibold text-amber-800 hover:bg-amber-200 dark:bg-amber-900 dark:text-amber-100" data-i18n="exemptCall">Mark Exempt from Call</button>
       <div class="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-900">
         <div class="mb-2 flex items-center justify-between gap-2"><label for="outcome" class="text-sm font-bold" data-i18n="outcome">Outcome</label><button id="polishBtn" class="rounded-full border border-purple-300 bg-purple-100 px-3 py-1 text-xs font-bold text-purple-700 hover:bg-purple-200 dark:border-purple-800 dark:bg-purple-950 dark:text-purple-200" data-i18n="polish">✨ Jesh AI Polish</button></div>
         <textarea id="outcome" rows="4" placeholder="Type rough notes..." class="mb-3 w-full rounded-lg border border-gray-300 bg-white p-3 text-sm dark:border-gray-600 dark:bg-gray-800"></textarea>
-        <div class="flex gap-2"><button id="copyOutcomeBtn" class="flex-1 rounded-lg bg-gray-200 p-3 font-semibold text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100" data-i18n="copyOutcome">📋 Copy Outcome</button><button id="saveOutcomeBtn" class="flex-1 rounded-lg bg-blue-600 p-3 font-semibold text-white shadow hover:bg-blue-700" data-i18n="saveOutcome">Save Outcome</button></div>
+        <div class="flex gap-2"><button id="copyOutcomeBtn" class="flex-1 rounded-lg bg-gray-200 p-3 font-semibold text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100" data-i18n="copyOutcome">📋 Copy Outcome</button><button id="saveOutcomeBtn" class="bg-primary bg-primary-hover flex-1 rounded-lg p-3 font-semibold text-white shadow" data-i18n="saveOutcome">Save Outcome</button></div>
       </div>
     </div>
   </div>
 
   <div id="toast" class="fixed left-1/2 top-16 z-50 hidden max-w-[90vw] -translate-x-1/2 rounded-full bg-gray-900 px-5 py-2 text-center text-sm text-white shadow-lg" role="status" aria-live="polite"></div>
 
-  <nav class="safe-bottom fixed inset-x-0 bottom-0 z-30 flex border-t border-blue-200 bg-white dark:border-gray-700 dark:bg-gray-800" aria-label="Main navigation">
-    <button data-tab="attendance" class="nav-btn flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-semibold text-blue-600 dark:text-blue-300"><i data-lucide="clipboard-check" class="h-5 w-5"></i><span data-i18n="attendance">Attendance</span></button>
+  <nav class="safe-bottom fixed inset-x-0 bottom-0 z-30 flex border-t border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800" aria-label="Main navigation">
+    <button data-tab="attendance" class="nav-btn text-primary flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-semibold"><i data-lucide="clipboard-check" class="h-5 w-5"></i><span data-i18n="attendance">Attendance</span></button>
     <button data-tab="followup" class="nav-btn flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-semibold text-gray-400"><i data-lucide="phone" class="h-5 w-5"></i><span data-i18n="followup">Follow-up</span></button>
     <button data-tab="insights" class="nav-btn flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-semibold text-gray-400"><i data-lucide="chart-no-axes-combined" class="h-5 w-5"></i><span data-i18n="insights">Insights</span></button>
     <button data-tab="report" class="nav-btn flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-semibold text-gray-400"><i data-lucide="file-text" class="h-5 w-5"></i><span data-i18n="report">Report</span></button>
@@ -168,14 +228,22 @@
       groq: 'llama-3.3-70b-versatile',
       cerebras: 'llama3.1-8b'
     };
+    const PALETTE = [
+      { name: 'Blue', primary: '#2563eb', dark: '#1d4ed8' },
+      { name: 'Indigo', primary: '#4f46e5', dark: '#4338ca' },
+      { name: 'Emerald', primary: '#059669', dark: '#047857' },
+      { name: 'Rose', primary: '#e11d48', dark: '#be123c' },
+      { name: 'Orange', primary: '#ea580c', dark: '#c2410c' },
+      { name: 'Purple', primary: '#7c3aed', dark: '#6d28d9' }
+    ];
     const $ = id => document.getElementById(id);
     const sessions = ['S.1', 'S.2', 'S.3'];
     const translations = {
       en: {
-        appTitle:'FEA Attendance', todayLesson:"Today's Lesson", session:'Session', lessonNumber:'Lesson No.', lessonType:'Type', saveLesson:"Save Today's Lesson", aiImport:'AI Import', searchPlaceholder:'Search by Name or ID', absentToday:'Absent Today', insights:'Insights', topAttendance:'Top Attendance', dropoutRisk:'Dropout Risk — Lowest Attendance', absencesBySession:'Total Absences by Session', insightsNote:'Attendance rate excludes Exempt records. Historical insights use all records available through Supabase.', copyReport:'📋 Copy Report', aiKeys:'Jesh AI Keys (Fallback)', fallbackOrder:'Order: Gemini → Groq → Cerebras. If one fails (quota, 429, error), the next is tried instantly.', modelHelp:'Model fields are optional. Leave blank to use the defaults shown.', keyWarning:"Browser-stored API keys are visible to this device's users. For production, use a secured backend.", googleSheets:'📊 Google Sheet Webhooks', sheetsHelp:'Paste one or more deployed Web App URLs, one per line. Each saved attendance or outcome is sent to every URL.', scriptHelp:'Apps Script code (Extensions → Apps Script → Deploy as Web App, Anyone)', copyScript:'Copy Script', preferences:'Preferences', darkMode:'Dark Mode', language:'Language', saveSettings:'Save Settings', importTitle:'📥 AI Data Import', importHelp:'Paste raw Excel or WhatsApp data. AI extracts name, ID, session and phone.', analyzeSave:'✨ Analyze & Save to DB', copyLms:'📋 Copy LMS Link', exemptCall:'Mark Exempt from Call', outcome:'Outcome', polish:'✨ Jesh AI Polish', copyOutcome:'📋 Copy Outcome', saveOutcome:'Save Outcome', attendance:'Attendance', followup:'Follow-up', report:'Report', settings:'Settings', search:'Search', present:'Present', absent:'Absent', exempt:'Exempt', done:'Done', pending:'Pending', noStudents:'No students found. Use AI Import.', noMatches:'No matching students found.', noAbsentees:'No absentees today 🎉', noData:'No historical attendance data available.', totalStudents:'Students', records:'Attendance records'
+        appTitle:'FEA Attendance', todayLesson:"Today's Lesson", session:'Session', lessonNumber:'Lesson No.', lessonType:'Type', saveLesson:"Save Today's Lesson", aiImport:'AI Import', searchPlaceholder:'Search by Name or ID', absentToday:'Absent Today', insights:'Insights', insightsTitle:'Jesh AI Insights', topAttendance:'Top Attendance', dropoutRisk:'Dropout Risk — Lowest Attendance', absencesBySession:'Total Absences by Session', insightsNote:'Attendance rate excludes Exempt records. Historical insights use all records available through Supabase.', copyReport:'📋 Copy Report', controlCenter:'Jesh AI Control Center', fallbackOrder:'Order: Gemini → Groq → Cerebras. If one fails (quota, 429, error), the next is tried instantly.', modelHelp:'Model fields are optional. Leave blank to use the defaults shown.', keyWarning:"Browser-stored API keys are visible to this device's users. For production, use a secured backend.", googleSheets:'📊 Google Sheet Webhooks', sheetsHelp:'Paste one or more deployed Web App URLs, one per line. Each saved attendance or outcome is sent to every URL.', scriptHelp:'Apps Script code (Extensions → Apps Script → Deploy as Web App, Anyone)', copyScript:'Copy Script', preferences:'Preferences', darkMode:'Dark Mode', language:'Language', themeColor:'Theme Color', studioTitle:'Jesh AI Studio (Beta)', beta:'Beta', studioHelp:'These tools need a secure backend server and are not active yet.', videoTitle:'AI Video Generation', videoDesc:'Create AI avatar videos for lessons and parent updates.', codeTitle:'AI Code Agent', codeDesc:"An autonomous agent that can update this app's code for you.", comingSoon:'Coming Soon', needsBackend:'Requires Backend', launchDisabled:'Not available yet', saveSettings:'Save Settings', importTitle:'📥 Jesh AI Data Import', importHelp:'Paste raw Excel or WhatsApp data. Jesh AI extracts name, ID, session and phone.', analyzeSave:'✨ Analyze & Save to DB', copyLms:'📋 Copy LMS Link', exemptCall:'Mark Exempt from Call', outcome:'Outcome', polish:'✨ Jesh AI Polish', copyOutcome:'📋 Copy Outcome', saveOutcome:'Save Outcome', attendance:'Attendance', followup:'Follow-up', report:'Report', settings:'Settings', present:'Present', absent:'Absent', exempt:'Exempt', done:'Done', pending:'Pending', noStudents:'No students found. Use AI Import.', noMatches:'No matching students found.', noAbsentees:'No absentees today 🎉', noData:'No historical attendance data available.', totalStudents:'Students', records:'Attendance records', keySet:'set', keyMissing:'not set'
       },
       hi: {
-        appTitle:'FEA उपस्थिति', todayLesson:'आज का पाठ', session:'सत्र', lessonNumber:'पाठ संख्या', lessonType:'प्रकार', saveLesson:'आज का पाठ सहेजें', aiImport:'AI इम्पोर्ट', searchPlaceholder:'नाम या ID से खोजें', absentToday:'आज अनुपस्थित', insights:'जानकारी', topAttendance:'सबसे अच्छी उपस्थिति', dropoutRisk:'जोखिम — सबसे कम उपस्थिति', absencesBySession:'सत्र के अनुसार कुल अनुपस्थिति', insightsNote:'उपस्थिति दर में Exempt रिकॉर्ड शामिल नहीं हैं। ऐतिहासिक जानकारी Supabase में उपलब्ध रिकॉर्ड से है।', copyReport:'📋 रिपोर्ट कॉपी करें', aiKeys:'Jesh AI कुंजियाँ (Fallback)', fallbackOrder:'क्रम: Gemini → Groq → Cerebras। एक फेल होने पर (quota, 429, error) अगला तुरंत आज़माया जाता है।', modelHelp:'Model वाले खाने वैकल्पिक हैं। खाली छोड़ने पर दिखाए गए डिफ़ॉल्ट इस्तेमाल होंगे।', keyWarning:'ब्राउज़र में रखी API कुंजियाँ इस डिवाइस के उपयोगकर्ताओं को दिख सकती हैं। उत्पादन में सुरक्षित बैकएंड का उपयोग करें।', googleSheets:'📊 Google Sheet वेबहुक', sheetsHelp:'एक या अधिक Web App URL डालें, हर पंक्ति में एक URL। सेव की गई उपस्थिति और परिणाम सभी URL पर भेजे जाएंगे।', scriptHelp:'Apps Script कोड (Extensions → Apps Script → Web App के रूप में Deploy, Anyone)', copyScript:'स्क्रिप्ट कॉपी करें', preferences:'प्राथमिकताएँ', darkMode:'डार्क मोड', language:'भाषा', saveSettings:'सेटिंग्स सहेजें', importTitle:'📥 AI डेटा इम्पोर्ट', importHelp:'Excel या WhatsApp का डेटा पेस्ट करें। AI नाम, ID, सत्र और फ़ोन निकालेगा।', analyzeSave:'✨ विश्लेषण करें और DB में सहेजें', copyLms:'📋 LMS लिंक कॉपी करें', exemptCall:'कॉल से छूट दें', outcome:'परिणाम', polish:'✨ Jesh AI सुधारें', copyOutcome:'📋 परिणाम कॉपी करें', saveOutcome:'परिणाम सहेजें', attendance:'उपस्थिति', followup:'फॉलो-अप', report:'रिपोर्ट', settings:'सेटिंग्स', search:'खोजें', present:'उपस्थित', absent:'अनुपस्थित', exempt:'छूट', done:'पूरा', pending:'बाकी', noStudents:'कोई विद्यार्थी नहीं मिला। AI इम्पोर्ट करें।', noMatches:'कोई मेल खाता विद्यार्थी नहीं मिला।', noAbsentees:'आज कोई अनुपस्थित नहीं 🎉', noData:'ऐतिहासिक उपस्थिति डेटा उपलब्ध नहीं है।', totalStudents:'विद्यार्थी', records:'उपस्थिति रिकॉर्ड'
+        appTitle:'FEA उपस्थिति', todayLesson:'आज का पाठ', session:'सत्र', lessonNumber:'पाठ संख्या', lessonType:'प्रकार', saveLesson:'आज का पाठ सहेजें', aiImport:'AI इम्पोर्ट', searchPlaceholder:'नाम या ID से खोजें', absentToday:'आज अनुपस्थित', insights:'जानकारी', insightsTitle:'Jesh AI जानकारी', topAttendance:'सबसे अच्छी उपस्थिति', dropoutRisk:'जोखिम — सबसे कम उपस्थिति', absencesBySession:'सत्र के अनुसार कुल अनुपस्थिति', insightsNote:'उपस्थिति दर में Exempt रिकॉर्ड शामिल नहीं हैं। ऐतिहासिक जानकारी Supabase में उपलब्ध रिकॉर्ड से है।', copyReport:'📋 रिपोर्ट कॉपी करें', controlCenter:'Jesh AI कंट्रोल सेंटर', fallbackOrder:'क्रम: Gemini → Groq → Cerebras। एक फेल होने पर (quota, 429, error) अगला तुरंत आज़माया जाता है।', modelHelp:'Model वाले खाने वैकल्पिक हैं। खाली छोड़ने पर दिखाए गए डिफ़ॉल्ट इस्तेमाल होंगे।', keyWarning:'ब्राउज़र में रखी API कुंजियाँ इस डिवाइस के उपयोगकर्ताओं को दिख सकती हैं। उत्पादन में सुरक्षित बैकएंड का उपयोग करें।', googleSheets:'📊 Google Sheet वेबहुक', sheetsHelp:'एक या अधिक Web App URL डालें, हर पंक्ति में एक URL। सेव की गई उपस्थिति और परिणाम सभी URL पर भेजे जाएंगे।', scriptHelp:'Apps Script कोड (Extensions → Apps Script → Web App के रूप में Deploy, Anyone)', copyScript:'स्क्रिप्ट कॉपी करें', preferences:'प्राथमिकताएँ', darkMode:'डार्क मोड', language:'भाषा', themeColor:'थीम का रंग', studioTitle:'Jesh AI स्टूडियो (बीटा)', beta:'बीटा', studioHelp:'इन टूल्स के लिए सुरक्षित बैकएंड सर्वर चाहिए, अभी ये चालू नहीं हैं।', videoTitle:'AI वीडियो जनरेशन', videoDesc:'पाठ और अभिभावक अपडेट के लिए AI अवतार वीडियो बनाएँ।', codeTitle:'AI कोड एजेंट', codeDesc:'एक स्वचालित एजेंट जो इस ऐप का कोड आपके लिए अपडेट कर सके।', comingSoon:'जल्द आ रहा है', needsBackend:'बैकएंड ज़रूरी', launchDisabled:'अभी उपलब्ध नहीं', saveSettings:'सेटिंग्स सहेजें', importTitle:'📥 Jesh AI डेटा इम्पोर्ट', importHelp:'Excel या WhatsApp का डेटा पेस्ट करें। Jesh AI नाम, ID, सत्र और फ़ोन निकालेगा।', analyzeSave:'✨ विश्लेषण करें और DB में सहेजें', copyLms:'📋 LMS लिंक कॉपी करें', exemptCall:'कॉल से छूट दें', outcome:'परिणाम', polish:'✨ Jesh AI सुधारें', copyOutcome:'📋 परिणाम कॉपी करें', saveOutcome:'परिणाम सहेजें', attendance:'उपस्थिति', followup:'फॉलो-अप', report:'रिपोर्ट', settings:'सेटिंग्स', present:'उपस्थित', absent:'अनुपस्थित', exempt:'छूट', done:'पूरा', pending:'बाकी', noStudents:'कोई विद्यार्थी नहीं मिला। AI इम्पोर्ट करें।', noMatches:'कोई मेल खाता विद्यार्थी नहीं मिला।', noAbsentees:'आज कोई अनुपस्थित नहीं 🎉', noData:'ऐतिहासिक उपस्थिति डेटा उपलब्ध नहीं है।', totalStudents:'विद्यार्थी', records:'उपस्थिति रिकॉर्ड', keySet:'सेट है', keyMissing:'सेट नहीं'
       }
     };
     let db = null;
@@ -241,11 +309,53 @@
       if (event.key === 'Escape') ['importModal', 'studentModal'].forEach(id => setModal(id, false));
     });
 
+    function getPrimary() {
+      const saved = localStorage.getItem('primaryColor');
+      return PALETTE.find(item => item.primary === saved) || PALETTE[0];
+    }
+
     function applyTheme() {
       const dark = localStorage.getItem('darkMode') === 'true';
-      document.documentElement.classList.toggle('dark', dark);
+      const color = getPrimary();
+      const root = document.documentElement;
+      root.classList.toggle('dark', dark);
+      root.style.setProperty('--primary', color.primary);
+      root.style.setProperty('--primary-dark', color.dark);
       const meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute('content', dark ? '#1e3a8a' : '#2563eb');
+      if (meta) meta.setAttribute('content', color.primary);
+      renderSwatches();
+    }
+
+    function renderSwatches() {
+      const box = $('swatches');
+      if (!box) return;
+      box.replaceChildren();
+      const current = getPrimary().primary;
+      PALETTE.forEach(item => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'swatch' + (item.primary === current ? ' active' : '');
+        button.style.backgroundColor = item.primary;
+        button.setAttribute('aria-label', item.name);
+        button.addEventListener('click', () => {
+          localStorage.setItem('primaryColor', item.primary);
+          applyTheme();
+        });
+        box.appendChild(button);
+      });
+    }
+
+    function renderAIStatus() {
+      const box = $('aiStatus');
+      if (!box) return;
+      box.replaceChildren();
+      [['Gemini', 'geminiKey'], ['Groq', 'groqKey'], ['Cerebras', 'cerebrasKey']].forEach(([name, key]) => {
+        const ready = Boolean((localStorage.getItem(key) || '').trim());
+        const chip = document.createElement('span');
+        chip.className = `rounded-full px-2 py-1 ${ready ? 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300' : 'bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300'}`;
+        chip.textContent = `${name}: ${ready ? tr('keySet') : tr('keyMissing')}`;
+        box.appendChild(chip);
+      });
     }
 
     function applyLanguage() {
@@ -257,6 +367,7 @@
       document.querySelectorAll('[data-i18n-placeholder]').forEach(element => element.placeholder = tr(element.dataset.i18nPlaceholder));
       renderStudents();
       renderAbsentList();
+      renderAIStatus();
       if (window.lucide) lucide.createIcons();
     }
 
@@ -265,8 +376,7 @@
       document.querySelectorAll('.tab-panel').forEach(section => section.classList.toggle('hidden', section.id !== `tab-${name}`));
       document.querySelectorAll('.nav-btn').forEach(button => {
         const selected = button.dataset.tab === name;
-        button.classList.toggle('text-blue-600', selected);
-        button.classList.toggle('dark:text-blue-300', selected);
+        button.classList.toggle('text-primary', selected);
         button.classList.toggle('text-gray-400', !selected);
         button.setAttribute('aria-current', selected ? 'page' : 'false');
       });
@@ -462,7 +572,7 @@
     async function toggleAttendance(student) {
       const sid = String(student.student_id);
       const oldStatus = attendanceStatus[sid];
-      const nextStatus = oldStatus === 'Absent' ? 'Present' : 'Absent';
+      const nextStatus = (oldStatus === 'Absent' || oldStatus === 'Exempt') ? 'Present' : 'Absent';
       attendanceStatus[sid] = nextStatus;
       renderStudents();
       try {
@@ -507,10 +617,10 @@
       list.replaceChildren();
       absentStudents.forEach((student, index) => {
         const row = document.createElement('button'); row.type = 'button';
-        row.className = 'flex w-full items-center justify-between rounded-lg border border-blue-200 bg-white p-3 text-left shadow-sm hover:bg-blue-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700';
+        row.className = 'border-primary flex w-full items-center justify-between rounded-lg border bg-white p-3 text-left shadow-sm dark:bg-gray-800';
         row.addEventListener('click', () => openStudentModal(index));
         const info = document.createElement('span');
-        const name = document.createElement('span'); name.className = 'block text-sm font-semibold text-blue-700 dark:text-blue-300'; name.textContent = student.name || '';
+        const name = document.createElement('span'); name.className = 'text-primary block text-sm font-semibold'; name.textContent = student.name || '';
         const meta = document.createElement('span'); meta.className = 'block text-xs text-gray-500 dark:text-gray-400'; meta.textContent = `${student.student_id} | ${student.session || ''}`;
         info.append(name, meta);
         const badge = document.createElement('span'); const completed = done.has(String(student.student_id));
@@ -529,10 +639,10 @@
       const phones = $('phoneList'); phones.replaceChildren();
       [currentStudent.phone1, currentStudent.phone2, currentStudent.phone3].forEach(phone => {
         const row = document.createElement('div'); row.className = 'flex items-center gap-2';
-        const value = document.createElement('div'); value.className = 'flex-1 rounded-lg bg-blue-50 p-2 font-mono text-sm text-gray-800 dark:bg-gray-700 dark:text-white'; value.textContent = phone || '-'; row.appendChild(value);
+        const value = document.createElement('div'); value.className = 'bg-primary-soft flex-1 rounded-lg p-2 font-mono text-sm'; value.textContent = phone || '-'; row.appendChild(value);
         if (phone) {
           const call = document.createElement('a'); call.href = `tel:${String(phone).replace(/[^\d+*#,;]/g, '')}`; call.className = 'rounded-lg bg-green-500 px-3 py-2 text-sm font-semibold text-white'; call.textContent = '📞 Call';
-          const copy = document.createElement('button'); copy.type = 'button'; copy.className = 'rounded-lg bg-blue-100 px-3 py-2 text-sm font-semibold text-blue-700 dark:bg-blue-950 dark:text-blue-200'; copy.textContent = '📋 Copy'; copy.addEventListener('click', () => copyText(phone));
+          const copy = document.createElement('button'); copy.type = 'button'; copy.className = 'bg-primary-soft text-primary rounded-lg px-3 py-2 text-sm font-semibold'; copy.textContent = '📋 Copy'; copy.addEventListener('click', () => copyText(phone));
           row.append(call, copy);
         }
         phones.appendChild(row);
@@ -570,7 +680,7 @@
       try {
         const prompt = `Convert these rough Hindi/Hinglish notes into professional, clear B2 English. Preserve the meaning and use no more than 2 sentences. Return only the polished text, with no quotes or explanations:\n${text}`;
         $('outcome').value = (await callJeshAI(prompt)).trim();
-        toast(language === 'hi' ? 'AI ने सुधार दिया ✓' : 'AI polished ✓');
+        toast(language === 'hi' ? 'Jesh AI ने सुधार दिया ✓' : 'Jesh AI polished ✓');
       } catch (error) { console.error(error); toast('Error: ' + (error.message || 'AI failed')); }
       finally { button.disabled = false; button.textContent = tr('polish'); }
     });
@@ -679,7 +789,7 @@
         });
         const summary = $('insightsSummary'); summary.replaceChildren();
         [
-          { title: tr('totalStudents'), value: studentRows.length, color: 'bg-blue-600' },
+          { title: tr('totalStudents'), value: studentRows.length, color: 'bg-primary' },
           { title: tr('records'), value: attendanceRows.length, color: 'bg-violet-600' }
         ].forEach(item => {
           const card = document.createElement('div'); card.className = `rounded-xl ${item.color} p-4 text-white shadow`;
@@ -753,6 +863,9 @@
       $('sheetUrls').value = localStorage.getItem('sheetUrls') || '';
       $('darkMode').checked = localStorage.getItem('darkMode') === 'true';
       $('language').value = language;
+      renderSwatches();
+      renderAIStatus();
+      if (window.lucide) lucide.createIcons();
     }
 
     $('saveSettingsBtn').addEventListener('click', () => {
@@ -792,4 +905,3 @@
   </script>
 </body>
 </html>
-```
