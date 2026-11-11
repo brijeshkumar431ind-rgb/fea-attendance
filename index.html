@@ -136,6 +136,20 @@
       </div>
 
       <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h2 class="mb-1 flex items-center gap-2 font-bold"><i data-lucide="git-branch" class="h-4 w-4"></i><span data-i18n="githubTitle">GitHub (for Code Agent)</span></h2>
+        <p class="mb-3 text-xs text-gray-500 dark:text-gray-400" data-i18n="githubHelp">Needed only for the AI Code Agent. Use a fine-grained token limited to this one repository with Contents: Read and write.</p>
+        <label class="mb-1 block text-sm" for="ghRepo">Repository (username/repo-name)</label>
+        <input id="ghRepo" type="text" autocomplete="off" placeholder="username/repository-name" class="mb-2 w-full rounded border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900">
+        <div class="mb-2 grid grid-cols-2 gap-2">
+          <input id="ghBranch" type="text" autocomplete="off" placeholder="main" aria-label="Branch" class="w-full rounded border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900">
+          <input id="ghPath" type="text" autocomplete="off" placeholder="index.html" aria-label="File path" class="w-full rounded border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900">
+        </div>
+        <label class="mb-1 block text-sm" for="ghToken">GitHub Token</label>
+        <input id="ghToken" type="password" autocomplete="off" placeholder="github_pat_..." class="w-full rounded border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900">
+        <p class="mt-2 text-xs text-amber-700 dark:text-amber-300" data-i18n="githubWarning">The token is stored only in this browser. Never share it with anyone.</p>
+      </div>
+
+      <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
         <h2 class="mb-3 font-bold" data-i18n="preferences">Preferences</h2>
         <label class="mb-4 flex items-center justify-between"><span data-i18n="darkMode">Dark Mode</span><input id="darkMode" type="checkbox" class="h-5 w-5 accent-blue-600"></label>
         <label class="mb-4 flex items-center justify-between gap-3"><span data-i18n="language">Language</span><select id="language" class="rounded border border-gray-300 bg-white p-2 dark:border-gray-600 dark:bg-gray-900"><option value="en">English</option><option value="hi">हिन्दी</option></select></label>
@@ -150,29 +164,29 @@
           <h2 class="flex items-center gap-2 font-bold text-purple-700 dark:text-purple-300"><i data-lucide="flask-conical" class="h-4 w-4"></i><span data-i18n="studioTitle">Jesh AI Studio (Beta)</span></h2>
           <span class="rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-bold uppercase text-purple-700 dark:bg-purple-950 dark:text-purple-200" data-i18n="beta">Beta</span>
         </div>
-        <p class="mb-3 text-xs text-gray-500 dark:text-gray-400" data-i18n="studioHelp">These tools need a secure backend server and are not active yet.</p>
+        <p class="mb-3 text-xs text-gray-500 dark:text-gray-400" data-i18n="studioHelp">Both tools are free and run with your Jesh AI keys. No server needed.</p>
         <div class="space-y-3">
           <div class="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-900">
             <div class="flex items-start gap-3">
               <div class="rounded-lg bg-pink-100 p-2 text-pink-600 dark:bg-pink-950 dark:text-pink-300"><i data-lucide="video" class="h-5 w-5"></i></div>
               <div class="min-w-0 flex-1">
-                <div class="flex flex-wrap items-center gap-2"><span class="font-semibold" data-i18n="videoTitle">AI Video Generation</span><span class="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:bg-amber-900 dark:text-amber-100" data-i18n="comingSoon">Coming Soon</span></div>
-                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" data-i18n="videoDesc">Create AI avatar videos for lessons and parent updates.</p>
-                <span class="mt-2 inline-block rounded bg-gray-200 px-2 py-0.5 text-[10px] font-semibold text-gray-600 dark:bg-gray-700 dark:text-gray-300" data-i18n="needsBackend">Requires Backend</span>
+                <div class="flex flex-wrap items-center gap-2"><span class="font-semibold" data-i18n="videoTitle">AI Video Script Planner</span><span class="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-bold text-green-700 dark:bg-green-950 dark:text-green-300" data-i18n="activeBadge">Active</span></div>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" data-i18n="videoDesc">Make a scene-by-scene video script with Jesh AI.</p>
+                <span class="mt-2 inline-block rounded bg-gray-200 px-2 py-0.5 text-[10px] font-semibold text-gray-600 dark:bg-gray-700 dark:text-gray-300" data-i18n="freeBadge">Free</span>
               </div>
             </div>
-            <button disabled class="mt-3 w-full cursor-not-allowed rounded-lg bg-gray-200 p-2 text-sm font-semibold text-gray-400 dark:bg-gray-700 dark:text-gray-500" data-i18n="launchDisabled">Not available yet</button>
+            <button id="openVideoBtn" class="bg-primary bg-primary-hover mt-3 w-full rounded-lg p-2 text-sm font-semibold text-white" data-i18n="openPlanner">Open Planner</button>
           </div>
           <div class="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-900">
             <div class="flex items-start gap-3">
               <div class="rounded-lg bg-cyan-100 p-2 text-cyan-600 dark:bg-cyan-950 dark:text-cyan-300"><i data-lucide="terminal" class="h-5 w-5"></i></div>
               <div class="min-w-0 flex-1">
-                <div class="flex flex-wrap items-center gap-2"><span class="font-semibold" data-i18n="codeTitle">AI Code Agent</span><span class="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:bg-amber-900 dark:text-amber-100" data-i18n="comingSoon">Coming Soon</span></div>
-                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" data-i18n="codeDesc">An autonomous agent that can update this app's code for you.</p>
-                <span class="mt-2 inline-block rounded bg-gray-200 px-2 py-0.5 text-[10px] font-semibold text-gray-600 dark:bg-gray-700 dark:text-gray-300" data-i18n="needsBackend">Requires Backend</span>
+                <div class="flex flex-wrap items-center gap-2"><span class="font-semibold" data-i18n="codeTitle">AI Code Agent</span><span class="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-bold text-green-700 dark:bg-green-950 dark:text-green-300" data-i18n="activeBadge">Active</span></div>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" data-i18n="codeDesc">Describe a change in simple words. Jesh AI prepares it and you approve before it is saved to GitHub.</p>
+                <span class="mt-2 inline-block rounded bg-gray-200 px-2 py-0.5 text-[10px] font-semibold text-gray-600 dark:bg-gray-700 dark:text-gray-300" data-i18n="freeBadge">Free</span>
               </div>
             </div>
-            <button disabled class="mt-3 w-full cursor-not-allowed rounded-lg bg-gray-200 p-2 text-sm font-semibold text-gray-400 dark:bg-gray-700 dark:text-gray-500" data-i18n="launchDisabled">Not available yet</button>
+            <button id="openCodeBtn" class="bg-primary bg-primary-hover mt-3 w-full rounded-lg p-2 text-sm font-semibold text-white" data-i18n="openAgent">Open Code Agent</button>
           </div>
         </div>
       </div>
@@ -201,6 +215,46 @@
         <textarea id="outcome" rows="4" placeholder="Type rough notes..." class="mb-3 w-full rounded-lg border border-gray-300 bg-white p-3 text-sm dark:border-gray-600 dark:bg-gray-800"></textarea>
         <div class="flex gap-2"><button id="copyOutcomeBtn" class="flex-1 rounded-lg bg-gray-200 p-3 font-semibold text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100" data-i18n="copyOutcome">📋 Copy Outcome</button><button id="saveOutcomeBtn" class="bg-primary bg-primary-hover flex-1 rounded-lg p-3 font-semibold text-white shadow" data-i18n="saveOutcome">Save Outcome</button></div>
       </div>
+    </div>
+  </div>
+
+  <div id="videoModal" class="fixed inset-0 z-40 hidden items-end justify-center bg-black/60 p-0 sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="videoTitleText">
+    <div class="max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-t-2xl bg-white p-4 shadow-xl dark:bg-gray-800 sm:rounded-2xl" onclick="event.stopPropagation()">
+      <div class="mb-3 flex items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700">
+        <h2 id="videoTitleText" class="text-primary text-lg font-bold">🎬 Video Script Planner</h2>
+        <button data-close="videoModal" class="px-2 text-3xl text-gray-400" aria-label="Close">&times;</button>
+      </div>
+      <label for="videoTopic" class="mb-1 block text-sm font-semibold">Topic</label>
+      <textarea id="videoTopic" rows="3" placeholder="Example: Importance of attending class daily" class="mb-3 w-full rounded-lg border border-gray-300 bg-white p-3 text-sm dark:border-gray-600 dark:bg-gray-900"></textarea>
+      <div class="mb-3 grid grid-cols-3 gap-2">
+        <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">Audience
+          <select id="videoAudience" class="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900"><option>Students</option><option>Parents</option><option>Volunteers</option></select>
+        </label>
+        <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">Length
+          <select id="videoLength" class="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900"><option>30 seconds</option><option>60 seconds</option><option>2 minutes</option></select>
+        </label>
+        <label class="text-xs font-semibold text-gray-600 dark:text-gray-300">Language
+          <select id="videoLang" class="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900"><option>Hindi</option><option>English</option><option>Hinglish</option></select>
+        </label>
+      </div>
+      <button id="videoGenBtn" class="bg-primary bg-primary-hover mb-3 w-full rounded-lg p-3 font-semibold text-white shadow-md">✨ Generate Plan</button>
+      <textarea id="videoResult" rows="12" placeholder="Your scene-by-scene plan will appear here..." class="mb-3 w-full rounded-lg border border-gray-300 bg-white p-3 font-mono text-xs dark:border-gray-600 dark:bg-gray-900"></textarea>
+      <button id="videoCopyBtn" class="w-full rounded-lg bg-gray-200 p-3 font-semibold text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100">📋 Copy Plan</button>
+    </div>
+  </div>
+
+  <div id="agentModal" class="fixed inset-0 z-40 hidden items-end justify-center bg-black/60 p-0 sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="agentTitleText">
+    <div class="max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-t-2xl bg-white p-4 shadow-xl dark:bg-gray-800 sm:rounded-2xl" onclick="event.stopPropagation()">
+      <div class="mb-3 flex items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700">
+        <h2 id="agentTitleText" class="text-primary text-lg font-bold">🤖 AI Code Agent</h2>
+        <button data-close="agentModal" class="px-2 text-3xl text-gray-400" aria-label="Close">&times;</button>
+      </div>
+      <p class="mb-2 text-xs text-gray-500 dark:text-gray-400">Describe the change in simple words. Jesh AI prepares it, you review it, and only after you approve it is saved to GitHub. Every save is kept in GitHub history, so it can be undone.</p>
+      <textarea id="agentRequest" rows="4" placeholder="Example: Make the Save Today's Lesson button green" class="mb-3 w-full rounded-lg border border-gray-300 bg-white p-3 text-sm dark:border-gray-600 dark:bg-gray-900"></textarea>
+      <button id="agentPrepBtn" class="bg-primary bg-primary-hover mb-3 w-full rounded-lg p-3 font-semibold text-white shadow-md">✨ Prepare Change</button>
+      <div id="agentStatus" class="mb-3 text-sm text-gray-600 dark:text-gray-300" aria-live="polite"></div>
+      <div id="agentPreview" class="mb-3 space-y-2"></div>
+      <button id="agentApplyBtn" class="mb-2 hidden w-full rounded-lg bg-green-600 p-3 font-semibold text-white shadow-md hover:bg-green-700">✅ Approve &amp; Save to GitHub</button>
     </div>
   </div>
 
@@ -236,14 +290,15 @@
       { name: 'Orange', primary: '#ea580c', dark: '#c2410c' },
       { name: 'Purple', primary: '#7c3aed', dark: '#6d28d9' }
     ];
+    const MODAL_IDS = ['importModal', 'studentModal', 'videoModal', 'agentModal'];
     const $ = id => document.getElementById(id);
     const sessions = ['S.1', 'S.2', 'S.3'];
     const translations = {
       en: {
-        appTitle:'FEA Attendance', todayLesson:"Today's Lesson", session:'Session', lessonNumber:'Lesson No.', lessonType:'Type', saveLesson:"Save Today's Lesson", aiImport:'AI Import', searchPlaceholder:'Search by Name or ID', absentToday:'Absent Today', insights:'Insights', insightsTitle:'Jesh AI Insights', topAttendance:'Top Attendance', dropoutRisk:'Dropout Risk — Lowest Attendance', absencesBySession:'Total Absences by Session', insightsNote:'Attendance rate excludes Exempt records. Historical insights use all records available through Supabase.', copyReport:'📋 Copy Report', controlCenter:'Jesh AI Control Center', fallbackOrder:'Order: Gemini → Groq → Cerebras. If one fails (quota, 429, error), the next is tried instantly.', modelHelp:'Model fields are optional. Leave blank to use the defaults shown.', keyWarning:"Browser-stored API keys are visible to this device's users. For production, use a secured backend.", googleSheets:'📊 Google Sheet Webhooks', sheetsHelp:'Paste one or more deployed Web App URLs, one per line. Each saved attendance or outcome is sent to every URL.', scriptHelp:'Apps Script code (Extensions → Apps Script → Deploy as Web App, Anyone)', copyScript:'Copy Script', preferences:'Preferences', darkMode:'Dark Mode', language:'Language', themeColor:'Theme Color', studioTitle:'Jesh AI Studio (Beta)', beta:'Beta', studioHelp:'These tools need a secure backend server and are not active yet.', videoTitle:'AI Video Generation', videoDesc:'Create AI avatar videos for lessons and parent updates.', codeTitle:'AI Code Agent', codeDesc:"An autonomous agent that can update this app's code for you.", comingSoon:'Coming Soon', needsBackend:'Requires Backend', launchDisabled:'Not available yet', saveSettings:'Save Settings', importTitle:'📥 Jesh AI Data Import', importHelp:'Paste raw Excel or WhatsApp data. Jesh AI extracts name, ID, session and phone.', analyzeSave:'✨ Analyze & Save to DB', copyLms:'📋 Copy LMS Link', exemptCall:'Mark Exempt from Call', outcome:'Outcome', polish:'✨ Jesh AI Polish', copyOutcome:'📋 Copy Outcome', saveOutcome:'Save Outcome', attendance:'Attendance', followup:'Follow-up', report:'Report', settings:'Settings', present:'Present', absent:'Absent', exempt:'Exempt', done:'Done', pending:'Pending', noStudents:'No students found. Use AI Import.', noMatches:'No matching students found.', noAbsentees:'No absentees today 🎉', noData:'No historical attendance data available.', totalStudents:'Students', records:'Attendance records', keySet:'set', keyMissing:'not set'
+        appTitle:'FEA Attendance', todayLesson:"Today's Lesson", session:'Session', lessonNumber:'Lesson No.', lessonType:'Type', saveLesson:"Save Today's Lesson", aiImport:'AI Import', searchPlaceholder:'Search by Name or ID', absentToday:'Absent Today', insights:'Insights', insightsTitle:'Jesh AI Insights', topAttendance:'Top Attendance', dropoutRisk:'Dropout Risk — Lowest Attendance', absencesBySession:'Total Absences by Session', insightsNote:'Attendance rate excludes Exempt records. Historical insights use all records available through Supabase.', copyReport:'📋 Copy Report', controlCenter:'Jesh AI Control Center', fallbackOrder:'Order: Gemini → Groq → Cerebras. If one fails (quota, 429, error), the next is tried instantly.', modelHelp:'Model fields are optional. Leave blank to use the defaults shown.', keyWarning:"Browser-stored API keys are visible to this device's users. For production, use a secured backend.", googleSheets:'📊 Google Sheet Webhooks', sheetsHelp:'Paste one or more deployed Web App URLs, one per line. Each saved attendance or outcome is sent to every URL.', scriptHelp:'Apps Script code (Extensions → Apps Script → Deploy as Web App, Anyone)', copyScript:'Copy Script', githubTitle:'GitHub (for Code Agent)', githubHelp:'Needed only for the AI Code Agent. Use a fine-grained token limited to this one repository with Contents: Read and write.', githubWarning:'The token is stored only in this browser. Never share it with anyone.', preferences:'Preferences', darkMode:'Dark Mode', language:'Language', themeColor:'Theme Color', studioTitle:'Jesh AI Studio (Beta)', beta:'Beta', studioHelp:'Both tools are free and run with your Jesh AI keys. No server needed.', videoTitle:'AI Video Script Planner', videoDesc:'Make a scene-by-scene video script with Jesh AI.', codeTitle:'AI Code Agent', codeDesc:'Describe a change in simple words. Jesh AI prepares it and you approve before it is saved to GitHub.', activeBadge:'Active', freeBadge:'Free', openPlanner:'Open Planner', openAgent:'Open Code Agent', saveSettings:'Save Settings', importTitle:'📥 Jesh AI Data Import', importHelp:'Paste raw Excel or WhatsApp data. Jesh AI extracts name, ID, session and phone.', analyzeSave:'✨ Analyze & Save to DB', copyLms:'📋 Copy LMS Link', exemptCall:'Mark Exempt from Call', outcome:'Outcome', polish:'✨ Jesh AI Polish', copyOutcome:'📋 Copy Outcome', saveOutcome:'Save Outcome', attendance:'Attendance', followup:'Follow-up', report:'Report', settings:'Settings', present:'Present', absent:'Absent', exempt:'Exempt', done:'Done', pending:'Pending', noStudents:'No students found. Use AI Import.', noMatches:'No matching students found.', noAbsentees:'No absentees today 🎉', noData:'No historical attendance data available.', totalStudents:'Students', records:'Attendance records', keySet:'set', keyMissing:'not set'
       },
       hi: {
-        appTitle:'FEA उपस्थिति', todayLesson:'आज का पाठ', session:'सत्र', lessonNumber:'पाठ संख्या', lessonType:'प्रकार', saveLesson:'आज का पाठ सहेजें', aiImport:'AI इम्पोर्ट', searchPlaceholder:'नाम या ID से खोजें', absentToday:'आज अनुपस्थित', insights:'जानकारी', insightsTitle:'Jesh AI जानकारी', topAttendance:'सबसे अच्छी उपस्थिति', dropoutRisk:'जोखिम — सबसे कम उपस्थिति', absencesBySession:'सत्र के अनुसार कुल अनुपस्थिति', insightsNote:'उपस्थिति दर में Exempt रिकॉर्ड शामिल नहीं हैं। ऐतिहासिक जानकारी Supabase में उपलब्ध रिकॉर्ड से है।', copyReport:'📋 रिपोर्ट कॉपी करें', controlCenter:'Jesh AI कंट्रोल सेंटर', fallbackOrder:'क्रम: Gemini → Groq → Cerebras। एक फेल होने पर (quota, 429, error) अगला तुरंत आज़माया जाता है।', modelHelp:'Model वाले खाने वैकल्पिक हैं। खाली छोड़ने पर दिखाए गए डिफ़ॉल्ट इस्तेमाल होंगे।', keyWarning:'ब्राउज़र में रखी API कुंजियाँ इस डिवाइस के उपयोगकर्ताओं को दिख सकती हैं। उत्पादन में सुरक्षित बैकएंड का उपयोग करें।', googleSheets:'📊 Google Sheet वेबहुक', sheetsHelp:'एक या अधिक Web App URL डालें, हर पंक्ति में एक URL। सेव की गई उपस्थिति और परिणाम सभी URL पर भेजे जाएंगे।', scriptHelp:'Apps Script कोड (Extensions → Apps Script → Web App के रूप में Deploy, Anyone)', copyScript:'स्क्रिप्ट कॉपी करें', preferences:'प्राथमिकताएँ', darkMode:'डार्क मोड', language:'भाषा', themeColor:'थीम का रंग', studioTitle:'Jesh AI स्टूडियो (बीटा)', beta:'बीटा', studioHelp:'इन टूल्स के लिए सुरक्षित बैकएंड सर्वर चाहिए, अभी ये चालू नहीं हैं।', videoTitle:'AI वीडियो जनरेशन', videoDesc:'पाठ और अभिभावक अपडेट के लिए AI अवतार वीडियो बनाएँ।', codeTitle:'AI कोड एजेंट', codeDesc:'एक स्वचालित एजेंट जो इस ऐप का कोड आपके लिए अपडेट कर सके।', comingSoon:'जल्द आ रहा है', needsBackend:'बैकएंड ज़रूरी', launchDisabled:'अभी उपलब्ध नहीं', saveSettings:'सेटिंग्स सहेजें', importTitle:'📥 Jesh AI डेटा इम्पोर्ट', importHelp:'Excel या WhatsApp का डेटा पेस्ट करें। Jesh AI नाम, ID, सत्र और फ़ोन निकालेगा।', analyzeSave:'✨ विश्लेषण करें और DB में सहेजें', copyLms:'📋 LMS लिंक कॉपी करें', exemptCall:'कॉल से छूट दें', outcome:'परिणाम', polish:'✨ Jesh AI सुधारें', copyOutcome:'📋 परिणाम कॉपी करें', saveOutcome:'परिणाम सहेजें', attendance:'उपस्थिति', followup:'फॉलो-अप', report:'रिपोर्ट', settings:'सेटिंग्स', present:'उपस्थित', absent:'अनुपस्थित', exempt:'छूट', done:'पूरा', pending:'बाकी', noStudents:'कोई विद्यार्थी नहीं मिला। AI इम्पोर्ट करें।', noMatches:'कोई मेल खाता विद्यार्थी नहीं मिला।', noAbsentees:'आज कोई अनुपस्थित नहीं 🎉', noData:'ऐतिहासिक उपस्थिति डेटा उपलब्ध नहीं है।', totalStudents:'विद्यार्थी', records:'उपस्थिति रिकॉर्ड', keySet:'सेट है', keyMissing:'सेट नहीं'
+        appTitle:'FEA उपस्थिति', todayLesson:'आज का पाठ', session:'सत्र', lessonNumber:'पाठ संख्या', lessonType:'प्रकार', saveLesson:'आज का पाठ सहेजें', aiImport:'AI इम्पोर्ट', searchPlaceholder:'नाम या ID से खोजें', absentToday:'आज अनुपस्थित', insights:'जानकारी', insightsTitle:'Jesh AI जानकारी', topAttendance:'सबसे अच्छी उपस्थिति', dropoutRisk:'जोखिम — सबसे कम उपस्थिति', absencesBySession:'सत्र के अनुसार कुल अनुपस्थिति', insightsNote:'उपस्थिति दर में Exempt रिकॉर्ड शामिल नहीं हैं। ऐतिहासिक जानकारी Supabase में उपलब्ध रिकॉर्ड से है।', copyReport:'📋 रिपोर्ट कॉपी करें', controlCenter:'Jesh AI कंट्रोल सेंटर', fallbackOrder:'क्रम: Gemini → Groq → Cerebras। एक फेल होने पर (quota, 429, error) अगला तुरंत आज़माया जाता है।', modelHelp:'Model वाले खाने वैकल्पिक हैं। खाली छोड़ने पर दिखाए गए डिफ़ॉल्ट इस्तेमाल होंगे।', keyWarning:'ब्राउज़र में रखी API कुंजियाँ इस डिवाइस के उपयोगकर्ताओं को दिख सकती हैं। उत्पादन में सुरक्षित बैकएंड का उपयोग करें।', googleSheets:'📊 Google Sheet वेबहुक', sheetsHelp:'एक या अधिक Web App URL डालें, हर पंक्ति में एक URL। सेव की गई उपस्थिति और परिणाम सभी URL पर भेजे जाएंगे।', scriptHelp:'Apps Script कोड (Extensions → Apps Script → Web App के रूप में Deploy, Anyone)', copyScript:'स्क्रिप्ट कॉपी करें', githubTitle:'GitHub (Code Agent के लिए)', githubHelp:'सिर्फ AI Code Agent के लिए चाहिए। सिर्फ इसी एक repository वाला fine-grained token बनाइए, जिसमें Contents: Read and write हो।', githubWarning:'Token सिर्फ इसी ब्राउज़र में रहता है। इसे किसी को मत दीजिए।', preferences:'प्राथमिकताएँ', darkMode:'डार्क मोड', language:'भाषा', themeColor:'थीम का रंग', studioTitle:'Jesh AI स्टूडियो (बीटा)', beta:'बीटा', studioHelp:'दोनों टूल मुफ्त हैं और आपकी Jesh AI key से चलते हैं। किसी सर्वर की ज़रूरत नहीं।', videoTitle:'AI वीडियो स्क्रिप्ट प्लानर', videoDesc:'Jesh AI से सीन-दर-सीन वीडियो स्क्रिप्ट बनाएँ।', codeTitle:'AI कोड एजेंट', codeDesc:'बदलाव आसान भाषा में लिखिए। Jesh AI उसे तैयार करेगा और आपके Approve करने पर ही GitHub में सेव होगा।', activeBadge:'चालू', freeBadge:'मुफ्त', openPlanner:'प्लानर खोलें', openAgent:'कोड एजेंट खोलें', saveSettings:'सेटिंग्स सहेजें', importTitle:'📥 Jesh AI डेटा इम्पोर्ट', importHelp:'Excel या WhatsApp का डेटा पेस्ट करें। Jesh AI नाम, ID, सत्र और फ़ोन निकालेगा।', analyzeSave:'✨ विश्लेषण करें और DB में सहेजें', copyLms:'📋 LMS लिंक कॉपी करें', exemptCall:'कॉल से छूट दें', outcome:'परिणाम', polish:'✨ Jesh AI सुधारें', copyOutcome:'📋 परिणाम कॉपी करें', saveOutcome:'परिणाम सहेजें', attendance:'उपस्थिति', followup:'फॉलो-अप', report:'रिपोर्ट', settings:'सेटिंग्स', present:'उपस्थित', absent:'अनुपस्थित', exempt:'छूट', done:'पूरा', pending:'बाकी', noStudents:'कोई विद्यार्थी नहीं मिला। AI इम्पोर्ट करें।', noMatches:'कोई मेल खाता विद्यार्थी नहीं मिला।', noAbsentees:'आज कोई अनुपस्थित नहीं 🎉', noData:'ऐतिहासिक उपस्थिति डेटा उपलब्ध नहीं है।', totalStudents:'विद्यार्थी', records:'उपस्थिति रिकॉर्ड', keySet:'सेट है', keyMissing:'सेट नहीं'
       }
     };
     let db = null;
@@ -252,6 +307,7 @@
     let absentStudents = [];
     let currentStudent = null;
     let activeTab = 'attendance';
+    let agentPending = null;
     let language = localStorage.getItem('language') || 'en';
 
     try {
@@ -302,11 +358,11 @@
     }
 
     document.querySelectorAll('[data-close]').forEach(button => button.addEventListener('click', () => setModal(button.dataset.close, false)));
-    ['importModal', 'studentModal'].forEach(id => $(id).addEventListener('click', event => {
+    MODAL_IDS.forEach(id => $(id).addEventListener('click', event => {
       if (event.target === $(id)) setModal(id, false);
     }));
     document.addEventListener('keydown', event => {
-      if (event.key === 'Escape') ['importModal', 'studentModal'].forEach(id => setModal(id, false));
+      if (event.key === 'Escape') MODAL_IDS.forEach(id => setModal(id, false));
     });
 
     function getPrimary() {
@@ -398,7 +454,7 @@
       };
     }
 
-    async function fetchWithTimeout(url, options, ms = 25000) {
+    async function fetchWithTimeout(url, options, ms = 45000) {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), ms);
       try {
@@ -853,13 +909,15 @@
     $('copyReportBtn').addEventListener('click', () => copyText($('report').value));
     $('copyScriptBtn').addEventListener('click', () => copyText($('appsScriptCode').value));
 
+    const SETTING_FIELDS = {
+      geminiKey: 'geminiKey', geminiModel: 'geminiModel',
+      groqKey: 'groqKey', groqModel: 'groqModel',
+      cerebrasKey: 'cerebrasKey', cerebrasModel: 'cerebrasModel',
+      ghRepo: 'ghRepo', ghBranch: 'ghBranch', ghPath: 'ghPath', ghToken: 'ghToken'
+    };
+
     function loadSettings() {
-      $('geminiKey').value = localStorage.getItem('geminiKey') || '';
-      $('geminiModel').value = localStorage.getItem('geminiModel') || '';
-      $('groqKey').value = localStorage.getItem('groqKey') || '';
-      $('groqModel').value = localStorage.getItem('groqModel') || '';
-      $('cerebrasKey').value = localStorage.getItem('cerebrasKey') || '';
-      $('cerebrasModel').value = localStorage.getItem('cerebrasModel') || '';
+      Object.keys(SETTING_FIELDS).forEach(id => { $(id).value = localStorage.getItem(SETTING_FIELDS[id]) || ''; });
       $('sheetUrls').value = localStorage.getItem('sheetUrls') || '';
       $('darkMode').checked = localStorage.getItem('darkMode') === 'true';
       $('language').value = language;
@@ -869,12 +927,7 @@
     }
 
     $('saveSettingsBtn').addEventListener('click', () => {
-      localStorage.setItem('geminiKey', $('geminiKey').value.trim());
-      localStorage.setItem('geminiModel', $('geminiModel').value.trim());
-      localStorage.setItem('groqKey', $('groqKey').value.trim());
-      localStorage.setItem('groqModel', $('groqModel').value.trim());
-      localStorage.setItem('cerebrasKey', $('cerebrasKey').value.trim());
-      localStorage.setItem('cerebrasModel', $('cerebrasModel').value.trim());
+      Object.keys(SETTING_FIELDS).forEach(id => localStorage.setItem(SETTING_FIELDS[id], $(id).value.trim()));
       localStorage.setItem('sheetUrls', $('sheetUrls').value.split(/\r?\n/).map(value => value.trim()).filter(Boolean).join('\n'));
       localStorage.setItem('darkMode', String($('darkMode').checked));
       language = $('language').value;
@@ -897,6 +950,240 @@
       $('lessonType').value = lesson ? (lesson.lesson_type || 'Regular') : 'Regular';
     }
     $('lessonSession').addEventListener('change', loadLessonForToday);
+
+    $('openVideoBtn').addEventListener('click', () => setModal('videoModal', true));
+    $('videoGenBtn').addEventListener('click', async () => {
+      const topic = $('videoTopic').value.trim();
+      if (!topic) return toast(language === 'hi' ? 'पहले विषय लिखें' : 'Write a topic first');
+      const button = $('videoGenBtn');
+      button.disabled = true;
+      button.textContent = '⏳ ...';
+      try {
+        const prompt = `You are a video script writer for an education NGO. Create a ${$('videoLength').value} video plan about: "${topic}". Audience: ${$('videoAudience').value}. Language: ${$('videoLang').value}. Format strictly as numbered scenes. For each scene write: Scene N (time range), Visual: what is shown, Voiceover: the spoken line, On-screen text: short text. Finish with a one-line caption and 3 hashtags. Keep it simple and practical. Do not use markdown symbols like ** or #.`;
+        $('videoResult').value = (await callJeshAI(prompt)).trim();
+        toast('Jesh AI ✓');
+      } catch (error) {
+        console.error(error);
+        toast('Error: ' + (error.message || 'AI failed'));
+      } finally {
+        button.disabled = false;
+        button.textContent = '✨ Generate Plan';
+      }
+    });
+    $('videoCopyBtn').addEventListener('click', () => copyText($('videoResult').value));
+
+    function b64ToUtf8(b64) {
+      const binary = atob(String(b64).replace(/\s/g, ''));
+      const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));
+      return new TextDecoder().decode(bytes);
+    }
+
+    function utf8ToB64(text) {
+      const bytes = new TextEncoder().encode(text);
+      let binary = '';
+      for (let i = 0; i < bytes.length; i += 0x8000) {
+        binary += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+      }
+      return btoa(binary);
+    }
+
+    function getGithubConfig() {
+      const read = key => (localStorage.getItem(key) || '').trim();
+      return { token: read('ghToken'), repo: read('ghRepo'), branch: read('ghBranch') || 'main', path: read('ghPath') || 'index.html' };
+    }
+
+    function githubUrl(cfg) {
+      return `https://api.github.com/repos/${cfg.repo}/contents/${cfg.path.split('/').map(encodeURIComponent).join('/')}`;
+    }
+
+    function githubHeaders(cfg) {
+      return { 'Authorization': `Bearer ${cfg.token}`, 'Accept': 'application/vnd.github+json' };
+    }
+
+    async function githubFetchFile(cfg) {
+      const response = await fetchWithTimeout(`${githubUrl(cfg)}?ref=${encodeURIComponent(cfg.branch)}`, { headers: githubHeaders(cfg), cache: 'no-store' });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(`GitHub ${response.status}: ${data.message || 'request failed'}`);
+      if (!data.content) throw new Error('GitHub returned no file content');
+      return { text: b64ToUtf8(data.content), sha: data.sha };
+    }
+
+    async function githubSaveFile(cfg, text, sha, message) {
+      const response = await fetchWithTimeout(githubUrl(cfg), {
+        method: 'PUT',
+        headers: { ...githubHeaders(cfg), 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message, content: utf8ToB64(text), sha, branch: cfg.branch })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(`GitHub ${response.status}: ${data.message || 'save failed'}`);
+      return data;
+    }
+
+    function countOccurrences(text, part) {
+      return text.split(part).length - 1;
+    }
+
+    function parseAgentPlan(raw) {
+      const cleaned = raw.replace(/```(?:json)?/gi, '').trim();
+      const start = cleaned.indexOf('{');
+      const end = cleaned.lastIndexOf('}');
+      if (start < 0 || end < start) throw new Error('AI did not return JSON');
+      const plan = JSON.parse(cleaned.slice(start, end + 1));
+      if (!plan || !Array.isArray(plan.edits) || !plan.edits.length) throw new Error('AI returned no edits');
+      return { summary: String(plan.summary || 'Code change'), edits: plan.edits };
+    }
+
+    function applyEdits(original, edits) {
+      if (edits.length > 8) throw new Error('Too many edits (max 8)');
+      let result = original;
+      edits.forEach((edit, index) => {
+        const oldStr = typeof edit.old_str === 'string' ? edit.old_str : '';
+        const newStr = typeof edit.new_str === 'string' ? edit.new_str : '';
+        if (!oldStr) throw new Error(`Edit ${index + 1}: old_str is empty`);
+        const count = countOccurrences(result, oldStr);
+        if (count !== 1) throw new Error(`Edit ${index + 1}: old_str was found ${count} times, it must be found exactly once`);
+        result = result.replace(oldStr, () => newStr);
+      });
+      return result;
+    }
+
+    function checkSafety(original, updated) {
+      if (updated === original) throw new Error('The change does not modify the file');
+      if (!updated.includes('</html>')) throw new Error('The change removed the end of the page');
+      if (updated.length < original.length * 0.7) throw new Error('The change removes too much code');
+      const open = '<scr' + 'ipt>';
+      const close = '</scr' + 'ipt>';
+      const start = updated.lastIndexOf(open);
+      const end = updated.lastIndexOf(close);
+      if (start < 0 || end < start) throw new Error('Main script block not found');
+      const code = updated.slice(start + open.length, end);
+      try {
+        new Function(code);
+      } catch (error) {
+        if (error instanceof SyntaxError) throw new Error('Syntax error after change: ' + error.message);
+      }
+    }
+
+    function buildAgentPrompt(fileText, request, feedback) {
+      const retry = feedback ? `\nYour previous answer failed because: ${feedback}\nReturn corrected JSON.\n` : '';
+      return `You are a careful code editor for a single-file HTML/JavaScript web app (Tailwind CSS, Supabase, vanilla JS).
+Below is the complete current file, then the change requested by the user.
+Return ONLY a JSON object, no markdown, in exactly this shape:
+{"summary":"one or two simple sentences describing the change","edits":[{"old_str":"exact text copied from the file","new_str":"replacement text"}]}
+Rules:
+- Make the smallest possible change. Never rewrite the whole file.
+- Each old_str must be copied character-for-character from the file (same spaces and line breaks) and must appear exactly once in the file. Prefer short unique snippets of 1 to 5 lines.
+- To add new code, use an existing unique line as old_str and put that line plus the new code in new_str.
+- At most 6 edits. Keep the Supabase credentials, window.onerror and all existing features working.
+- Do not add any text outside the JSON.
+${retry}
+USER REQUEST:
+${request}
+
+CURRENT FILE:
+${fileText}`;
+    }
+
+    function setAgentStatus(message) {
+      $('agentStatus').textContent = message;
+    }
+
+    function renderAgentPreview(plan) {
+      const box = $('agentPreview');
+      box.replaceChildren();
+      const summary = document.createElement('div');
+      summary.className = 'rounded-lg bg-green-50 p-3 text-sm font-semibold text-green-800 dark:bg-green-950 dark:text-green-200';
+      summary.textContent = plan.summary;
+      box.appendChild(summary);
+      plan.edits.forEach((edit, index) => {
+        const card = document.createElement('div');
+        card.className = 'rounded-lg border border-gray-200 p-2 text-xs dark:border-gray-700';
+        const title = document.createElement('div');
+        title.className = 'mb-1 font-bold';
+        title.textContent = `Change ${index + 1}`;
+        const removeLabel = document.createElement('div');
+        removeLabel.className = 'font-semibold text-red-600';
+        removeLabel.textContent = 'Remove:';
+        const removeBlock = document.createElement('pre');
+        removeBlock.className = 'mb-2 max-h-40 overflow-auto whitespace-pre-wrap rounded bg-red-50 p-2 dark:bg-red-950';
+        removeBlock.textContent = edit.old_str || '';
+        const addLabel = document.createElement('div');
+        addLabel.className = 'font-semibold text-green-600';
+        addLabel.textContent = 'Add:';
+        const addBlock = document.createElement('pre');
+        addBlock.className = 'max-h-40 overflow-auto whitespace-pre-wrap rounded bg-green-50 p-2 dark:bg-green-950';
+        addBlock.textContent = edit.new_str || '';
+        card.append(title, removeLabel, removeBlock, addLabel, addBlock);
+        box.appendChild(card);
+      });
+    }
+
+    $('openCodeBtn').addEventListener('click', () => setModal('agentModal', true));
+    $('agentPrepBtn').addEventListener('click', async () => {
+      const request = $('agentRequest').value.trim();
+      if (!request) return toast(language === 'hi' ? 'पहले बदलाव लिखें' : 'Describe the change first');
+      const cfg = getGithubConfig();
+      if (!cfg.token || !/^[\w.-]+\/[\w.-]+$/.test(cfg.repo)) {
+        return toast(language === 'hi' ? 'Settings में GitHub repo और token डालिए' : 'Add GitHub repo and token in Settings');
+      }
+      const button = $('agentPrepBtn');
+      button.disabled = true;
+      agentPending = null;
+      $('agentPreview').replaceChildren();
+      $('agentApplyBtn').classList.add('hidden');
+      try {
+        setAgentStatus('Reading the file from GitHub...');
+        const file = await githubFetchFile(cfg);
+        let feedback = '';
+        let plan = null;
+        let updated = '';
+        for (let attempt = 1; attempt <= 2; attempt++) {
+          setAgentStatus(`Jesh AI is preparing the change (try ${attempt} of 2)...`);
+          try {
+            const raw = await callJeshAI(buildAgentPrompt(file.text, request, feedback));
+            plan = parseAgentPlan(raw);
+            updated = applyEdits(file.text, plan.edits);
+            checkSafety(file.text, updated);
+            break;
+          } catch (error) {
+            plan = null;
+            if (attempt === 2) throw error;
+            feedback = error.message;
+          }
+        }
+        agentPending = { cfg, sha: file.sha, text: updated, summary: plan.summary };
+        renderAgentPreview(plan);
+        $('agentApplyBtn').classList.remove('hidden');
+        setAgentStatus('Review the change below. Nothing is saved yet.');
+      } catch (error) {
+        console.error(error);
+        setAgentStatus('Error: ' + (error.message || 'Could not prepare the change'));
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    $('agentApplyBtn').addEventListener('click', async () => {
+      if (!agentPending) return;
+      const button = $('agentApplyBtn');
+      button.disabled = true;
+      try {
+        setAgentStatus('Saving to GitHub...');
+        const message = ('Jesh AI Code Agent: ' + agentPending.summary).replace(/\s+/g, ' ').slice(0, 100);
+        await githubSaveFile(agentPending.cfg, agentPending.text, agentPending.sha, message);
+        agentPending = null;
+        button.classList.add('hidden');
+        $('agentPreview').replaceChildren();
+        $('agentRequest').value = '';
+        setAgentStatus('Saved to GitHub ✓ The app updates in 1 to 2 minutes. Then refresh the page.');
+        toast('Saved to GitHub ✓');
+      } catch (error) {
+        console.error(error);
+        setAgentStatus('Error: ' + (error.message || 'Could not save') + ' — press Prepare Change again.');
+      } finally {
+        button.disabled = false;
+      }
+    });
 
     applyTheme();
     applyLanguage();
