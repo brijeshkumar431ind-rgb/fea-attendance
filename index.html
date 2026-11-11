@@ -39,24 +39,21 @@
 <!-- TAB 3: REPORT -->
 <section id="tab3" class="hidden">
   <textarea id="report" rows="18" class="w-full p-3 rounded-lg border border-blue-300 bg-white text-sm shadow-sm focus:outline-blue-500 font-mono"></textarea>
-  <button onclick="copyText(report.value)" class="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg font-semibold shadow-md transition">📋 Copy Report</button>
+  <button onclick="copyText(document.getElementById('report').value)" class="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg font-semibold shadow-md transition">📋 Copy Report</button>
 </section>
 
 <!-- TAB 4: SETTINGS -->
 <section id="tab4" class="hidden space-y-4">
-  <!-- AI Keys -->
   <div class="bg-white p-4 rounded-lg shadow-sm border border-blue-200">
     <h2 class="font-bold text-blue-700 mb-2">✨ Jesh AI Keys (Fallback)</h2>
-    <p class="text-xs text-gray-500 mb-2">AI will use Key 1, if fails tries Key 2, then Key 3.</p>
     <input id="apiKey1" type="password" placeholder="Gemini Key 1 (Required)" class="w-full p-2 border rounded mb-2 text-sm focus:outline-blue-500">
     <input id="apiKey2" type="password" placeholder="Gemini Key 2 (Optional)" class="w-full p-2 border rounded mb-2 text-sm focus:outline-blue-500">
     <input id="apiKey3" type="password" placeholder="Gemini Key 3 (Optional)" class="w-full p-2 border rounded mb-2 text-sm focus:outline-blue-500">
   </div>
 
-  <!-- Google Sheet Setup -->
   <div class="bg-white p-4 rounded-lg shadow-sm border border-green-300 bg-green-50">
     <h2 class="font-bold text-green-800 mb-2">📊 Connect Google Sheet</h2>
-    <p class="text-xs text-gray-600 mb-2"><b>Step 1:</b> Open Google Sheet > Extensions > Apps Script. Paste the code below and Deploy as Web App (Access: Anyone).</p>
+    <p class="text-xs text-gray-600 mb-2"><b>Step 1:</b> Google Sheet > Extensions > Apps Script. Paste code, Deploy as Web App (Anyone).</p>
     <textarea id="appsScriptCode" rows="4" readonly class="w-full p-2 border rounded text-xs bg-gray-100 mb-2 font-mono">function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   var data = JSON.parse(e.postData.contents);
@@ -65,8 +62,7 @@
   return ContentService.createTextOutput("Success");
 }</textarea>
     <button onclick="copyText(document.getElementById('appsScriptCode').value)" class="bg-gray-200 text-gray-700 px-3 py-1 rounded text-xs font-bold mb-3">Copy Script</button>
-
-    <p class="text-xs text-gray-600 mb-2"><b>Step 2:</b> Paste your Web App URL here:</p>
+    <p class="text-xs text-gray-600 mb-2"><b>Step 2:</b> Paste Web App URL here:</p>
     <input id="sheetUrl" type="text" placeholder="https://script.google.com/macros/s/.../exec" class="w-full p-2 border rounded mb-3 text-sm focus:outline-green-500">
   </div>
 
@@ -83,8 +79,8 @@
       <div class="font-bold text-indigo-700 text-lg">📥 AI Data Import</div>
       <button onclick="closeImportModal()" class="text-3xl text-gray-400 px-2">&times;</button>
     </div>
-    <p class="text-sm text-gray-600 mb-2">Copy raw data from Excel/WhatsApp and paste below. Jesh AI will extract Name, ID, and Phone.</p>
-    <textarea id="importText" rows="6" placeholder="Example:&#10;954285 Aishwarya Pratap Singh 965223028&#10;954117 Juhi Kushwaha 7348346703" class="w-full p-3 rounded-lg border border-gray-300 mb-3 text-sm focus:outline-indigo-500 font-mono"></textarea>
+    <p class="text-sm text-gray-600 mb-2">Copy raw data and paste below. AI will extract Name, ID, Phone.</p>
+    <textarea id="importText" rows="6" placeholder="Example:&#10;954285 Aishwarya Pratap Singh 965223028" class="w-full p-3 rounded-lg border border-gray-300 mb-3 text-sm focus:outline-indigo-500 font-mono"></textarea>
     <button onclick="processAIImport()" id="importBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-lg font-semibold shadow-md flex justify-center items-center gap-2 transition">
       ✨ Analyze & Save to DB
     </button>
@@ -101,9 +97,7 @@
       </div>
       <button onclick="closeModal()" class="text-3xl text-gray-400 px-2 hover:text-red-500">&times;</button>
     </div>
-    
     <div id="mPhones" class="space-y-2 mb-4"></div>
-    
     <button id="mLms" class="w-full bg-blue-100 hover:bg-blue-200 text-blue-700 p-3 rounded-lg font-semibold mb-4 border border-blue-200 transition">📋 Copy LMS Link</button>
     
     <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
@@ -113,9 +107,9 @@
           ✨ Jesh AI Polish
         </button>
       </div>
-      <textarea id="outcome" rows="4" placeholder="Type rough notes (Hindi/Hinglish)..." class="w-full p-3 rounded-lg border border-gray-300 mb-3 text-sm focus:outline-blue-500"></textarea>
+      <textarea id="outcome" rows="4" placeholder="Type rough notes..." class="w-full p-3 rounded-lg border border-gray-300 mb-3 text-sm focus:outline-blue-500"></textarea>
       <div class="flex gap-2">
-        <button onclick="copyText(outcome.value)" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 p-3 rounded-lg font-semibold transition">📋 Copy</button>
+        <button onclick="copyText(document.getElementById('outcome').value)" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 p-3 rounded-lg font-semibold transition">📋 Copy</button>
         <button onclick="saveOutcome()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg font-semibold shadow transition">Save Outcome</button>
       </div>
     </div>
@@ -132,10 +126,22 @@
 </nav>
 
 <script>
+// ERROR CATCHER: अगर कोड में कोई गलती होगी, तो यह स्क्रीन पर अलर्ट दिखाएगा
+window.onerror = function(msg, url, line, col, error) {
+   alert("⚠️ Error Found: " + msg + "\nLine: " + line);
+   return false;
+};
+
 const SUPABASE_URL = 'https://dutsjeykzovclazuztho.supabase.co'; 
 const SUPABASE_KEY = 'sb_publishable_fW3YXy94NvEQkzODuoPFpQ_H8nSylsk'; 
 const LMS_BASE = 'http://103.27.234.18:8080/Student/Details/';
-const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let db = null;
+try {
+  db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+} catch(e) {
+  alert("Database Connection Error: " + e.message);
+}
 
 const $ = id => document.getElementById(id);
 const today = () => {
@@ -193,7 +199,7 @@ async function processAIImport() {
   btn.innerHTML = '⏳ Analyzing...';
   btn.disabled = true;
 
-  const prompt = `Extract student data from the text below. The text might be copied from an Excel sheet (tab-separated). 
+  const prompt = `Extract student data from the text below. The text might be copied from an Excel sheet. 
   Return ONLY a valid JSON array of objects. Do not wrap in markdown. 
   Each object must have exactly these keys:
   - "student_id": (Look for a 6-digit number in the row)
@@ -241,6 +247,7 @@ async function processAIImport() {
 
 // --- TAB 1: ATTENDANCE ---
 async function loadStudents() {
+  if(!db) return;
   const s = $('session').value;
   const { data: st } = await db.from('students').select('*').eq('session', s).order('student_id');
   students = st || [];
@@ -262,6 +269,7 @@ function renderStudents() {
 }
 
 async function toggle(sid) {
+  if(!db) return;
   const next = status[sid] === 'Absent' ? 'Present' : 'Absent';
   status[sid] = next;
   renderStudents();
@@ -279,6 +287,7 @@ async function toggle(sid) {
 
 // --- TAB 2: FOLLOW-UP & AI ---
 async function loadAbsent() {
+  if(!db) return;
   const { data: at } = await db.from('attendance').select('student_id').eq('date', today()).eq('status', 'Absent');
   const ids = (at || []).map(r => r.student_id);
   if (!ids.length) {
@@ -317,6 +326,7 @@ async function openModal(i) {
 function closeModal() { $('modal').classList.add('hidden'); }
 
 async function saveOutcome() {
+  if(!db) return;
   const val = $('outcome').value;
   if(!val) return toast('Write outcome first');
   const { data: ex } = await db.from('follow_ups').select('id').eq('date', today()).eq('student_id', current.student_id).limit(1);
@@ -334,7 +344,6 @@ async function saveOutcome() {
   }
 }
 
-// JESH AI POLISH
 async function polishAI() {
   const keys = getApiKeys();
   const text = $('outcome').value;
@@ -351,9 +360,7 @@ async function polishAI() {
       const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${keys[i]}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: `Convert this into professional B2 English. Max 2 sentences:\n"${text}"` }] }]
-        })
+        body: JSON.stringify({ contents: [{ parts: [{ text: `Convert this into professional B2 English. Max 2 sentences:\n"${text}"` }] }] })
       });
       if (res.ok) {
         const data = await res.json();
@@ -373,6 +380,7 @@ async function polishAI() {
 
 // --- TAB 3: REPORT ---
 async function loadReport() {
+  if(!db) return;
   const { data: st } = await db.from('students').select('student_id,session');
   const { data: at } = await db.from('attendance').select('student_id,status').eq('date', today());
   const { data: fu } = await db.from('follow_ups').select('student_id').eq('date', today());
@@ -414,6 +422,4 @@ function saveSettings() {
   localStorage.setItem('geminiKey1', $('apiKey1').value.trim());
   localStorage.setItem('geminiKey2', $('apiKey2').value.trim());
   localStorage.setItem('geminiKey3', $('apiKey3').value.trim());
-  localStorage.setItem('sheetUrl', $('sheetUrl').value.trim());
-  $('settingsMsg').classList.remove('hidden');
-  setTimeout(() => $('settin
+  localStorage.setItem('s
