@@ -1,97 +1,130 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#2563eb">
-  <title>NGO Attendance &amp; Follow-up</title>
+  <title>FEA Attendance & Jesh AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script>tailwind.config = { darkMode: 'class' };</script>
   <style>
-    :root { --primary: #2563eb; --primary-dark: #1d4ed8; color-scheme: light; }
+    :root { color-scheme: light; }
     html.dark { color-scheme: dark; }
-    body { -webkit-tap-highlight-color: transparent; padding-bottom: env(safe-area-inset-bottom); }
-    .primary-bg { background-color: var(--primary); }
-    .primary-bg:hover { background-color: var(--primary-dark); }
-    .primary-text { color: var(--primary); }
-    .primary-ring:focus { outline: 2px solid var(--primary); outline-offset: 2px; }
+    body { -webkit-tap-highlight-color: transparent; }
+    .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
   </style>
 </head>
-<body class="min-h-screen bg-blue-50 text-gray-800 transition-colors dark:bg-gray-900 dark:text-gray-100">
-  <header class="sticky top-0 z-20 flex items-center justify-center gap-2 p-4 text-center text-lg font-bold text-white shadow-md primary-bg">
+<body class="min-h-screen bg-blue-50 pb-24 text-gray-800 transition-colors dark:bg-gray-900 dark:text-gray-100">
+  <header class="sticky top-0 z-20 flex items-center justify-center gap-2 bg-blue-600 p-4 text-center text-lg font-bold text-white shadow-md dark:bg-blue-800">
     <i data-lucide="clipboard-check" class="h-5 w-5" aria-hidden="true"></i>
-    <span data-i18n="appTitle">NGO Attendance</span>
-    <span class="text-sm text-yellow-200">✨ Jesh AI</span>
+    <span data-i18n="appTitle">FEA Attendance</span>
+    <span class="text-sm text-yellow-300">✨ Jesh AI</span>
   </header>
 
-  <main class="mx-auto max-w-xl space-y-4 p-3 pb-24">
-    <section id="tab-attendance" class="tab-panel space-y-3" aria-label="Attendance">
+  <main class="mx-auto max-w-xl p-3">
+    <section id="tab-attendance" class="tab-panel space-y-3">
       <div class="rounded-xl border border-blue-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-        <h2 class="mb-2 flex items-center gap-2 font-bold primary-text"><i data-lucide="book-open-check" class="h-4 w-4" aria-hidden="true"></i><span data-i18n="todayLesson">Today's Lesson</span></h2>
+        <h2 class="mb-2 flex items-center gap-2 font-bold text-blue-700 dark:text-blue-300"><i data-lucide="book-open-check" class="h-4 w-4"></i><span data-i18n="todayLesson">Today's Lesson</span></h2>
         <div class="grid grid-cols-3 gap-2">
-          <label class="text-xs font-semibold"><span data-i18n="session">Session</span><select id="lessonSession" class="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900"><option>S.1</option><option>S.2</option><option>S.3</option></select></label>
-          <label class="text-xs font-semibold"><span data-i18n="lessonNumber">Lesson No.</span><input id="lessonNumber" type="number" min="1" inputmode="numeric" class="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900"></label>
-          <label class="text-xs font-semibold"><span data-i18n="lessonType">Type</span><select id="lessonType" class="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900"><option value="Regular">Regular</option><option value="SL">SL</option><option value="Rev">Rev</option></select></label>
+          <label class="text-xs font-semibold text-gray-600 dark:text-gray-300"><span data-i18n="session">Session</span>
+            <select id="lessonSession" class="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900"><option>S.1</option><option>S.2</option><option>S.3</option></select>
+          </label>
+          <label class="text-xs font-semibold text-gray-600 dark:text-gray-300"><span data-i18n="lessonNumber">Lesson No.</span>
+            <input id="lessonNumber" type="number" min="1" inputmode="numeric" placeholder="33" class="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900">
+          </label>
+          <label class="text-xs font-semibold text-gray-600 dark:text-gray-300"><span data-i18n="lessonType">Type</span>
+            <select id="lessonType" class="mt-1 w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900"><option value="Regular">Regular</option><option value="SL">SL</option><option value="Rev">Rev</option></select>
+          </label>
         </div>
-        <button id="saveLessonBtn" class="primary-bg mt-3 w-full rounded-lg p-2.5 text-sm font-bold text-white" data-i18n="saveLesson">Save Today's Lesson</button>
+        <button id="saveLessonBtn" class="mt-3 w-full rounded-lg bg-blue-600 p-2.5 text-sm font-bold text-white hover:bg-blue-700" data-i18n="saveLesson">Save Today's Lesson</button>
       </div>
+
       <div class="flex gap-2">
-        <label class="sr-only" for="session">Session</label><select id="session" class="flex-1 rounded-lg border border-gray-300 bg-white p-3 font-semibold dark:border-gray-600 dark:bg-gray-800"><option>S.1</option><option>S.2</option><option>S.3</option></select>
-        <button id="openImportBtn" class="flex items-center gap-1 rounded-lg bg-indigo-600 px-3 py-3 text-sm font-semibold text-white hover:bg-indigo-700"><i data-lucide="file-up" class="h-4 w-4" aria-hidden="true"></i><span data-i18n="aiImport">📥 AI Import</span></button>
+        <select id="session" aria-label="Session" class="flex-1 rounded-lg border border-blue-300 bg-white p-3 font-semibold shadow-sm dark:border-gray-600 dark:bg-gray-800"><option>S.1</option><option>S.2</option><option>S.3</option></select>
+        <button id="openImportBtn" class="flex items-center gap-1 rounded-lg bg-indigo-600 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700"><i data-lucide="file-up" class="h-4 w-4"></i><span data-i18n="aiImport">AI Import</span></button>
       </div>
-      <label class="sr-only" for="search" data-i18n="search">Search</label><input id="search" type="search" data-i18n-placeholder="searchPlaceholder" placeholder="Search by Name or ID" class="primary-ring w-full rounded-lg border border-gray-300 bg-white p-3 shadow-sm dark:border-gray-600 dark:bg-gray-800">
+      <input id="search" type="search" data-i18n-placeholder="searchPlaceholder" placeholder="Search by Name or ID" class="w-full rounded-lg border border-blue-300 bg-white p-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800">
       <div id="studentList" class="space-y-2" aria-live="polite"></div>
     </section>
 
-    <section id="tab-followup" class="tab-panel hidden" aria-label="Follow-up">
-      <h2 class="mb-2 flex items-center gap-2 font-bold primary-text"><i data-lucide="phone-call" class="h-5 w-5" aria-hidden="true"></i><span data-i18n="absentToday">Absent Today — Follow-up</span></h2>
+    <section id="tab-followup" class="tab-panel hidden">
+      <h2 class="mb-2 flex items-center gap-2 font-bold text-blue-700 dark:text-blue-300"><i data-lucide="phone-call" class="h-5 w-5"></i><span data-i18n="absentToday">Absent Today</span></h2>
       <div id="absentList" class="space-y-2"></div>
     </section>
 
-    <section id="tab-insights" class="tab-panel hidden space-y-4" aria-label="Insights">
-      <h2 class="flex items-center gap-2 text-lg font-bold primary-text"><i data-lucide="chart-no-axes-combined" class="h-5 w-5" aria-hidden="true"></i><span data-i18n="insights">Insights</span></h2>
+    <section id="tab-insights" class="tab-panel hidden space-y-4">
+      <h2 class="flex items-center gap-2 text-lg font-bold text-blue-700 dark:text-blue-300"><i data-lucide="chart-no-axes-combined" class="h-5 w-5"></i><span data-i18n="insights">Insights</span></h2>
       <div id="insightsSummary" class="grid grid-cols-2 gap-3"></div>
-      <div class="rounded-xl border border-green-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800"><h3 class="mb-3 font-bold text-green-700 dark:text-green-300" data-i18n="topAttendance">Top Attendance</h3><ol id="topStudents" class="space-y-2 text-sm"></ol></div>
-      <div class="rounded-xl border border-red-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800"><h3 class="mb-3 font-bold text-red-700 dark:text-red-300" data-i18n="dropoutRisk">Dropout Risk — Lowest Attendance</h3><ol id="lowStudents" class="space-y-2 text-sm"></ol></div>
-      <div class="rounded-xl border border-amber-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800"><h3 class="mb-3 font-bold text-amber-700 dark:text-amber-300" data-i18n="absencesBySession">Total Absences by Session</h3><div id="sessionAbsences" class="grid grid-cols-3 gap-2"></div></div>
+      <div class="rounded-xl border border-green-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h3 class="mb-3 font-bold text-green-700 dark:text-green-300" data-i18n="topAttendance">Top Attendance</h3>
+        <ol id="topStudents" class="space-y-2 text-sm"></ol>
+      </div>
+      <div class="rounded-xl border border-red-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h3 class="mb-3 font-bold text-red-700 dark:text-red-300" data-i18n="dropoutRisk">Dropout Risk — Lowest Attendance</h3>
+        <ol id="lowStudents" class="space-y-2 text-sm"></ol>
+      </div>
+      <div class="rounded-xl border border-amber-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h3 class="mb-3 font-bold text-amber-700 dark:text-amber-300" data-i18n="absencesBySession">Total Absences by Session</h3>
+        <div id="sessionAbsences" class="grid grid-cols-3 gap-2"></div>
+      </div>
       <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="insightsNote">Attendance rate excludes Exempt records. Historical insights use all records available through Supabase.</p>
     </section>
 
-    <section id="tab-report" class="tab-panel hidden" aria-label="Report">
-      <label class="sr-only" for="report" data-i18n="report">Report</label><textarea id="report" rows="20" readonly class="w-full rounded-lg border border-gray-300 bg-white p-3 font-mono text-sm shadow-sm dark:border-gray-600 dark:bg-gray-800"></textarea>
-      <button id="copyReportBtn" class="primary-bg mt-3 w-full rounded-lg p-3 font-semibold text-white shadow-md" data-i18n="copyReport">📋 Copy Report</button>
+    <section id="tab-report" class="tab-panel hidden">
+      <textarea id="report" rows="20" readonly class="w-full rounded-lg border border-blue-300 bg-white p-3 font-mono text-sm shadow-sm dark:border-gray-600 dark:bg-gray-800"></textarea>
+      <button id="copyReportBtn" class="mt-3 w-full rounded-lg bg-blue-600 p-3 font-semibold text-white shadow-md hover:bg-blue-700"><span data-i18n="copyReport">📋 Copy Report</span></button>
     </section>
 
-    <section id="tab-settings" class="tab-panel hidden space-y-4" aria-label="Settings">
+    <section id="tab-settings" class="tab-panel hidden space-y-4">
       <div class="rounded-lg border border-blue-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-        <h2 class="mb-3 flex items-center gap-2 font-bold primary-text"><i data-lucide="sparkles" class="h-4 w-4" aria-hidden="true"></i><span data-i18n="aiKeys">AI Keys (Fallback)</span></h2>
-        <label class="mb-1 block text-sm" for="geminiKey">Gemini API Key</label><input id="geminiKey" type="password" autocomplete="off" placeholder="Gemini API key" class="mb-3 w-full rounded border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900">
-        <label class="mb-1 block text-sm" for="groqKey">Groq API Key</label><input id="groqKey" type="password" autocomplete="off" placeholder="Groq API key" class="mb-3 w-full rounded border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900">
-        <label class="mb-1 block text-sm" for="cerebrasKey">Cerebras API Key (optional)</label><input id="cerebrasKey" type="password" autocomplete="off" placeholder="Cerebras API key" class="w-full rounded border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900">
-        <p class="mt-2 text-xs text-amber-700 dark:text-amber-300" data-i18n="keyWarning">Browser-stored API keys are visible to device users. For production, use a secured backend.</p>
+        <h2 class="mb-3 flex items-center gap-2 font-bold text-blue-700 dark:text-blue-300"><i data-lucide="sparkles" class="h-4 w-4"></i><span data-i18n="aiKeys">Jesh AI Keys (Fallback)</span></h2>
+        <p class="mb-3 text-xs text-gray-500 dark:text-gray-400" data-i18n="fallbackOrder">Order: Gemini → Groq → Cerebras. If one fails (quota, 429, error), the next is tried instantly.</p>
+        <label class="mb-1 block text-sm" for="geminiKey">Gemini API Key</label>
+        <input id="geminiKey" type="password" autocomplete="off" placeholder="Gemini API key" class="mb-2 w-full rounded border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900">
+        <input id="geminiModel" type="text" autocomplete="off" placeholder="gemini-flash-latest" class="mb-3 w-full rounded border border-gray-300 bg-white p-2 text-xs dark:border-gray-600 dark:bg-gray-900" aria-label="Gemini model">
+        <label class="mb-1 block text-sm" for="groqKey">Groq API Key</label>
+        <input id="groqKey" type="password" autocomplete="off" placeholder="Groq API key" class="mb-2 w-full rounded border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900">
+        <input id="groqModel" type="text" autocomplete="off" placeholder="llama-3.3-70b-versatile" class="mb-3 w-full rounded border border-gray-300 bg-white p-2 text-xs dark:border-gray-600 dark:bg-gray-900" aria-label="Groq model">
+        <label class="mb-1 block text-sm" for="cerebrasKey">Cerebras API Key</label>
+        <input id="cerebrasKey" type="password" autocomplete="off" placeholder="Cerebras API key" class="mb-2 w-full rounded border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900">
+        <input id="cerebrasModel" type="text" autocomplete="off" placeholder="llama3.1-8b" class="w-full rounded border border-gray-300 bg-white p-2 text-xs dark:border-gray-600 dark:bg-gray-900" aria-label="Cerebras model">
+        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400" data-i18n="modelHelp">Model fields are optional. Leave blank to use the defaults shown.</p>
+        <p class="mt-2 text-xs text-amber-700 dark:text-amber-300" data-i18n="keyWarning">Browser-stored API keys are visible to this device's users. For production, use a secured backend.</p>
       </div>
+
       <div class="rounded-lg border border-green-300 bg-green-50 p-4 shadow-sm dark:border-green-900 dark:bg-green-950">
         <h2 class="mb-2 font-bold text-green-800 dark:text-green-300" data-i18n="googleSheets">📊 Google Sheet Webhooks</h2>
-        <p class="mb-2 text-xs text-gray-600 dark:text-gray-300" data-i18n="sheetsHelp">Paste deployed Web App URLs, one per line. Saved attendance and outcomes are posted to each URL.</p>
+        <p class="mb-2 text-xs text-gray-600 dark:text-gray-300" data-i18n="sheetsHelp">Paste one or more deployed Web App URLs, one per line. Each saved attendance or outcome is sent to every URL.</p>
         <textarea id="sheetUrls" rows="4" placeholder="https://script.google.com/macros/s/.../exec" class="w-full rounded border border-gray-300 bg-white p-2 text-sm dark:border-gray-600 dark:bg-gray-900"></textarea>
+        <details class="mt-3">
+          <summary class="cursor-pointer text-xs font-semibold text-green-800 dark:text-green-300" data-i18n="scriptHelp">Apps Script code (Extensions → Apps Script → Deploy as Web App, Anyone)</summary>
+          <textarea id="appsScriptCode" rows="8" readonly class="mt-2 w-full rounded border border-gray-300 bg-gray-100 p-2 font-mono text-xs dark:border-gray-600 dark:bg-gray-900">function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  if (data.type == 'attendance') sheet.appendRow([new Date(), 'Att', data.date, data.student_id, data.session, data.status]);
+  if (data.type == 'outcome') sheet.appendRow([new Date(), 'Log', data.date, data.student_id, data.outcome]);
+  return ContentService.createTextOutput('Success');
+}</textarea>
+          <button id="copyScriptBtn" type="button" class="mt-2 rounded bg-gray-200 px-3 py-1 text-xs font-bold text-gray-700 dark:bg-gray-700 dark:text-gray-100" data-i18n="copyScript">Copy Script</button>
+        </details>
       </div>
+
       <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
         <h2 class="mb-3 font-bold" data-i18n="preferences">Preferences</h2>
         <label class="mb-4 flex items-center justify-between"><span data-i18n="darkMode">Dark Mode</span><input id="darkMode" type="checkbox" class="h-5 w-5 accent-blue-600"></label>
-        <label class="mb-4 flex items-center justify-between gap-3"><span data-i18n="language">Language</span><select id="language" class="rounded border border-gray-300 bg-white p-2 dark:border-gray-600 dark:bg-gray-900"><option value="en">English</option><option value="hi">हिन्दी</option></select></label>
-        <label class="flex items-center justify-between gap-3"><span data-i18n="primaryColor">Primary Color</span><select id="primaryColor" class="rounded border border-gray-300 bg-white p-2 dark:border-gray-600 dark:bg-gray-900"><option value="blue">Blue</option><option value="green">Green</option><option value="purple">Purple</option></select></label>
+        <label class="flex items-center justify-between gap-3"><span data-i18n="language">Language</span><select id="language" class="rounded border border-gray-300 bg-white p-2 dark:border-gray-600 dark:bg-gray-900"><option value="en">English</option><option value="hi">हिन्दी</option></select></label>
       </div>
-      <div class="rounded-lg border border-amber-300 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950"><h2 class="mb-2 font-bold text-amber-900 dark:text-amber-200" data-i18n="comingSoon">Coming Soon / Requires Backend</h2><p class="mb-2 text-sm">🎥 <span data-i18n="videoPlaceholder">AI Avatar / Video Generation</span></p><p class="text-sm">📄 <span data-i18n="filePlaceholder">Direct PDF / Excel parsing</span></p><span class="mt-3 inline-block rounded-full bg-amber-200 px-3 py-1 text-xs font-bold text-amber-900 dark:bg-amber-800 dark:text-amber-100" data-i18n="backendBadge">Coming Soon · Backend required</span></div>
       <button id="saveSettingsBtn" class="w-full rounded-lg bg-green-600 p-3 font-semibold text-white shadow-md hover:bg-green-700" data-i18n="saveSettings">Save Settings</button>
-      <p class="text-xs text-amber-700 dark:text-amber-300" data-i18n="supabaseWarning">The Supabase publishable/anon key is public in this page. Never use a service-role key. Protect student data with suitable Supabase Row Level Security policies.</p>
     </section>
   </main>
 
   <div id="importModal" class="fixed inset-0 z-40 hidden items-end justify-center bg-black/60 p-0 sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="importTitle">
     <div class="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-t-2xl bg-white p-4 shadow-xl dark:bg-gray-800 sm:rounded-2xl" onclick="event.stopPropagation()">
-      <div class="mb-3 flex items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700"><h2 id="importTitle" class="text-lg font-bold text-indigo-700 dark:text-indigo-300" data-i18n="importTitle">📥 AI Student Import</h2><button data-close="importModal" class="px-2 text-3xl leading-none text-gray-400" aria-label="Close">&times;</button></div>
-      <p class="mb-2 text-sm text-gray-600 dark:text-gray-300" data-i18n="importHelp">Paste student text. AI extracts name, ID, session and phone. PDF/Excel parsing requires a backend.</p>
+      <div class="mb-3 flex items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700"><h2 id="importTitle" class="text-lg font-bold text-indigo-700 dark:text-indigo-300" data-i18n="importTitle">📥 AI Data Import</h2><button data-close="importModal" class="px-2 text-3xl text-gray-400" aria-label="Close">&times;</button></div>
+      <p class="mb-2 text-sm text-gray-600 dark:text-gray-300" data-i18n="importHelp">Paste raw Excel or WhatsApp data. AI extracts name, ID, session and phone.</p>
       <textarea id="importText" rows="7" placeholder="Paste student data here..." class="mb-3 w-full rounded-lg border border-gray-300 bg-white p-3 text-sm dark:border-gray-600 dark:bg-gray-900"></textarea>
       <button id="analyzeBtn" class="w-full rounded-lg bg-indigo-600 p-3 font-semibold text-white shadow-md hover:bg-indigo-700" data-i18n="analyzeSave">✨ Analyze &amp; Save to DB</button>
     </div>
@@ -99,43 +132,53 @@
 
   <div id="studentModal" class="fixed inset-0 z-40 hidden items-end justify-center bg-black/60 p-0 sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="modalName">
     <div class="max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-t-2xl bg-white p-4 shadow-xl dark:bg-gray-800 sm:rounded-2xl" onclick="event.stopPropagation()">
-      <div class="mb-3 flex items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700"><div><h2 id="modalName" class="text-lg font-bold primary-text"></h2><div id="modalId" class="text-sm text-gray-500 dark:text-gray-400"></div></div><button data-close="studentModal" class="px-2 text-3xl leading-none text-gray-400" aria-label="Close">&times;</button></div>
+      <div class="mb-3 flex items-center justify-between border-b border-gray-200 pb-2 dark:border-gray-700"><div><h2 id="modalName" class="text-lg font-bold text-blue-700 dark:text-blue-300"></h2><div id="modalId" class="text-sm text-gray-500 dark:text-gray-400"></div></div><button data-close="studentModal" class="px-2 text-3xl text-gray-400" aria-label="Close">&times;</button></div>
       <div id="phoneList" class="mb-4 space-y-2"></div>
-      <button id="copyLmsBtn" class="mb-3 w-full rounded-lg border border-blue-200 bg-blue-50 p-3 font-semibold text-blue-700 dark:border-blue-900 dark:bg-blue-950 dark:text-blue-200" data-i18n="copyLms">🔗 Copy LMS Link</button>
-      <button id="exemptBtn" class="mb-4 w-full rounded-lg bg-amber-100 p-3 font-semibold text-amber-800 dark:bg-amber-900 dark:text-amber-100" data-i18n="exemptCall">Mark Exempt from Call</button>
+      <button id="copyLmsBtn" class="mb-3 w-full rounded-lg border border-blue-200 bg-blue-50 p-3 font-semibold text-blue-700 hover:bg-blue-100 dark:border-blue-900 dark:bg-blue-950 dark:text-blue-200" data-i18n="copyLms">📋 Copy LMS Link</button>
+      <button id="exemptBtn" class="mb-4 w-full rounded-lg bg-amber-100 p-3 font-semibold text-amber-800 hover:bg-amber-200 dark:bg-amber-900 dark:text-amber-100" data-i18n="exemptCall">Mark Exempt from Call</button>
       <div class="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-900">
-        <div class="mb-2 flex items-center justify-between gap-2"><label for="outcome" class="text-sm font-bold" data-i18n="outcome">Outcome</label><button id="polishBtn" class="rounded-full border border-purple-300 bg-purple-100 px-3 py-1 text-xs font-bold text-purple-700 dark:border-purple-800 dark:bg-purple-950 dark:text-purple-200" data-i18n="polish">✨ Jesh AI Polish</button></div>
+        <div class="mb-2 flex items-center justify-between gap-2"><label for="outcome" class="text-sm font-bold" data-i18n="outcome">Outcome</label><button id="polishBtn" class="rounded-full border border-purple-300 bg-purple-100 px-3 py-1 text-xs font-bold text-purple-700 hover:bg-purple-200 dark:border-purple-800 dark:bg-purple-950 dark:text-purple-200" data-i18n="polish">✨ Jesh AI Polish</button></div>
         <textarea id="outcome" rows="4" placeholder="Type rough notes..." class="mb-3 w-full rounded-lg border border-gray-300 bg-white p-3 text-sm dark:border-gray-600 dark:bg-gray-800"></textarea>
-        <div class="flex gap-2"><button id="copyOutcomeBtn" class="flex-1 rounded-lg bg-gray-200 p-3 font-semibold text-gray-700 dark:bg-gray-700 dark:text-gray-100" data-i18n="copyOutcome">📋 Copy</button><button id="saveOutcomeBtn" class="primary-bg flex-1 rounded-lg p-3 font-semibold text-white" data-i18n="saveOutcome">Save Outcome</button></div>
+        <div class="flex gap-2"><button id="copyOutcomeBtn" class="flex-1 rounded-lg bg-gray-200 p-3 font-semibold text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100" data-i18n="copyOutcome">📋 Copy Outcome</button><button id="saveOutcomeBtn" class="flex-1 rounded-lg bg-blue-600 p-3 font-semibold text-white shadow hover:bg-blue-700" data-i18n="saveOutcome">Save Outcome</button></div>
       </div>
     </div>
   </div>
 
-  <div id="toast" class="fixed left-1/2 top-16 z-50 hidden -translate-x-1/2 rounded-full bg-gray-900 px-5 py-2 text-sm text-white shadow-lg" role="status" aria-live="polite"></div>
-  <nav class="fixed inset-x-0 bottom-0 z-30 flex border-t border-blue-200 bg-white dark:border-gray-700 dark:bg-gray-800" aria-label="Main navigation">
-    <button data-tab="attendance" class="nav-btn flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-semibold primary-text"><i data-lucide="clipboard-check" class="h-5 w-5" aria-hidden="true"></i><span data-i18n="attendance">Attendance</span></button>
-    <button data-tab="followup" class="nav-btn flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-semibold text-gray-400"><i data-lucide="phone" class="h-5 w-5" aria-hidden="true"></i><span data-i18n="followup">Follow-up</span></button>
-    <button data-tab="insights" class="nav-btn flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-semibold text-gray-400"><i data-lucide="chart-no-axes-combined" class="h-5 w-5" aria-hidden="true"></i><span data-i18n="insights">Insights</span></button>
-    <button data-tab="report" class="nav-btn flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-semibold text-gray-400"><i data-lucide="file-text" class="h-5 w-5" aria-hidden="true"></i><span data-i18n="report">Report</span></button>
-    <button data-tab="settings" class="nav-btn flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-semibold text-gray-400"><i data-lucide="settings" class="h-5 w-5" aria-hidden="true"></i><span data-i18n="settings">Settings</span></button>
+  <div id="toast" class="fixed left-1/2 top-16 z-50 hidden max-w-[90vw] -translate-x-1/2 rounded-full bg-gray-900 px-5 py-2 text-center text-sm text-white shadow-lg" role="status" aria-live="polite"></div>
+
+  <nav class="safe-bottom fixed inset-x-0 bottom-0 z-30 flex border-t border-blue-200 bg-white dark:border-gray-700 dark:bg-gray-800" aria-label="Main navigation">
+    <button data-tab="attendance" class="nav-btn flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-semibold text-blue-600 dark:text-blue-300"><i data-lucide="clipboard-check" class="h-5 w-5"></i><span data-i18n="attendance">Attendance</span></button>
+    <button data-tab="followup" class="nav-btn flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-semibold text-gray-400"><i data-lucide="phone" class="h-5 w-5"></i><span data-i18n="followup">Follow-up</span></button>
+    <button data-tab="insights" class="nav-btn flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-semibold text-gray-400"><i data-lucide="chart-no-axes-combined" class="h-5 w-5"></i><span data-i18n="insights">Insights</span></button>
+    <button data-tab="report" class="nav-btn flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-semibold text-gray-400"><i data-lucide="file-text" class="h-5 w-5"></i><span data-i18n="report">Report</span></button>
+    <button data-tab="settings" class="nav-btn flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-semibold text-gray-400"><i data-lucide="settings" class="h-5 w-5"></i><span data-i18n="settings">Settings</span></button>
   </nav>
 
   <script>
-    window.onerror = function (message, source, line, column, error) {
-      alert(`JavaScript error: ${message}\nLine: ${line || 'unknown'}`);
-      console.error('Unhandled JavaScript error:', { message, source, line, column, error });
+    window.onerror = function(msg, url, line) {
+      alert('Error: ' + msg + ' on line ' + line);
       return false;
     };
 
-    // This is the public anon/publishable key. Never put a Supabase service-role key in browser code.
-    // Enforce Row Level Security in Supabase before storing real student data.
     const SUPABASE_URL = 'https://dutsjeykzovclazuztho.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_fW3YXy94NvEQkzODuoPFpQ_H8nSylsk';
     const LMS_BASE = 'http://103.27.234.18:8080/Student/Details/';
-    const sessions = ['S.1', 'S.2', 'S.3'];
+    const DEFAULT_MODELS = {
+      gemini: 'gemini-flash-latest',
+      groq: 'llama-3.3-70b-versatile',
+      cerebras: 'llama3.1-8b'
+    };
     const $ = id => document.getElementById(id);
-    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
+    const sessions = ['S.1', 'S.2', 'S.3'];
+    const translations = {
+      en: {
+        appTitle:'FEA Attendance', todayLesson:"Today's Lesson", session:'Session', lessonNumber:'Lesson No.', lessonType:'Type', saveLesson:"Save Today's Lesson", aiImport:'AI Import', searchPlaceholder:'Search by Name or ID', absentToday:'Absent Today', insights:'Insights', topAttendance:'Top Attendance', dropoutRisk:'Dropout Risk — Lowest Attendance', absencesBySession:'Total Absences by Session', insightsNote:'Attendance rate excludes Exempt records. Historical insights use all records available through Supabase.', copyReport:'📋 Copy Report', aiKeys:'Jesh AI Keys (Fallback)', fallbackOrder:'Order: Gemini → Groq → Cerebras. If one fails (quota, 429, error), the next is tried instantly.', modelHelp:'Model fields are optional. Leave blank to use the defaults shown.', keyWarning:"Browser-stored API keys are visible to this device's users. For production, use a secured backend.", googleSheets:'📊 Google Sheet Webhooks', sheetsHelp:'Paste one or more deployed Web App URLs, one per line. Each saved attendance or outcome is sent to every URL.', scriptHelp:'Apps Script code (Extensions → Apps Script → Deploy as Web App, Anyone)', copyScript:'Copy Script', preferences:'Preferences', darkMode:'Dark Mode', language:'Language', saveSettings:'Save Settings', importTitle:'📥 AI Data Import', importHelp:'Paste raw Excel or WhatsApp data. AI extracts name, ID, session and phone.', analyzeSave:'✨ Analyze & Save to DB', copyLms:'📋 Copy LMS Link', exemptCall:'Mark Exempt from Call', outcome:'Outcome', polish:'✨ Jesh AI Polish', copyOutcome:'📋 Copy Outcome', saveOutcome:'Save Outcome', attendance:'Attendance', followup:'Follow-up', report:'Report', settings:'Settings', search:'Search', present:'Present', absent:'Absent', exempt:'Exempt', done:'Done', pending:'Pending', noStudents:'No students found. Use AI Import.', noMatches:'No matching students found.', noAbsentees:'No absentees today 🎉', noData:'No historical attendance data available.', totalStudents:'Students', records:'Attendance records'
+      },
+      hi: {
+        appTitle:'FEA उपस्थिति', todayLesson:'आज का पाठ', session:'सत्र', lessonNumber:'पाठ संख्या', lessonType:'प्रकार', saveLesson:'आज का पाठ सहेजें', aiImport:'AI इम्पोर्ट', searchPlaceholder:'नाम या ID से खोजें', absentToday:'आज अनुपस्थित', insights:'जानकारी', topAttendance:'सबसे अच्छी उपस्थिति', dropoutRisk:'जोखिम — सबसे कम उपस्थिति', absencesBySession:'सत्र के अनुसार कुल अनुपस्थिति', insightsNote:'उपस्थिति दर में Exempt रिकॉर्ड शामिल नहीं हैं। ऐतिहासिक जानकारी Supabase में उपलब्ध रिकॉर्ड से है।', copyReport:'📋 रिपोर्ट कॉपी करें', aiKeys:'Jesh AI कुंजियाँ (Fallback)', fallbackOrder:'क्रम: Gemini → Groq → Cerebras। एक फेल होने पर (quota, 429, error) अगला तुरंत आज़माया जाता है।', modelHelp:'Model वाले खाने वैकल्पिक हैं। खाली छोड़ने पर दिखाए गए डिफ़ॉल्ट इस्तेमाल होंगे।', keyWarning:'ब्राउज़र में रखी API कुंजियाँ इस डिवाइस के उपयोगकर्ताओं को दिख सकती हैं। उत्पादन में सुरक्षित बैकएंड का उपयोग करें।', googleSheets:'📊 Google Sheet वेबहुक', sheetsHelp:'एक या अधिक Web App URL डालें, हर पंक्ति में एक URL। सेव की गई उपस्थिति और परिणाम सभी URL पर भेजे जाएंगे।', scriptHelp:'Apps Script कोड (Extensions → Apps Script → Web App के रूप में Deploy, Anyone)', copyScript:'स्क्रिप्ट कॉपी करें', preferences:'प्राथमिकताएँ', darkMode:'डार्क मोड', language:'भाषा', saveSettings:'सेटिंग्स सहेजें', importTitle:'📥 AI डेटा इम्पोर्ट', importHelp:'Excel या WhatsApp का डेटा पेस्ट करें। AI नाम, ID, सत्र और फ़ोन निकालेगा।', analyzeSave:'✨ विश्लेषण करें और DB में सहेजें', copyLms:'📋 LMS लिंक कॉपी करें', exemptCall:'कॉल से छूट दें', outcome:'परिणाम', polish:'✨ Jesh AI सुधारें', copyOutcome:'📋 परिणाम कॉपी करें', saveOutcome:'परिणाम सहेजें', attendance:'उपस्थिति', followup:'फॉलो-अप', report:'रिपोर्ट', settings:'सेटिंग्स', search:'खोजें', present:'उपस्थित', absent:'अनुपस्थित', exempt:'छूट', done:'पूरा', pending:'बाकी', noStudents:'कोई विद्यार्थी नहीं मिला। AI इम्पोर्ट करें।', noMatches:'कोई मेल खाता विद्यार्थी नहीं मिला।', noAbsentees:'आज कोई अनुपस्थित नहीं 🎉', noData:'ऐतिहासिक उपस्थिति डेटा उपलब्ध नहीं है।', totalStudents:'विद्यार्थी', records:'उपस्थिति रिकॉर्ड'
+      }
+    };
+    let db = null;
     let students = [];
     let attendanceStatus = {};
     let absentStudents = [];
@@ -143,26 +186,26 @@
     let activeTab = 'attendance';
     let language = localStorage.getItem('language') || 'en';
 
-    const translations = {
-      en: {
-        appTitle:'NGO Attendance', todayLesson:"Today's Lesson", session:'Session', lessonNumber:'Lesson No.', lessonType:'Type', saveLesson:"Save Today's Lesson", aiImport:'📥 AI Import', search:'Search', searchPlaceholder:'Search by Name or ID', absentToday:'Absent Today — Follow-up', insights:'Insights', topAttendance:'Top Attendance', dropoutRisk:'Dropout Risk — Lowest Attendance', absencesBySession:'Total Absences by Session', insightsNote:'Attendance rate excludes Exempt records. Historical insights use all records available through Supabase.', report:'Report', copyReport:'📋 Copy Report', aiKeys:'AI Keys (Fallback)', keyWarning:'Browser-stored API keys are visible to device users. For production, use a secured backend.', googleSheets:'📊 Google Sheet Webhooks', sheetsHelp:'Paste deployed Web App URLs, one per line. Saved attendance and outcomes are posted to each URL.', preferences:'Preferences', darkMode:'Dark Mode', language:'Language', primaryColor:'Primary Color', saveSettings:'Save Settings', comingSoon:'Coming Soon / Requires Backend', videoPlaceholder:'AI Avatar / Video Generation', filePlaceholder:'Direct PDF / Excel parsing', backendBadge:'Coming Soon · Backend required', importTitle:'📥 AI Student Import', importHelp:'Paste student text. AI extracts name, ID, session and phone. PDF/Excel parsing requires a backend.', analyzeSave:'✨ Analyze & Save to DB', copyLms:'🔗 Copy LMS Link', exemptCall:'Mark Exempt from Call', outcome:'Outcome', polish:'✨ Jesh AI Polish', copyOutcome:'📋 Copy', saveOutcome:'Save Outcome', attendance:'Attendance', followup:'Follow-up', settings:'Settings', noStudents:'No students found. Use AI Import.', noMatches:'No matching students.', noAbsentees:'No absentees today.', noData:'No historical attendance data available.', done:'Done', pending:'Pending', present:'Present', absent:'Absent', exempt:'Exempt', students:'Students', records:'Attendance records', copy:'Copy', call:'Call', phoneUnavailable:'No phone', copied:'Copied ✓', saved:'Saved ✓', error:'Error', writeOutcome:'Write outcome first', pasteText:'Paste some student text first', enterLesson:'Enter a valid lesson number', aiNoKeys:'Add at least one AI API key in Settings.', supabaseWarning:'The Supabase publishable/anon key is public in this page. Never use a service-role key. Protect student data with suitable Supabase Row Level Security policies.'
-      },
-      hi: {
-        appTitle:'उपस्थिति और फॉलो-अप', todayLesson:'आज का पाठ', session:'सत्र', lessonNumber:'पाठ संख्या', lessonType:'प्रकार', saveLesson:'आज का पाठ सहेजें', aiImport:'📥 AI से जोड़ें', search:'खोजें', searchPlaceholder:'नाम या ID से खोजें', absentToday:'आज अनुपस्थित — फॉलो-अप', insights:'जानकारी', topAttendance:'सबसे अच्छी उपस्थिति', dropoutRisk:'जोखिम — कम उपस्थिति', absencesBySession:'सत्र के अनुसार अनुपस्थिति', insightsNote:'छूटे हुए रिकॉर्ड उपस्थिति दर में शामिल नहीं हैं।', report:'रिपोर्ट', copyReport:'📋 रिपोर्ट कॉपी करें', aiKeys:'AI कुंजियाँ', keyWarning:'ब्राउज़र में रखी API कुंजियाँ इस डिवाइस के उपयोगकर्ताओं को दिख सकती हैं।', googleSheets:'📊 Google शीट वेबहुक', sheetsHelp:'हर तैनात Web App URL को अलग पंक्ति में डालें।', preferences:'प्राथमिकताएँ', darkMode:'डार्क मोड', language:'भाषा', primaryColor:'मुख्य रंग', saveSettings:'सेटिंग्स सहेजें', comingSoon:'जल्द आ रहा है / बैकएंड आवश्यक', videoPlaceholder:'AI अवतार / वीडियो निर्माण', filePlaceholder:'सीधे PDF / Excel पढ़ना', backendBadge:'जल्द आ रहा है · बैकएंड आवश्यक', importTitle:'📥 AI विद्यार्थी जोड़ें', importHelp:'विद्यार्थी का टेक्स्ट पेस्ट करें। PDF/Excel के लिए बैकएंड चाहिए।', analyzeSave:'✨ विश्लेषण करें और सहेजें', copyLms:'🔗 LMS लिंक कॉपी करें', exemptCall:'कॉल से छूट दें', outcome:'परिणाम', polish:'✨ Jesh AI सुधारें', copyOutcome:'📋 कॉपी करें', saveOutcome:'परिणाम सहेजें', attendance:'उपस्थिति', followup:'फॉलो-अप', settings:'सेटिंग्स', noStudents:'विद्यार्थी नहीं मिले। AI Import करें।', noMatches:'कोई मेल नहीं मिला।', noAbsentees:'आज कोई अनुपस्थित नहीं।', noData:'पुराना उपस्थिति डेटा उपलब्ध नहीं।', done:'पूरा', pending:'बाकी', present:'उपस्थित', absent:'अनुपस्थित', exempt:'छूट', students:'विद्यार्थी', records:'उपस्थिति रिकॉर्ड', copy:'कॉपी', call:'कॉल', phoneUnavailable:'फोन नहीं', copied:'कॉपी हो गया ✓', saved:'सहेजा गया ✓', error:'त्रुटि', writeOutcome:'पहले परिणाम लिखें', pasteText:'पहले विद्यार्थी का टेक्स्ट पेस्ट करें', enterLesson:'सही पाठ संख्या डालें', aiNoKeys:'सेटिंग्स में कम से कम एक AI key जोड़ें।', supabaseWarning:'Supabase publishable/anon key इस पेज में सार्वजनिक है। Service-role key का इस्तेमाल न करें। छात्र डेटा के लिए Supabase RLS policies लागू करें।'
+    try {
+      if (window.supabase && SUPABASE_URL !== 'YOUR_URL' && SUPABASE_KEY !== 'YOUR_KEY') {
+        db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       }
-    };
-    const tr = key => translations[language]?.[key] || translations.en[key] || key;
+    } catch (error) {
+      console.error('Supabase initialization failed:', error);
+    }
+
     const today = () => {
       const date = new Date();
       return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
     };
+    const tr = key => (translations[language] && translations[language][key]) || translations.en[key] || key;
 
     function toast(message) {
       const element = $('toast');
       element.textContent = message;
       element.classList.remove('hidden');
       clearTimeout(element._timer);
-      element._timer = setTimeout(() => element.classList.add('hidden'), 2800);
+      element._timer = setTimeout(() => element.classList.add('hidden'), 3500);
     }
 
     async function copyText(text) {
@@ -176,11 +219,11 @@
         field.style.opacity = '0';
         document.body.appendChild(field);
         field.select();
-        const copied = document.execCommand('copy');
+        const ok = document.execCommand('copy');
         field.remove();
-        if (!copied) return toast(tr('error'));
+        if (!ok) return toast('Error');
       }
-      toast(tr('copied'));
+      toast(language === 'hi' ? 'कॉपी हो गया ✓' : 'Copied ✓');
     }
 
     function setModal(id, open) {
@@ -199,17 +242,19 @@
     });
 
     function applyTheme() {
-      document.documentElement.classList.toggle('dark', localStorage.getItem('darkMode') === 'true');
-      const palette = { blue: ['#2563eb', '#1d4ed8'], green: ['#16a34a', '#15803d'], purple: ['#9333ea', '#7e22ce'] };
-      const colors = palette[localStorage.getItem('primaryColor') || 'blue'] || palette.blue;
-      document.documentElement.style.setProperty('--primary', colors[0]);
-      document.documentElement.style.setProperty('--primary-dark', colors[1]);
+      const dark = localStorage.getItem('darkMode') === 'true';
+      document.documentElement.classList.toggle('dark', dark);
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', dark ? '#1e3a8a' : '#2563eb');
     }
 
     function applyLanguage() {
       document.documentElement.lang = language === 'hi' ? 'hi' : 'en';
-      document.querySelectorAll('[data-i18n]').forEach(element => { element.textContent = tr(element.dataset.i18n); });
-      document.querySelectorAll('[data-i18n-placeholder]').forEach(element => { element.placeholder = tr(element.dataset.i18nPlaceholder); });
+      document.querySelectorAll('[data-i18n]').forEach(element => {
+        const value = tr(element.dataset.i18n);
+        if (value) element.textContent = value;
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(element => element.placeholder = tr(element.dataset.i18nPlaceholder));
       renderStudents();
       renderAbsentList();
       if (window.lucide) lucide.createIcons();
@@ -220,7 +265,8 @@
       document.querySelectorAll('.tab-panel').forEach(section => section.classList.toggle('hidden', section.id !== `tab-${name}`));
       document.querySelectorAll('.nav-btn').forEach(button => {
         const selected = button.dataset.tab === name;
-        button.classList.toggle('primary-text', selected);
+        button.classList.toggle('text-blue-600', selected);
+        button.classList.toggle('dark:text-blue-300', selected);
         button.classList.toggle('text-gray-400', !selected);
         button.setAttribute('aria-current', selected ? 'page' : 'false');
       });
@@ -233,60 +279,78 @@
 
     document.querySelectorAll('.nav-btn').forEach(button => button.addEventListener('click', () => showTab(button.dataset.tab)));
 
-    function getAIKeys() {
+    function getAIConfig() {
+      const read = key => (localStorage.getItem(key) || '').trim();
       return {
-        gemini: localStorage.getItem('geminiKey') || '',
-        groq: localStorage.getItem('groqKey') || '',
-        cerebras: localStorage.getItem('cerebrasKey') || ''
+        gemini: { key: read('geminiKey'), model: read('geminiModel') || DEFAULT_MODELS.gemini },
+        groq: { key: read('groqKey'), model: read('groqModel') || DEFAULT_MODELS.groq },
+        cerebras: { key: read('cerebrasKey'), model: read('cerebrasModel') || DEFAULT_MODELS.cerebras }
       };
     }
 
-    async function callJeshAI(prompt) {
-      const keys = getAIKeys();
-      const providers = [
-        {
-          name: 'Gemini', key: keys.gemini,
-          request: async key => {
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(key)}`, {
-              method: 'POST', headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-            });
-            const data = await response.json().catch(() => ({}));
-            if (!response.ok) throw new Error(data.error?.message || `Gemini HTTP ${response.status}`);
-            const text = data.candidates?.[0]?.content?.parts?.map(part => part.text || '').join('');
-            if (!text) throw new Error('Gemini returned an empty response');
-            return text;
-          }
-        },
-        { name: 'Groq', key: keys.groq, request: key => requestChatCompletion('https://api.groq.com/openai/v1/chat/completions', key, prompt, 'llama-3.1-8b-instant') },
-        { name: 'Cerebras', key: keys.cerebras, request: key => requestChatCompletion('https://api.cerebras.ai/v1/chat/completions', key, prompt, 'llama3.1-8b') }
-      ];
-      const configured = providers.filter(provider => provider.key.trim());
-      if (!configured.length) throw new Error(tr('aiNoKeys'));
-      let lastError;
-      for (const provider of configured) {
-        try { return await provider.request(provider.key.trim()); }
-        catch (error) { lastError = error; console.warn(`${provider.name} failed; trying the next AI provider.`, error); }
+    async function fetchWithTimeout(url, options, ms = 25000) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), ms);
+      try {
+        return await fetch(url, { ...options, signal: controller.signal });
+      } catch (error) {
+        if (error.name === 'AbortError') throw new Error('Request timed out');
+        throw error;
+      } finally {
+        clearTimeout(timer);
       }
-      throw lastError || new Error('All AI providers failed');
     }
 
-    async function requestChatCompletion(url, key, prompt, model) {
-      const response = await fetch(url, {
+    async function requestGemini(key, model, prompt) {
+      const response = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
-        body: JSON.stringify({ model, messages: [{ role: 'user', content: prompt }] })
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
       });
       const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(data.error?.message || `AI HTTP ${response.status}`);
-      const text = data.choices?.[0]?.message?.content;
-      if (!text) throw new Error('AI provider returned an empty response');
+      if (!response.ok) throw new Error(`HTTP ${response.status}: ${data.error?.message || 'Gemini request failed'}`);
+      const text = data.candidates?.[0]?.content?.parts?.map(part => part.text || '').join('');
+      if (!text || !text.trim()) throw new Error('Empty response');
       return text;
+    }
+
+    async function requestChatCompletion(url, key, model, prompt) {
+      const response = await fetchWithTimeout(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+        body: JSON.stringify({ model, messages: [{ role: 'user', content: prompt }], temperature: 0.2 })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(`HTTP ${response.status}: ${data.error?.message || 'Request failed'}`);
+      const text = data.choices?.[0]?.message?.content;
+      if (!text || !text.trim()) throw new Error('Empty response');
+      return text;
+    }
+
+    async function callJeshAI(prompt) {
+      const config = getAIConfig();
+      const providers = [
+        { name: 'Gemini', key: config.gemini.key, run: () => requestGemini(config.gemini.key, config.gemini.model, prompt) },
+        { name: 'Groq', key: config.groq.key, run: () => requestChatCompletion('https://api.groq.com/openai/v1/chat/completions', config.groq.key, config.groq.model, prompt) },
+        { name: 'Cerebras', key: config.cerebras.key, run: () => requestChatCompletion('https://api.cerebras.ai/v1/chat/completions', config.cerebras.key, config.cerebras.model, prompt) }
+      ].filter(provider => provider.key);
+      if (!providers.length) throw new Error(language === 'hi' ? 'सेटिंग्स में कम से कम एक AI API कुंजी जोड़ें' : 'Add at least one AI API key in Settings');
+      const failures = [];
+      for (const provider of providers) {
+        try {
+          return await provider.run();
+        } catch (error) {
+          failures.push(`${provider.name}: ${error.message}`);
+          console.warn(`${provider.name} failed, trying next provider.`, error);
+        }
+      }
+      throw new Error(failures.join(' | '));
     }
 
     function parseImportResponse(text) {
       const cleaned = text.replace(/```(?:json)?/gi, '').trim();
-      const start = cleaned.indexOf('['), end = cleaned.lastIndexOf(']');
+      const start = cleaned.indexOf('[');
+      const end = cleaned.lastIndexOf(']');
       if (start < 0 || end < start) throw new Error('AI did not return a JSON array');
       const items = JSON.parse(cleaned.slice(start, end + 1));
       if (!Array.isArray(items)) throw new Error('AI response is not an array');
@@ -300,118 +364,156 @@
 
     $('openImportBtn').addEventListener('click', () => setModal('importModal', true));
     $('analyzeBtn').addEventListener('click', async () => {
+      if (!db) return toast('Supabase is not configured');
       const raw = $('importText').value.trim();
-      if (!raw) return toast(tr('pasteText'));
+      if (!raw) return toast(language === 'hi' ? 'पहले डेटा पेस्ट करें' : 'Paste some data first');
       const button = $('analyzeBtn');
       button.disabled = true;
-      button.textContent = language === 'hi' ? '⏳ विश्लेषण हो रहा है...' : '⏳ Analyzing...';
+      button.textContent = language === 'hi' ? '⏳ विश्लेषण जारी है...' : '⏳ Analyzing...';
       try {
-        const prompt = `Extract student records from this text. Return ONLY a valid JSON array of objects with keys student_id, name, session, phone1. Sessions must be S.1/S.2/S.3 (default S.1); phone1 or null. Ignore unrelated numbers. Text:\n${raw}`;
+        const prompt = `Extract student records from the text. Return ONLY a valid JSON array of objects with exactly these keys: student_id, name, session, phone1. Use the student ID, full name, session (S.1/S.2/S.3; default S.1), and phone number (or null). Ignore unrelated numbers. Do not add explanations or markdown. Text:\n${raw}`;
         const records = parseImportResponse(await callJeshAI(prompt));
         if (!records.length) throw new Error('No valid student records found');
         const { error } = await db.from('students').insert(records);
         if (error) throw error;
-        toast(`${records.length} ${tr('students')} ${tr('saved')}`);
+        toast(`${records.length} ${language === 'hi' ? 'विद्यार्थी सहेजे ✓' : 'students saved ✓'}`);
         $('importText').value = '';
         setModal('importModal', false);
         await loadStudents();
-      } catch (error) { console.error(error); toast(`Error: ${error.message || 'AI import failed'}`); }
-      finally { button.disabled = false; button.textContent = tr('analyzeSave'); }
+      } catch (error) {
+        console.error(error);
+        toast('Error: ' + (error.message || 'AI import failed'));
+      } finally {
+        button.disabled = false;
+        button.textContent = tr('analyzeSave');
+      }
     });
 
     $('session').addEventListener('change', loadStudents);
     $('search').addEventListener('input', renderStudents);
 
     async function loadStudents() {
-      try {
-        const session = $('session').value;
-        const [studentResult, attendanceResult] = await Promise.all([
-          db.from('students').select('id,student_id,name,session,phone1,phone2,phone3').eq('session', session).order('student_id'),
-          db.from('attendance').select('student_id,status').eq('date', today()).eq('session', session)
-        ]);
-        if (studentResult.error) throw studentResult.error;
-        if (attendanceResult.error) throw attendanceResult.error;
-        students = studentResult.data || [];
-        attendanceStatus = {};
-        (attendanceResult.data || []).forEach(record => { attendanceStatus[String(record.student_id)] = record.status; });
-        renderStudents();
-      } catch (error) { console.error(error); toast(`Error loading students: ${error.message || ''}`); }
+      if (!db) {
+        $('studentList').innerHTML = `<p class="mt-5 text-center text-gray-500">${language === 'hi' ? 'Supabase URL और key सेट करें।' : 'Configure Supabase URL and key to connect.'}</p>`;
+        return;
+      }
+      const session = $('session').value;
+      const [studentResult, attendanceResult] = await Promise.all([
+        db.from('students').select('id,student_id,name,session,phone1,phone2,phone3').eq('session', session).order('student_id'),
+        db.from('attendance').select('student_id,status').eq('date', today()).eq('session', session)
+      ]);
+      if (studentResult.error || attendanceResult.error) {
+        console.error(studentResult.error || attendanceResult.error);
+        toast('Error');
+        return;
+      }
+      students = studentResult.data || [];
+      attendanceStatus = {};
+      (attendanceResult.data || []).forEach(record => attendanceStatus[String(record.student_id)] = record.status);
+      renderStudents();
     }
 
     function renderStudents() {
       const list = $('studentList');
       if (!list) return;
       list.replaceChildren();
-      const query = ($('search').value || '').trim().toLowerCase();
+      const query = ($('search')?.value || '').trim().toLowerCase();
       const filtered = students.filter(student => String(student.name || '').toLowerCase().includes(query) || String(student.student_id || '').toLowerCase().includes(query));
       if (!filtered.length) {
-        const empty = document.createElement('p'); empty.className = 'mt-5 text-center text-gray-500 dark:text-gray-400';
-        empty.textContent = students.length ? tr('noMatches') : tr('noStudents'); list.appendChild(empty); return;
+        const empty = document.createElement('p');
+        empty.className = 'mt-5 text-center text-gray-500 dark:text-gray-400';
+        empty.textContent = students.length ? tr('noMatches') : tr('noStudents');
+        list.appendChild(empty);
+        return;
       }
       filtered.forEach(student => {
-        const sid = String(student.student_id), status = attendanceStatus[sid] || 'Present';
-        const row = document.createElement('button'); row.type = 'button';
-        row.className = `flex w-full items-center justify-between rounded-lg p-3 text-left text-white shadow-sm transition ${status === 'Absent' ? 'bg-red-500' : status === 'Exempt' ? 'bg-amber-500' : 'bg-green-600'}`;
-        row.setAttribute('aria-label', `${student.name || ''}, ${sid}, ${tr(status.toLowerCase())}`);
+        const sid = String(student.student_id);
+        const status = attendanceStatus[sid] || 'Present';
+        const row = document.createElement('button');
+        row.type = 'button';
+        row.className = `flex w-full items-center justify-between rounded-lg p-3 text-left text-white shadow-sm transition ${status === 'Absent' ? 'bg-red-500' : status === 'Exempt' ? 'bg-amber-500' : 'bg-green-500'}`;
         row.addEventListener('click', () => toggleAttendance(student));
-        const info = document.createElement('span'), name = document.createElement('span'), id = document.createElement('span'), label = document.createElement('span');
-        name.className = 'block text-sm font-semibold'; name.textContent = student.name || '';
-        id.className = 'block text-xs opacity-90'; id.textContent = sid; info.append(name, id);
-        label.className = 'text-sm font-bold'; label.textContent = tr(status.toLowerCase());
-        row.append(info, label); list.appendChild(row);
+        const info = document.createElement('span');
+        const name = document.createElement('span'); name.className = 'block text-sm font-semibold'; name.textContent = student.name || '';
+        const id = document.createElement('span'); id.className = 'block text-xs opacity-90'; id.textContent = sid;
+        info.append(name, id);
+        const label = document.createElement('span'); label.className = 'text-sm font-bold'; label.textContent = tr(status.toLowerCase());
+        row.append(info, label);
+        list.appendChild(row);
       });
     }
 
     async function saveAttendanceStatus(student, nextStatus, sync = true) {
-      const sid = String(student.student_id), session = student.session || $('session').value;
+      if (!db) throw new Error('Supabase is not configured');
+      const sid = String(student.student_id);
+      const session = student.session || $('session').value;
       const { data: existing, error: findError } = await db.from('attendance').select('id').eq('date', today()).eq('student_id', sid).eq('session', session).limit(1);
       if (findError) throw findError;
-      let result;
-      if (existing?.length) result = await db.from('attendance').update({ status: nextStatus }).eq('id', existing[0].id);
-      else result = await db.from('attendance').insert({ date: today(), student_id: sid, session, status: nextStatus });
-      if (result.error) throw result.error;
+      let error;
+      if (existing?.length) {
+        ({ error } = await db.from('attendance').update({ status: nextStatus }).eq('id', existing[0].id));
+      } else {
+        ({ error } = await db.from('attendance').insert({ date: today(), student_id: sid, session, status: nextStatus }));
+      }
+      if (error) throw error;
       if (sync) syncToSheet({ type: 'attendance', student_id: sid, status: nextStatus, session, date: today() });
     }
 
     async function toggleAttendance(student) {
-      const sid = String(student.student_id), oldStatus = attendanceStatus[sid];
+      const sid = String(student.student_id);
+      const oldStatus = attendanceStatus[sid];
       const nextStatus = oldStatus === 'Absent' ? 'Present' : 'Absent';
-      attendanceStatus[sid] = nextStatus; renderStudents();
-      try { await saveAttendanceStatus(student, nextStatus); toast(tr('saved')); }
-      catch (error) { console.error(error); if (oldStatus) attendanceStatus[sid] = oldStatus; else delete attendanceStatus[sid]; renderStudents(); toast(tr('error')); }
+      attendanceStatus[sid] = nextStatus;
+      renderStudents();
+      try {
+        await saveAttendanceStatus(student, nextStatus);
+        toast('Saved ✓');
+      } catch (error) {
+        console.error(error);
+        if (oldStatus) attendanceStatus[sid] = oldStatus; else delete attendanceStatus[sid];
+        renderStudents();
+        toast('Error');
+      }
     }
 
     async function loadAbsent() {
-      try {
-        const { data, error } = await db.from('attendance').select('student_id,session,status').eq('date', today()).eq('status', 'Absent');
-        if (error) throw error;
-        const absent = data || [];
-        if (!absent.length) { absentStudents = []; renderAbsentList(); return; }
-        const ids = [...new Set(absent.map(row => String(row.student_id)))];
-        const { data: records, error: studentError } = await db.from('students').select('id,student_id,name,session,phone1,phone2,phone3').in('student_id', ids).order('session');
-        if (studentError) throw studentError;
-        const sessionById = new Map(absent.map(row => [String(row.student_id), row.session]));
-        absentStudents = (records || []).map(student => ({ ...student, session: student.session || sessionById.get(String(student.student_id)) }));
-        renderAbsentList();
-      } catch (error) { console.error(error); toast(`Error loading follow-ups: ${error.message || ''}`); }
+      if (!db) {
+        $('absentList').innerHTML = `<p class="mt-5 text-center text-gray-500">${language === 'hi' ? 'Supabase कनेक्ट करें।' : 'Connect Supabase to load follow-ups.'}</p>`;
+        return;
+      }
+      const { data, error } = await db.from('attendance').select('student_id,session,status').eq('date', today()).eq('status', 'Absent');
+      if (error) { console.error(error); toast('Error'); return; }
+      const absent = data || [];
+      if (!absent.length) { absentStudents = []; renderAbsentList(); return; }
+      const ids = [...new Set(absent.map(row => String(row.student_id)))];
+      const { data: records, error: studentError } = await db.from('students').select('id,student_id,name,session,phone1,phone2,phone3').in('student_id', ids).order('session');
+      if (studentError) { console.error(studentError); toast('Error'); return; }
+      const sessionById = new Map(absent.map(row => [String(row.student_id), row.session]));
+      absentStudents = (records || []).map(student => ({ ...student, session: student.session || sessionById.get(String(student.student_id)) }));
+      renderAbsentList();
     }
 
     async function renderAbsentList() {
-      const list = $('absentList'); list.replaceChildren();
+      const list = $('absentList');
+      list.replaceChildren();
       if (!absentStudents.length) {
         const empty = document.createElement('p'); empty.className = 'mt-5 text-center text-gray-500 dark:text-gray-400'; empty.textContent = tr('noAbsentees'); list.appendChild(empty); return;
       }
       let done = new Set();
-      const { data, error } = await db.from('follow_ups').select('student_id').eq('date', today());
-      if (!error) done = new Set((data || []).map(row => String(row.student_id)));
+      if (db) {
+        const { data, error } = await db.from('follow_ups').select('student_id').eq('date', today());
+        if (!error) done = new Set((data || []).map(row => String(row.student_id)));
+      }
+      list.replaceChildren();
       absentStudents.forEach((student, index) => {
-        const row = document.createElement('button'); row.type = 'button'; row.className = 'flex w-full items-center justify-between rounded-lg border border-blue-200 bg-white p-3 text-left shadow-sm hover:bg-blue-50 dark:border-gray-700 dark:bg-gray-800';
+        const row = document.createElement('button'); row.type = 'button';
+        row.className = 'flex w-full items-center justify-between rounded-lg border border-blue-200 bg-white p-3 text-left shadow-sm hover:bg-blue-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700';
         row.addEventListener('click', () => openStudentModal(index));
-        const info = document.createElement('span'), name = document.createElement('span'), meta = document.createElement('span'), badge = document.createElement('span');
-        name.className = 'block text-sm font-semibold primary-text'; name.textContent = student.name || '';
-        meta.className = 'block text-xs text-gray-500 dark:text-gray-400'; meta.textContent = `${student.student_id} | ${student.session || ''}`;
+        const info = document.createElement('span');
+        const name = document.createElement('span'); name.className = 'block text-sm font-semibold text-blue-700 dark:text-blue-300'; name.textContent = student.name || '';
+        const meta = document.createElement('span'); meta.className = 'block text-xs text-gray-500 dark:text-gray-400'; meta.textContent = `${student.student_id} | ${student.session || ''}`;
         info.append(name, meta);
-        const completed = done.has(String(student.student_id));
+        const badge = document.createElement('span'); const completed = done.has(String(student.student_id));
         badge.className = `rounded px-2 py-1 text-xs font-bold ${completed ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`;
         badge.textContent = completed ? tr('done') : tr('pending');
         row.append(info, badge); list.appendChild(row);
@@ -424,35 +526,41 @@
       $('modalName').textContent = currentStudent.name || '';
       $('modalId').textContent = `${currentStudent.student_id} | ${currentStudent.session || ''}`;
       $('outcome').value = '';
-      const phoneList = $('phoneList'); phoneList.replaceChildren();
+      const phones = $('phoneList'); phones.replaceChildren();
       [currentStudent.phone1, currentStudent.phone2, currentStudent.phone3].forEach(phone => {
         const row = document.createElement('div'); row.className = 'flex items-center gap-2';
-        const value = document.createElement('div'); value.className = 'flex-1 rounded-lg bg-blue-50 p-2 font-mono text-sm text-gray-800 dark:bg-gray-700 dark:text-white'; value.textContent = phone || tr('phoneUnavailable'); row.appendChild(value);
+        const value = document.createElement('div'); value.className = 'flex-1 rounded-lg bg-blue-50 p-2 font-mono text-sm text-gray-800 dark:bg-gray-700 dark:text-white'; value.textContent = phone || '-'; row.appendChild(value);
         if (phone) {
-          const call = document.createElement('a'); call.href = `tel:${String(phone).replace(/[^\d+*#,;]/g, '')}`; call.className = 'rounded-lg bg-green-600 px-3 py-2 text-sm font-semibold text-white'; call.textContent = `☎ ${tr('call')}`;
-          const copy = document.createElement('button'); copy.type = 'button'; copy.className = 'rounded-lg bg-blue-100 px-3 py-2 text-sm font-semibold text-blue-700 dark:bg-blue-950 dark:text-blue-200'; copy.textContent = tr('copy'); copy.addEventListener('click', () => copyText(phone));
+          const call = document.createElement('a'); call.href = `tel:${String(phone).replace(/[^\d+*#,;]/g, '')}`; call.className = 'rounded-lg bg-green-500 px-3 py-2 text-sm font-semibold text-white'; call.textContent = '📞 Call';
+          const copy = document.createElement('button'); copy.type = 'button'; copy.className = 'rounded-lg bg-blue-100 px-3 py-2 text-sm font-semibold text-blue-700 dark:bg-blue-950 dark:text-blue-200'; copy.textContent = '📋 Copy'; copy.addEventListener('click', () => copyText(phone));
           row.append(call, copy);
         }
-        phoneList.appendChild(row);
+        phones.appendChild(row);
       });
       $('copyLmsBtn').onclick = () => copyText(LMS_BASE + encodeURIComponent(currentStudent.student_id));
       $('exemptBtn').onclick = exemptCurrentStudent;
       setModal('studentModal', true);
-      const studentId = String(currentStudent.student_id);
-      const { data, error } = await db.from('follow_ups').select('outcome_final').eq('date', today()).eq('student_id', studentId).limit(1);
+      if (!db) return;
+      const { data, error } = await db.from('follow_ups').select('outcome_final').eq('date', today()).eq('student_id', String(currentStudent.student_id)).limit(1);
       if (error) { console.error(error); return; }
-      if (data?.length && currentStudent && String(currentStudent.student_id) === studentId) $('outcome').value = data[0].outcome_final || '';
+      if (data?.length && currentStudent) $('outcome').value = data[0].outcome_final || '';
     }
 
     async function exemptCurrentStudent() {
       if (!currentStudent) return;
+      const target = currentStudent;
       try {
-        await saveAttendanceStatus(currentStudent, 'Exempt');
-        attendanceStatus[String(currentStudent.student_id)] = 'Exempt';
-        setModal('studentModal', false); await loadAbsent();
-        if (activeTab === 'attendance' && currentStudent.session === $('session').value) renderStudents();
-        toast(tr('saved'));
-      } catch (error) { console.error(error); toast(tr('error')); }
+        await saveAttendanceStatus(target, 'Exempt');
+        toast('Saved ✓');
+        setModal('studentModal', false);
+        await loadAbsent();
+        if (activeTab === 'attendance' && target.session === $('session').value) {
+          attendanceStatus[String(target.student_id)] = 'Exempt';
+          renderStudents();
+        }
+      } catch (error) {
+        console.error(error); toast('Error');
+      }
     }
 
     $('polishBtn').addEventListener('click', async () => {
@@ -460,100 +568,135 @@
       if (!text) return toast(language === 'hi' ? 'पहले नोट लिखें' : 'Type something first');
       const button = $('polishBtn'); button.disabled = true; button.textContent = '⏳...';
       try {
-        const prompt = `Convert these rough Hindi/Hinglish notes into professional, clear B2 English. Preserve the meaning and use no more than 2 sentences. Return only the polished text:\n${text}`;
-        $('outcome').value = (await callJeshAI(prompt)).trim(); toast(language === 'hi' ? 'AI ने सुधार दिया ✓' : 'AI polished ✓');
-      } catch (error) { console.error(error); toast(`Error: ${error.message || 'AI failed'}`); }
+        const prompt = `Convert these rough Hindi/Hinglish notes into professional, clear B2 English. Preserve the meaning and use no more than 2 sentences. Return only the polished text, with no quotes or explanations:\n${text}`;
+        $('outcome').value = (await callJeshAI(prompt)).trim();
+        toast(language === 'hi' ? 'AI ने सुधार दिया ✓' : 'AI polished ✓');
+      } catch (error) { console.error(error); toast('Error: ' + (error.message || 'AI failed')); }
       finally { button.disabled = false; button.textContent = tr('polish'); }
     });
-    $('copyOutcomeBtn').addEventListener('click', () => copyText($('outcome').value));
 
+    $('copyOutcomeBtn').addEventListener('click', () => copyText($('outcome').value));
     $('saveOutcomeBtn').addEventListener('click', async () => {
-      if (!currentStudent) return toast(tr('error'));
+      if (!db || !currentStudent) return toast('Error');
       const outcome = $('outcome').value.trim();
-      if (!outcome) return toast(tr('writeOutcome'));
+      if (!outcome) return toast(language === 'hi' ? 'पहले परिणाम लिखें' : 'Write outcome first');
       const sid = String(currentStudent.student_id);
       try {
         const { data: existing, error: findError } = await db.from('follow_ups').select('id').eq('date', today()).eq('student_id', sid).limit(1);
         if (findError) throw findError;
-        let result;
-        if (existing?.length) result = await db.from('follow_ups').update({ outcome_final: outcome }).eq('id', existing[0].id);
-        else result = await db.from('follow_ups').insert({ date: today(), student_id: sid, outcome_final: outcome });
-        if (result.error) throw result.error;
+        let error;
+        if (existing?.length) ({ error } = await db.from('follow_ups').update({ outcome_final: outcome }).eq('id', existing[0].id));
+        else ({ error } = await db.from('follow_ups').insert({ date: today(), student_id: sid, outcome_final: outcome }));
+        if (error) throw error;
         syncToSheet({ type: 'outcome', student_id: sid, outcome, date: today() });
-        toast(tr('saved')); setModal('studentModal', false); await loadAbsent();
-      } catch (error) { console.error(error); toast(tr('error')); }
+        toast('Saved ✓'); setModal('studentModal', false); await loadAbsent();
+      } catch (error) { console.error(error); toast('Error'); }
     });
 
     function syncToSheet(payload) {
-      const urls = (localStorage.getItem('sheetUrls') || '').split(/\r?\n/).map(url => url.trim()).filter(Boolean);
-      urls.forEach(url => fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(error => console.error('Sheet webhook failed:', url, error)));
+      const urls = (localStorage.getItem('sheetUrls') || '')
+        .split(/\r?\n/)
+        .map(url => url.trim())
+        .filter(url => /^https?:\/\//i.test(url));
+      const body = JSON.stringify(payload);
+      urls.forEach(url => {
+        fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body })
+          .catch(error => console.error('Sheet webhook failed:', url, error));
+      });
     }
 
     $('saveLessonBtn').addEventListener('click', async () => {
-      const lessonNo = Number($('lessonNumber').value), session = $('lessonSession').value, lessonType = $('lessonType').value;
-      if (!Number.isInteger(lessonNo) || lessonNo < 1) return toast(tr('enterLesson'));
+      if (!db) return toast('Error');
+      const lessonNo = Number($('lessonNumber').value);
+      const session = $('lessonSession').value;
+      const lessonType = $('lessonType').value;
+      if (!Number.isInteger(lessonNo) || lessonNo < 1) return toast(language === 'hi' ? 'सही पाठ संख्या डालें' : 'Enter a valid lesson number');
       try {
+        const lesson = { date: today(), session, lesson_no: lessonNo, lesson_type: lessonType };
         const { data: existing, error: findError } = await db.from('lessons').select('id').eq('date', today()).eq('session', session).limit(1);
         if (findError) throw findError;
-        let result;
-        if (existing?.length) result = await db.from('lessons').update({ lesson_no: lessonNo, lesson_type: lessonType }).eq('id', existing[0].id);
-        else result = await db.from('lessons').insert({ date: today(), session, lesson_no: lessonNo, lesson_type: lessonType });
-        if (result.error) throw result.error;
-        toast(tr('saved')); if (activeTab === 'report') loadReport();
-      } catch (error) { console.error(error); toast(`${tr('error')}: ${error.message || ''}`); }
+        let error;
+        if (existing?.length) ({ error } = await db.from('lessons').update({ lesson_no: lessonNo, lesson_type: lessonType }).eq('id', existing[0].id));
+        else ({ error } = await db.from('lessons').insert(lesson));
+        if (error) throw error;
+        toast('Saved ✓');
+        if (activeTab === 'report') loadReport();
+      } catch (error) { console.error(error); toast('Error'); }
     });
 
     async function fetchAll(table, columns) {
-      const pageSize = 1000; let rows = [];
+      const pageSize = 1000;
+      let result = [];
       for (let offset = 0; ; offset += pageSize) {
-        const { data, error } = await db.from(table).select(columns).range(offset, offset + pageSize - 1);
+        const { data, error } = await db.from(table).select(columns).order('id').range(offset, offset + pageSize - 1);
         if (error) throw error;
-        rows = rows.concat(data || []);
+        result = result.concat(data || []);
         if (!data || data.length < pageSize) break;
       }
-      return rows;
+      return result;
     }
 
     async function loadInsights() {
+      if (!db) {
+        $('insightsSummary').innerHTML = `<div class="col-span-2 rounded-xl bg-white p-4 text-center text-gray-500 dark:bg-gray-800">Supabase is not configured.</div>`;
+        return;
+      }
       $('topStudents').innerHTML = '<li class="text-gray-500">Loading…</li>';
       $('lowStudents').innerHTML = '<li class="text-gray-500">Loading…</li>';
       try {
-        const [studentRows, attendanceRows] = await Promise.all([fetchAll('students', 'student_id,name,session'), fetchAll('attendance', 'student_id,session,status')]);
-        const statsByStudent = new Map();
+        const [studentRows, attendanceRows] = await Promise.all([
+          fetchAll('students', 'id,student_id,name,session'),
+          fetchAll('attendance', 'id,student_id,session,status')
+        ]);
+        const byStudent = new Map();
         attendanceRows.forEach(row => {
           const id = String(row.student_id);
-          if (!statsByStudent.has(id)) statsByStudent.set(id, { attended: 0, eligible: 0 });
-          const stats = statsByStudent.get(id);
-          if (row.status !== 'Exempt') { stats.eligible++; if (row.status === 'Present') stats.attended++; }
+          if (!byStudent.has(id)) byStudent.set(id, { attended: 0, eligible: 0, absent: 0 });
+          const stats = byStudent.get(id);
+          if (row.status === 'Exempt') return;
+          stats.eligible++;
+          if (row.status === 'Present') stats.attended++;
+          if (row.status === 'Absent') stats.absent++;
         });
         const ranked = studentRows.map(student => {
-          const stats = statsByStudent.get(String(student.student_id)) || { attended: 0, eligible: 0 };
-          return { ...student, rate: stats.eligible ? stats.attended / stats.eligible * 100 : null };
+          const stats = byStudent.get(String(student.student_id)) || { attended: 0, eligible: 0, absent: 0 };
+          return { ...student, ...stats, rate: stats.eligible ? stats.attended / stats.eligible * 100 : null };
         }).filter(student => student.rate !== null).sort((a, b) => b.rate - a.rate);
-        renderRanking('topStudents', ranked.slice(0, 3), 'text-green-700 dark:text-green-300');
-        renderRanking('lowStudents', [...ranked].sort((a, b) => a.rate - b.rate).slice(0, 3), 'text-red-700 dark:text-red-300');
+        const top = ranked.slice(0, 3);
+        const low = [...ranked].sort((a, b) => a.rate - b.rate).slice(0, 3);
+        renderRanking('topStudents', top, 'text-green-700 dark:text-green-300');
+        renderRanking('lowStudents', low, 'text-red-700 dark:text-red-300');
+
         const absences = Object.fromEntries(sessions.map(session => [session, 0]));
         attendanceRows.forEach(row => { if (row.status === 'Absent' && sessions.includes(row.session)) absences[row.session]++; });
-        const cards = $('sessionAbsences'); cards.replaceChildren();
+        const absenceCards = $('sessionAbsences'); absenceCards.replaceChildren();
         sessions.forEach((session, index) => {
-          const card = document.createElement('div'); card.className = `rounded-lg p-3 text-center text-white shadow ${['bg-orange-500', 'bg-rose-500', 'bg-purple-500'][index]}`;
+          const card = document.createElement('div');
+          card.className = `rounded-lg p-3 text-center text-white shadow ${['bg-orange-500', 'bg-rose-500', 'bg-purple-500'][index]}`;
           const label = document.createElement('div'); label.className = 'text-xs opacity-90'; label.textContent = session;
           const value = document.createElement('div'); value.className = 'text-2xl font-bold'; value.textContent = absences[session];
-          card.append(label, value); cards.appendChild(card);
+          card.append(label, value); absenceCards.appendChild(card);
         });
         const summary = $('insightsSummary'); summary.replaceChildren();
-        [{ title: tr('students'), value: studentRows.length, color: 'bg-blue-600' }, { title: tr('records'), value: attendanceRows.length, color: 'bg-violet-600' }].forEach(item => {
+        [
+          { title: tr('totalStudents'), value: studentRows.length, color: 'bg-blue-600' },
+          { title: tr('records'), value: attendanceRows.length, color: 'bg-violet-600' }
+        ].forEach(item => {
           const card = document.createElement('div'); card.className = `rounded-xl ${item.color} p-4 text-white shadow`;
           const title = document.createElement('div'); title.className = 'text-xs opacity-90'; title.textContent = item.title;
           const value = document.createElement('div'); value.className = 'mt-1 text-2xl font-bold'; value.textContent = item.value;
           card.append(title, value); summary.appendChild(card);
         });
-      } catch (error) { console.error(error); toast(`Error loading insights: ${error.message || ''}`); }
+      } catch (error) {
+        console.error(error); toast('Error loading insights');
+      }
     }
 
     function renderRanking(elementId, rows, colorClass) {
       const list = $(elementId); list.replaceChildren();
-      if (!rows.length) { const empty = document.createElement('li'); empty.className = 'text-gray-500 dark:text-gray-400'; empty.textContent = tr('noData'); list.appendChild(empty); return; }
+      if (!rows.length) {
+        const empty = document.createElement('li'); empty.className = 'text-gray-500 dark:text-gray-400'; empty.textContent = tr('noData'); list.appendChild(empty); return;
+      }
       rows.forEach(student => {
         const item = document.createElement('li'); item.className = 'flex items-center justify-between gap-2 rounded-lg bg-gray-50 p-2 dark:bg-gray-700';
         const label = document.createElement('span'); label.className = 'min-w-0 truncate'; label.textContent = `${student.name || '—'} (${student.student_id})`;
@@ -570,6 +713,7 @@
     }
 
     async function loadReport() {
+      if (!db) { $('report').value = 'Configure Supabase URL and key to generate the report.'; return; }
       try {
         const [studentResult, attendanceResult, followResult, lessonResult] = await Promise.all([
           db.from('students').select('student_id,session'),
@@ -579,65 +723,73 @@
         ]);
         const failed = [studentResult, attendanceResult, followResult, lessonResult].find(result => result.error);
         if (failed) throw failed.error;
-        const roster = studentResult.data || [], records = attendanceResult.data || [];
+        const studentsForDay = studentResult.data || [];
+        const attendanceForDay = attendanceResult.data || [];
         const followedIds = new Set((followResult.data || []).map(row => String(row.student_id)));
-        const lessons = new Map((lessonResult.data || []).map(row => [row.session, row]));
-        const absentIds = new Set(records.filter(row => row.status === 'Absent').map(row => String(row.student_id)));
-        const exemptIds = new Set(records.filter(row => row.status === 'Exempt').map(row => String(row.student_id)));
+        const lessonsBySession = new Map((lessonResult.data || []).map(row => [row.session, row]));
+        const absentIds = new Set(attendanceForDay.filter(row => row.status === 'Absent').map(row => String(row.student_id)));
+        const exemptIds = new Set(attendanceForDay.filter(row => row.status === 'Exempt').map(row => String(row.student_id)));
         const output = {};
         sessions.forEach(session => {
-          const group = roster.filter(student => student.session === session);
-          output[session] = {
-            count: group.filter(student => !absentIds.has(String(student.student_id)) && !exemptIds.has(String(student.student_id))).length,
-            ids: group.filter(student => followedIds.has(String(student.student_id))).map(student => student.student_id).join(', '),
-            lesson: formatLesson(lessons.get(session))
-          };
+          const roster = studentsForDay.filter(student => student.session === session);
+          const presentCount = roster.filter(student => !absentIds.has(String(student.student_id)) && !exemptIds.has(String(student.student_id))).length;
+          const ids = roster.filter(student => followedIds.has(String(student.student_id))).map(student => student.student_id).join(', ');
+          output[session] = { presentCount, ids, lesson: formatLesson(lessonsBySession.get(session)) };
         });
-        $('report').value = `Daily Summary Report – ${today()}\n\nS.1: ${output['S.1'].count}/22 | ${output['S.1'].lesson}\nS.2: ${output['S.2'].count}/22 | ${output['S.2'].lesson}\nS.3: ${output['S.3'].count}/22 | ${output['S.3'].lesson}\n\nAdmin Hour:-\nDuring the admin hour, I called absentees for follow-up and updated the phone/meeting logs.\n\nStudent IDs after updating logs:-\nS.1: ${output['S.1'].ids}\nS.2: ${output['S.2'].ids}\nS.3: ${output['S.3'].ids}`;
-      } catch (error) { console.error(error); toast(`Error generating report: ${error.message || ''}`); }
+        $('report').value = `Daily Summary Report – ${today()}\n\nS.1: ${output['S.1'].presentCount}/22 | ${output['S.1'].lesson}\nS.2: ${output['S.2'].presentCount}/22 | ${output['S.2'].lesson}\nS.3: ${output['S.3'].presentCount}/22 | ${output['S.3'].lesson}\n\nAdmin Hour:-\nDuring the admin hour, I called absentees for follow-up and updated the phone/meeting logs.\n\nStudent IDs after updating logs:-\nS.1: ${output['S.1'].ids}\nS.2: ${output['S.2'].ids}\nS.3: ${output['S.3'].ids}`;
+      } catch (error) { console.error(error); toast('Error generating report'); }
     }
+
     $('copyReportBtn').addEventListener('click', () => copyText($('report').value));
+    $('copyScriptBtn').addEventListener('click', () => copyText($('appsScriptCode').value));
 
     function loadSettings() {
       $('geminiKey').value = localStorage.getItem('geminiKey') || '';
+      $('geminiModel').value = localStorage.getItem('geminiModel') || '';
       $('groqKey').value = localStorage.getItem('groqKey') || '';
+      $('groqModel').value = localStorage.getItem('groqModel') || '';
       $('cerebrasKey').value = localStorage.getItem('cerebrasKey') || '';
+      $('cerebrasModel').value = localStorage.getItem('cerebrasModel') || '';
       $('sheetUrls').value = localStorage.getItem('sheetUrls') || '';
       $('darkMode').checked = localStorage.getItem('darkMode') === 'true';
       $('language').value = language;
-      $('primaryColor').value = localStorage.getItem('primaryColor') || 'blue';
     }
 
     $('saveSettingsBtn').addEventListener('click', () => {
       localStorage.setItem('geminiKey', $('geminiKey').value.trim());
+      localStorage.setItem('geminiModel', $('geminiModel').value.trim());
       localStorage.setItem('groqKey', $('groqKey').value.trim());
+      localStorage.setItem('groqModel', $('groqModel').value.trim());
       localStorage.setItem('cerebrasKey', $('cerebrasKey').value.trim());
+      localStorage.setItem('cerebrasModel', $('cerebrasModel').value.trim());
       localStorage.setItem('sheetUrls', $('sheetUrls').value.split(/\r?\n/).map(value => value.trim()).filter(Boolean).join('\n'));
       localStorage.setItem('darkMode', String($('darkMode').checked));
-      language = $('language').value; localStorage.setItem('language', language);
-      localStorage.setItem('primaryColor', $('primaryColor').value);
-      applyTheme(); applyLanguage(); toast(tr('saved'));
+      language = $('language').value;
+      localStorage.setItem('language', language);
+      applyTheme(); applyLanguage(); toast(language === 'hi' ? 'सेटिंग्स सहेजी ✓' : 'Settings saved ✓');
     });
-    $('darkMode').addEventListener('change', () => { localStorage.setItem('darkMode', String($('darkMode').checked)); applyTheme(); });
-    $('language').addEventListener('change', () => { language = $('language').value; localStorage.setItem('language', language); applyLanguage(); });
-    $('primaryColor').addEventListener('change', () => { localStorage.setItem('primaryColor', $('primaryColor').value); applyTheme(); });
+    $('darkMode').addEventListener('change', () => {
+      localStorage.setItem('darkMode', String($('darkMode').checked)); applyTheme();
+    });
+    $('language').addEventListener('change', () => {
+      language = $('language').value; localStorage.setItem('language', language); applyLanguage();
+    });
 
     async function loadLessonForToday() {
-      try {
-        const { data, error } = await db.from('lessons').select('session,lesson_no,lesson_type').eq('date', today());
-        if (error) throw error;
-        const lesson = (data || []).find(row => row.session === $('lessonSession').value);
-        if (lesson) { $('lessonNumber').value = lesson.lesson_no; $('lessonType').value = lesson.lesson_type || 'Regular'; }
-      } catch (error) { console.warn('Could not load today lesson:', error); }
+      if (!db) return;
+      const { data, error } = await db.from('lessons').select('session,lesson_no,lesson_type').eq('date', today());
+      if (error) { console.warn('Could not load today lesson', error); return; }
+      const lesson = (data || []).find(row => row.session === $('lessonSession').value);
+      $('lessonNumber').value = lesson ? lesson.lesson_no : '';
+      $('lessonType').value = lesson ? (lesson.lesson_type || 'Regular') : 'Regular';
     }
     $('lessonSession').addEventListener('change', loadLessonForToday);
 
-    // Single startup sequence: apply preferences, render icons, and open Attendance.
     applyTheme();
     applyLanguage();
-    showTab('attendance');
+    loadStudents();
     loadLessonForToday();
-    if (window.lucide) lucide.createIcons();
   </script>
 </body>
 </html>
+```
